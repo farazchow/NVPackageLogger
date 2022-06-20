@@ -1,19 +1,26 @@
-import React, { JSXElementConstructor, useEffect } from "react";
+import React, { JSXElementConstructor, useEffect, useState } from "react";
+
 const App = () => {
   /*
    */
-  let data = "";
+  const [data, setData] = useState("");
 
   // dummy load data for data fetching
   useEffect(() => {
-    fetch("http://localhost:3001/api").then(() => {
-      console.log("yay data fetched! server is up and running");
-    });
-  });
+    async function getData() {
+      console.log("starting to fetch data");
+      const result = await (await fetch("/api/auth")).text();
+      console.log("data retrieved", result);
+      // console.log("other result is", res);
+      setData(result);
+    }
+
+    getData();
+  }, []);
 
   return (
     <>
-      <div>The beginning of a great react app! Data is:{data} | End</div>
+      <div>The beginning of a great react app! Data is: {data} | End</div>
     </>
   );
 };

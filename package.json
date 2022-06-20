@@ -5,6 +5,8 @@
   "scripts": {
     "server": "npx ts-node server/server.tsx",
     "start": "webpack serve --config webpack.dev.config.ts",
+    "dev": "concurrently --kill-others-on-fail \"npm run start\" \"npm run server\"",
+    "stop": "npx kill-port 3000 && npx kill-port 4000",
     "test": "echo create the first one!",
     "build": "webpack --config webpack.prod.config.ts",
     "lint": "eslint --ext .ts,.tsx src",
@@ -13,6 +15,7 @@
   "author": "NV Deskworkers",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-validation": "^4.1.0",
     "react": "^18.2.0",
@@ -34,6 +37,7 @@
     "@typescript-eslint/parser": "^5.28.0",
     "babel-loader": "^8.2.5",
     "clean-webpack-plugin": "^4.0.0",
+    "concurrently": "^7.2.2",
     "eslint": "^8.18.0",
     "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -45,5 +49,7 @@
     "webpack": "^5.73.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.2"
-  }
+  },
+  "@proxy-comment": "this doesn't really do anything because the proxy is set up in webpack",
+  "proxy": "htt://localhost:3000"
 }

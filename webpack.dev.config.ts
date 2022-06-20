@@ -1,4 +1,5 @@
 import path from "path";
+import "dotenv/config";
 import {
   Configuration as WebpackConfiguration,
   HotModuleReplacementPlugin,
@@ -54,9 +55,12 @@ const config: Configuration = {
   devServer: {
     static: path.join(__dirname, "build"),
     historyApiFallback: true,
-    port: 4000,
-    open: true,
+    port: process.env.WEBPORT,
+    open: false,
     hot: true,
+    proxy: {
+      "*": "http://localhost:3000",
+    },
   },
 };
 

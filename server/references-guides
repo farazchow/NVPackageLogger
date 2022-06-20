@@ -1,0 +1,30 @@
+This is a documentation of the guides that were used to setup the client and server
+
+Setup for React, Typescript, ESLlint, Webpack, Babel:
+https://www.carlrippon.com/creating-react-app-with-typescript-eslint-with-webpack5/
+https://lewislbr.dev/blog/set-up-project-react-typescript-babel-webpack-prettier-eslint/
+
+Used to connect front end to back end:
+Also used for npm concurrent.
+https://towardsdev.com/how-to-set-up-a-node-js-express-server-for-react-c19104568d12
+
+Backend setup:  
+https://dev.to/pratham10/how-to-set-up-a-node-js-express-server-for-react-2fja
+https://medium.com/geekculture/build-and-deploy-a-web-application-with-react-and-node-js-express-bce2c3cfec32
+
+Bundling and Minification (Prod webpack file):
+https://docs.microsoft.com/en-us/aspnet/core/client-side/bundling-and-minification?view=aspnetcore-6.0
+https://dev.to/flippedcoding/difference-between-development-stage-and-production-d0p
+
+---
+
+Future:
+
+(Possibly) Improving Webpack Performance:
+https://javascript.plainenglish.io/how-to-improve-webpack-performance-7637db26fa5f
+
+MIT Touchstone Auth:
+https://wikis.mit.edu/confluence/display/TOUCHSTONE/Provisioning+Steps
+https://rolesweb.mit.edu/
+https://shibboleth.atlassian.net/wiki/spaces/SP3/pages/2065335066/ProtectContent
+https://wikis.mit.edu/confluence/display/WSWG/How+to+acquire+and+verify+a+M.I.T.+x509+Server+Certificate
