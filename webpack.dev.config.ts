@@ -3,6 +3,7 @@ import "dotenv/config";
 import {
   Configuration as WebpackConfiguration,
   HotModuleReplacementPlugin,
+  ProvidePlugin,
 } from "webpack";
 import { Configuration as WebpackDevServerConfiguration } from "webpack-dev-server";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -50,6 +51,9 @@ const config: Configuration = {
     new ForkTsCheckerWebpackPlugin({
       async: false,
     }),
+    // Adds React as an external so we don't have to do import 'React'
+    // every time; it tells webpack that React is a gloabl module
+    new ProvidePlugin({ React: "react" }),
   ],
   devtool: "inline-source-map",
   devServer: {
