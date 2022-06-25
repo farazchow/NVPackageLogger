@@ -18,6 +18,10 @@ https://dev.to/flippedcoding/difference-between-development-stage-and-production
 
 ---
 
+Mongoose + Typescript:
+https://thecodebarbarian.com/working-with-mongoose-in-typescript.html
+https://medium.com/@agentwhs/complete-guide-for-typescript-for-mongoose-for-node-js-8cc0a7e470c1
+
 Future:
 
 (Possibly) Improving Webpack Performance:
@@ -28,3 +32,9 @@ https://wikis.mit.edu/confluence/display/TOUCHSTONE/Provisioning+Steps
 https://rolesweb.mit.edu/
 https://shibboleth.atlassian.net/wiki/spaces/SP3/pages/2065335066/ProtectContent
 https://wikis.mit.edu/confluence/display/WSWG/How+to+acquire+and+verify+a+M.I.T.+x509+Server+Certificate
+
+Hooks:
+\_
+
+Typegoose:
+\_
