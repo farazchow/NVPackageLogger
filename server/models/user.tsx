@@ -13,3 +13,4 @@ const userSchema = new Schema<DevUser>({
 const User = model<DevUser>("User", userSchema);
 
 export { User };
+export type { DevUser };

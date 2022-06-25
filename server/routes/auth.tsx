@@ -2,10 +2,16 @@ import { NextFunction, Request, Response } from "express";
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const { User } = require("../models/user");
 
 router.use((req: Request, res: Response, next: NextFunction) => {
   console.log("Time: ", Date.now());
-  next();
+  // next();
+
+  User.find({ name: "Paul" }).then((users: any) => {
+    console.log(users);
+    res.send(users);
+  });
 });
 
 // This defines the home page the this route; route would not work without it
