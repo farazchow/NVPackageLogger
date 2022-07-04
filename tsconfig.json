@@ -22,6 +22,6 @@
     "strictPropertyInitialization": true,
     "sourceMap": true
   },
-  "include": ["src/*/"],
+  "include": ["client/src/*", "client/index.tsx"],
   "exclude": ["node_modules"]
 }

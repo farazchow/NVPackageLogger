@@ -46,6 +46,9 @@ mongoose
 app.use(express.json()); // parses the incoming message and puts the data in req.body
 app.use(express.urlencoded({ extended: true })); // allow encoded posts/puts like forms
 
+// Static Files
+app.use(express.static(__dirname + "/client/src/css"));
+
 // Routes
 app.use("/api/auth", auth); // authentication
 
