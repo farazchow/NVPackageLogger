@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import Landing from "./src/components/Landing";
+import { FunctionComponent, useEffect, useState } from "react";
+import NavBar from "./src/components/NavBar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
@@ -8,10 +8,12 @@ import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
 import { DevUser } from "../server/models/user";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { RouteComponentProps } from "@reach/router";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
-const App = () => {
+const App: FunctionComponent = () => {
   /*
    */
   const [data, setData] = useState<DevUser[]>([]);
@@ -32,8 +34,26 @@ const App = () => {
 
   return (
     <>
-      <Landing />
-      <div>Hello here</div>
+      <Routes>
+        <Route index element={<div>Home</div>} />
+        <Route path="/profile" element={<div>Profile</div>} />
+        <Route path="/residents" element={<div>Residents</div>} />
+
+        <Route path="package">
+          <Route path="in" element={<div>Check In Package</div>} />
+          <Route path="out" element={<div>Deliver Package</div>} />
+        </Route>
+
+        <Route path="/lend/items" element={<div>Lend Desk Items</div>} />
+        <Route path="resident">
+          <Route path="in" element={<div>Check In Resident</div>} />
+          <Route path="out" element={<div>Check Out Resident</div>} />
+        </Route>
+
+        <Route path="/desk/workers" element={<div>Desk Workers</div>} />
+        <Route path="/lost/items" element={<div>Lost Items</div>} />
+      </Routes>
+      <NavBar />
     </>
 
     // <>
@@ -152,13 +172,3 @@ const App = () => {
 };
 
 export default App;
-
-interface Example {
-  prop1d?: string;
-  username?: number;
-  information?: number;
-}
-
-const ex: Example = { username: 2, information: 1029 };
-
-// ex.information

@@ -19,7 +19,7 @@ const config: Configuration = {
   output: {
     publicPath: "/",
   },
-  entry: "./client/index.tsx",
+  entry: path.join(__dirname, "client", "index.tsx"),
   module: {
     rules: [
       {
@@ -67,7 +67,7 @@ const config: Configuration = {
     open: false,
     hot: true,
     proxy: {
-      "*": "http://localhost:3000",
+      "/api": "http://localhost:3000",
     },
   },
 };
