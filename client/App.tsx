@@ -1,5 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import NavBar from "./src/components/NavBar";
+import Login from "./src/components/Login";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
@@ -35,7 +36,7 @@ const App: FunctionComponent = () => {
   return (
     <>
       <Routes>
-        <Route index element={<div>Home</div>} />
+        <Route index element={<Login />} />
         <Route path="/profile" element={<div>Profile</div>} />
         <Route path="/residents" element={<div>Residents</div>} />
 
