@@ -5,6 +5,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
+// import "../styles/App.css"
 
 import { DevUser } from "../server/models/user";
 
@@ -141,32 +148,48 @@ const App = () => {
 
     getData();
   }, []);
-
   return (
     <>
-      <br></br>
-      <div className="container-fluid text-sm-center p-5 bg-light">
-        {/* <!-- bg-light is background color & p-5 is padding --> */}
-        <h1 className="display-2">New Vassar Front Desk</h1>
-        <p className="lead">Contributors: !</p>
-      </div>
+    <br></br>
+    <div className="container-fluid text-sm-center p-5 bg-light">
+         {/* <!-- bg-light is background color & p-5 is padding --> */}
+         <h1 className="display-2">MIT Housing and Residential Services</h1>
+         <p className="lead">Contributors: !</p>
+    </div>
+    <Router>
+      <div>
       <Nav fill variant="tabs" defaultActiveKey="/home">
-        <Nav.Item>
-          <Nav.Link href="#">Home</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="link-1">Log Packages Page</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="link-2">Lend Desk Item</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="disabled" disabled>
-            Disabled
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
-      {/*  */}
+         <Nav.Item>
+           <Link to="/">Home</Link>
+         </Nav.Item>
+         <Nav.Item>
+           <Link to="/logpackages">Log Packages Page</Link>
+         </Nav.Item>
+         <Nav.Item>
+           <Link to="/lenddesk">Lend Desk Item</Link>
+         </Nav.Item>
+         <Nav.Item>
+           <Nav.Link eventKey="disabled" disabled>
+             Disabled
+           </Nav.Link>
+         </Nav.Item>
+       </Nav>
+
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Routes>
+          <Route path="/" element={<Home />}/>
+          <Route path="/logpackages" element={<LogPackages />}/>
+          <Route path="/lenddesk" element={<LendDesk />}/>
+        </Routes>
+      </div>
+    </Router>
+    </>
+    
+  );
+
+  function Home() {
+    return (
       <Row>
         <Col>
           <Card className="mb-4">
@@ -255,8 +278,16 @@ const App = () => {
           </Card>
         </Col>
       </Row>
-    </>
-  );
+    );
+  }
+  
+  function LogPackages() {
+    return <h2>LogPackages</h2>;
+  }
+  
+  function LendDesk() {
+    return <h2>LendDesk</h2>;
+  }
 };
 
 export default App;
