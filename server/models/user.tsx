@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-interface DevUser {
+export interface DevUser {
   name: String;
   createdAt: Date;
 }
@@ -13,4 +13,3 @@ const userSchema = new Schema<DevUser>({
 const User = model<DevUser>("User", userSchema);
 
 export { User };
-export type { DevUser };
