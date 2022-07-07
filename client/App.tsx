@@ -6,14 +6,14 @@ import CheckInOut from "./Resident";
 import { Home } from "./Home";
 import { LogPackages } from "./LogPackages";
 
-import { DevUser } from "../server/models/user";
+import { UserInterface } from "../server/models/user";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
 const App = () => {
   /*
    */
-  const [data, setData] = useState<DevUser[]>([]);
+  const [data, setData] = useState<UserInterface[]>([]);
 
   // dummy load data for data fetching
   useEffect(() => {

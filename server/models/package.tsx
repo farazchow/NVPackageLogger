@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-interface DevPackage {
+interface PackageInterface {
   shipping_id: String;
   recipient: String;
   shipper: String;
@@ -8,7 +8,7 @@ interface DevPackage {
   createdAt: Date;
 }
 
-const packageSchema = new Schema<DevPackage>({
+const packageSchema = new Schema<PackageInterface>({
   shipping_id: String,
   recipient: String,
   shipper: String,
@@ -17,7 +17,7 @@ const packageSchema = new Schema<DevPackage>({
   createdAt: { type: Date, immutable: true },
 });
 
-const Package = model<DevPackage>("package", packageSchema, "packages");
+const Package = model<PackageInterface>("package", packageSchema, "packages");
 
 export { Package };
-export type { DevPackage };
+export type { PackageInterface };

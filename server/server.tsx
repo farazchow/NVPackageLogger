@@ -32,26 +32,6 @@ mongoose
 // dummy function to post simple data to MongoDB
 (async function run() {
   console.log("connected to database");
-
-  // // const user: typeof User = mongoose.createUser({ name: "Paul" });
-  // const user = new User({ name: "Paul", createdAt: Date.now() });
-  // // const user = User.create({ name: "Paul" });
-  // await user
-  //   .save()
-  //   .then(() => console.log("User saved"))
-  //   .catch((e: Error) => console.log("error occurred", e));
-  // console.log("finished sending user");
-  // const object = { testing: "apple", other: "remaining" };
-
-  //   const pckage = new Package({
-  //     name: "package1",
-  //     createdAt: Date.now(),
-  //     recipient: "cathy",
-  //   });
-  //   await pckage
-  //     .save()
-  //     .then(() => console.log("User saved"))
-  //     .catch((e: Error) => console.log("error occurred", e));
 })();
 
 // Middleware //
