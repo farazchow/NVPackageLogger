@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react"
 
 class SelectInput extends React.Component<any,any> {
     // generic dropdown menu
