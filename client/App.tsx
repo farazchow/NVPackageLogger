@@ -12,7 +12,7 @@ import {
   Link
 } from "react-router-dom";
 // import "../styles/App.css"
-
+import CheckInOut from "../client/CheckInOut";
 import { DevUser } from "../server/models/user";
 
 // require("react-bootstrap/lib/NavbarHeader");
@@ -169,6 +169,9 @@ const App = () => {
            <Link to="/lenddesk">Lend Desk Item</Link>
          </Nav.Item>
          <Nav.Item>
+           <Link to="/checkinout">Resident Check-in/Check-out</Link>
+         </Nav.Item>
+         <Nav.Item>
            <Nav.Link eventKey="disabled" disabled>
              Disabled
            </Nav.Link>
@@ -181,6 +184,7 @@ const App = () => {
           <Route path="/" element={<Home />}/>
           <Route path="/logpackages" element={<LogPackages />}/>
           <Route path="/lenddesk" element={<LendDesk />}/>
+          <Route path="/checkinout" element={<CheckInOut />}/>
         </Routes>
       </div>
     </Router>
