@@ -12,35 +12,11 @@ import {
   Link
 } from "react-router-dom";
 // import "../styles/App.css"
-import CheckInOut from "../client/CheckInOut";
+import CheckInOut from "./Resident";
+import SelectInput from "./SelectInput";
 import { DevUser } from "../server/models/user";
 
 // require("react-bootstrap/lib/NavbarHeader");
-
-class SelectInput extends React.Component<any,any> {
-  // generic dropdown menu
-  constructor(props: {}){
-    super(props);
-    
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(event: any) {
-    this.props.onChange(event);
-  }
-
-  override render() {
-    return (
-      <select name={this.props.name} value={this.props.value} onChange={this.handleChange} id={this.props.id}>
-        {this.props.options.map(
-          (option: any, key: number) => {
-            return <option key={key} value={option}>{option}</option>
-          }
-          )}
-      </select>
-    )
-    }
-}
 
 class PackageInputForm extends React.Component<any, any> {
   // TODO: MAKE 'NAMES' A DROPDOWN MENU USING RESIDENT INFO
