@@ -1,18 +1,26 @@
 import { Schema, model } from "mongoose";
 
-interface IPackage {
-  name: String;
-  recipient: String;
+interface DevPackage {
+  id: String;
+  shipper: String;
+  resident: String;
+  location: String;
+  notes: String;
+  worker: String;
   createdAt: Date;
 }
 
-const packageSchema = new Schema<IPackage>({
-  name: String,
-  recipient: String,
+const packageSchema = new Schema<DevPackage>({
+  id: String,
+  shipper: String,
+  resident: String,
+  location: String,
+  notes: String,
+  worker: { type: String, immutable: true },
   createdAt: { type: Date, immutable: true },
 });
 
-const Package = model<IPackage>("Package", packageSchema);
+const Package = model<DevPackage>("User", packageSchema);
 
 export { Package };
-export type { IPackage };
+export type { DevPackage };
