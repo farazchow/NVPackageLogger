@@ -19,7 +19,7 @@ const navigations = [
 const Landing = () => {
   return (
     <>
-      <header className="py-3 mb-4 border-bottom shadow">
+      {/* <header className="py-3 mb-4 border-bottom shadow">
         <div className="container-fluid align-items-center d-flex">
           <div className="flex-shrink-1">
             <a
@@ -84,7 +84,7 @@ const Landing = () => {
             </div>
           </div>
         </div>
-      </header>
+      </header> */}
       <div className="container-fluid pb-3 flex-grow-1 d-flex flex-column flex-sm-row overflow-auto">
         <div className="row flex-grow-sm-1 flex-grow-0">
           <div className="flex-grow-sm-1 flex-grow-0 sticky-top pb-sm-0 pb-3">

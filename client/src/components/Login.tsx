@@ -1,6 +1,11 @@
+import { useEffect, useState } from "react";
 import "../css/login.css";
 
 const Login = () => {
+  const [signup, setSignup] = useState(false);
+
+  useEffect(() => {}, [signup]);
+
   return (
     <>
       <div id="login-card" className="container card">
@@ -8,8 +13,25 @@ const Login = () => {
           <div className="text-center">Login</div>
           <br />
 
-          <form action="/">
+          <form action={`/api/${signup ? "signup" : "signin"}`}>
             <div className="form-group">
+              <input
+                type="text"
+                className="form-control"
+                id="fname"
+                placeholder="First Name"
+                name="first-name"
+                style={{ display: signup ? "block" : "none" }}
+              ></input>
+              <input
+                type="text"
+                className="form-control"
+                id="lname"
+                placeholder="Last Name"
+                name="last-name"
+                style={{ display: signup ? "block" : "none" }}
+              ></input>
+
               <input
                 type="email"
                 className="form-control"
@@ -18,7 +40,6 @@ const Login = () => {
                 name="email"
               ></input>
               <br />
-
               <input
                 type="password"
                 className="form-control"
@@ -34,12 +55,15 @@ const Login = () => {
           </form>
         </div>
         <div className="flex container">
-          <a href="#" className="signup">
+          <span
+            onClick={() => {
+              setSignup(!signup);
+            }}
+            className="signup"
+          >
             Signup
-          </a>
-          <a href="#" className="forgot-pswd">
-            Forgot Password
-          </a>
+          </span>
+          <span className="forgot-pswd">Forgot Password</span>
         </div>
       </div>
     </>

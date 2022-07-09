@@ -1,16 +1,9 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import NavBar from "./src/components/NavBar";
 import Login from "./src/components/Login";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import CardHeader from "react-bootstrap/esm/CardHeader";
 
 import { DevUser } from "../server/models/user";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { RouteComponentProps } from "@reach/router";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
@@ -23,17 +16,19 @@ const App: FunctionComponent = () => {
   useEffect(() => {
     async function getData() {
       console.log("starting to fetch data");
-      const result = await (await fetch("/api/auth")).json();
+      // const result = await (await fetch("/api/auth")).json();
+      const result = "dummy data!";
 
       console.log("data retrieved", result);
       // console.log("other result is", res);
-      setData(result);
+      // setData(result);
     }
 
     getData();
   }, []);
 
   return (
+    // <div>Home</div>
     <>
       <Routes>
         <Route index element={<Login />} />
@@ -54,16 +49,26 @@ const App: FunctionComponent = () => {
         <Route path="/desk/workers" element={<div>Desk Workers</div>} />
         <Route path="/lost/items" element={<div>Lost Items</div>} />
       </Routes>
+
       <NavBar />
+      <div className="container-fluid text-sm-center p-5 bg-light">
+        <div className="flex justify-content-between">
+          <NavBar />
+          <div className="container">
+            <h1 className="display-2">New Vassar Front Desk</h1>
+            <Login />
+            <p className="lead">Contributors: !</p>
+          </div>
+        </div>
+      </div>
+      {fetch("/api/auth", { method: "post" })
+        // .then((res: Response) => res.json())
+        .then((resp: Response) => console.log(JSON.stringify(resp)))}
     </>
 
     // <>
     //   <br></br>
-    //   <div className="container-fluid text-sm-center p-5 bg-light">
-    //     {/* <!-- bg-light is background color & p-5 is padding --> */}
-    //     <h1 className="display-2">New Vassar Front Desk</h1>
-    //     <p className="lead">Contributors: !</p>
-    //   </div>
+
     //   <Nav fill variant="tabs" defaultActiveKey="/home">
     //     <Nav.Item>
     //       <Nav.Link href="#">Home</Nav.Link>

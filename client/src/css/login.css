@@ -13,11 +13,14 @@ br {
 }
 
 #email,
-#password {
+#password,
+#fname,
+#lname {
   border-radius: 30px;
   background-color: #ebf0fc;
   border-color: #ebf0fc;
   color: #9da3b0;
+  margin: 24px 0px;
 }
 
 .btn {
