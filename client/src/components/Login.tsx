@@ -1,10 +1,23 @@
 import { useEffect, useState } from "react";
+import { post } from "../../utilities";
 import "../css/login.css";
 
 const Login = () => {
   const [signup, setSignup] = useState(false);
 
   useEffect(() => {}, [signup]);
+
+  const handleSubmit = async () => {
+    return await (signup
+      ? post("/signup", {
+          email: "test@gmail.com",
+          username: "username here!",
+        })
+      : post("/login", {
+          email: "test@gmail.com",
+          username: "username here!",
+        }));
+  };
 
   return (
     <>
@@ -13,14 +26,17 @@ const Login = () => {
           <div className="text-center">Login</div>
           <br />
 
-          <form action={`/api/${signup ? "signup" : "signin"}`}>
+          <form
+            action={`/api/auth/${signup ? "signup" : "login"}`}
+            method="post"
+          >
             <div className="form-group">
               <input
                 type="text"
                 className="form-control"
                 id="fname"
                 placeholder="First Name"
-                name="first-name"
+                name="firstName"
                 style={{ display: signup ? "block" : "none" }}
               ></input>
               <input
@@ -28,7 +44,7 @@ const Login = () => {
                 className="form-control"
                 id="lname"
                 placeholder="Last Name"
-                name="last-name"
+                name="lastName"
                 style={{ display: signup ? "block" : "none" }}
               ></input>
 
@@ -49,7 +65,12 @@ const Login = () => {
               ></input>
             </div>
             <br />
-            <button type="submit" id="submit-btn" className="btn submit">
+            <button
+              type="submit"
+              id="submit-btn"
+              className="btn submit"
+              onSubmit={handleSubmit}
+            >
               Submit
             </button>
           </form>

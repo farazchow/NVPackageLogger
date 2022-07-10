@@ -1,4 +1,4 @@
-// references:
+// references: Weblab,
 // https://dmitripavlutin.com/fetch-with-json/
 
 function logErrors(error: Error) {
@@ -42,6 +42,7 @@ export async function post(
     method: "post",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(params),
+    credentials: "include", // TODO: return to this
   })
     .then(convertToJSON) // convert result to JSON object
     .catch((error: Error): never => {
@@ -51,4 +52,4 @@ export async function post(
     });
 }
 
-// TODOs
+// Other functions?

@@ -65,7 +65,7 @@ const config: Configuration = {
     historyApiFallback: true,
     port: process.env.WEBPORT,
     open: false,
-    hot: true,
+    // hot: true, automatically applies
     proxy: {
       "/api": "http://localhost:3000",
     },

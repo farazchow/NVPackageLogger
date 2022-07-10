@@ -1,18 +1,28 @@
 import { Schema, model } from "mongoose";
+import { ACCESS } from "../routes/auth";
 
-interface DevUser {
-  name: String;
+interface UserInterface {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
   createdAt: Date;
-  happinessLevel: String;
+  accessLevel: string;
 }
 
-const userSchema = new Schema<DevUser>({
-  name: String,
-  createdAt: { type: Date, immutable: true },
-  happinessLevel: String,
+const UserSchema = new Schema<UserInterface>({
+  firstName: String,
+  lastName: String,
+  email: String,
+  password: String,
+  createdAt: { type: Date, immutable: true, default: Date.now() },
+  accessLevel: {
+    type: String,
+    enum: ACCESS,
+    default: "DESKCAPTAIN",
+  },
 });
 
-const User = model<DevUser>("User", userSchema);
+const User = model<UserInterface>("User", UserSchema, "users");
 
-export { User };
-export type { DevUser };
+export { User, UserSchema, type UserInterface };

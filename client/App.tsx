@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import NavBar from "./src/components/NavBar";
 import Login from "./src/components/Login";
 
-import { DevUser } from "../server/models/user";
+import { UserInterface } from "../server/models/user";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 // require("react-bootstrap/lib/NavbarHeader");
@@ -10,7 +10,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 const App: FunctionComponent = () => {
   /*
    */
-  const [data, setData] = useState<DevUser[]>([]);
+  const [data, setData] = useState<UserInterface[]>([]);
 
   // dummy load data for data fetching
   useEffect(() => {
@@ -61,9 +61,9 @@ const App: FunctionComponent = () => {
           </div>
         </div>
       </div>
-      {fetch("/api/auth", { method: "post" })
+      {/* {fetch("/api/auth", { method: "post" })
         // .then((res: Response) => res.json())
-        .then((resp: Response) => console.log(JSON.stringify(resp)))}
+        .then((resp: Response) => console.log(JSON.stringify(resp)))} */}
     </>
 
     // <>
