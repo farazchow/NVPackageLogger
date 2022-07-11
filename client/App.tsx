@@ -14,7 +14,7 @@ import {
 // import "../styles/App.css"
 
 import { DevUser } from "../server/models/user";
-import PackageInputForm from "./PackageInputForm"
+import { packageInputForm } from "./PackageInputForm"
 
 // require("react-bootstrap/lib/NavbarHeader");
 
@@ -84,7 +84,7 @@ const App = () => {
             <CardHeader className="border-bottom">
               <h6 className="m-0">MongoDB Data</h6>
             </CardHeader>
-            <PackageInputForm/>
+            {packageInputForm()}
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
                 <thead className="bg-light">
