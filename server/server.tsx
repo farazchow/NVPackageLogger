@@ -8,9 +8,6 @@ const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
 
-// Mongoose Models //
-// import { startPassport } from "./passport";
-
 // ENV Variables //
 require("dotenv/config");
 
@@ -19,6 +16,7 @@ const auth = require("./routes/auth");
 
 const PORT = process.env.PORT || 3000;
 const app: Application = express();
+const ONEHOUR = 1000 * 60 * 60;
 
 // Connect to MongoDB //
 mongoose
@@ -34,13 +32,24 @@ mongoose
 app.use(express.json()); // parses the incoming message and puts the data in req.body
 app.use(express.urlencoded({ extended: true })); // allow encoded posts/puts like forms
 
+if (process.env.NODE_ENV === "production") {
+  app.set("trust-proxy", 1);
+}
+
 app.use(
   session({
-    secret: "verygoodsecret",
+    proxy: process.env.NODE_ENV === "production", // for session to use app's proxy
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: ONEHOUR, // one hour - TODO: is this what we want?
+    },
   })
 );
+
 // Passport.js
 app.use(passport.initialize());
 app.use(passport.session());
@@ -51,6 +60,8 @@ app.use("/api/auth", auth, () => {
   console.log("authentication");
 }); // authentication
 
+
+
 // Error Handling
 app.use(
   (
@@ -58,7 +69,7 @@ app.use(
     req: Request,
     res: Response,
     next: NextFunction
-  ) => {
+  ): void => {
     const status = err.status || 500;
     if (status === 500) {
       // 500 means Internal Server Error

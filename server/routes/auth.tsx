@@ -13,12 +13,23 @@ export enum ACCESS {
   RESIDENT = "RESIDENT",
 }
 
+router.use((req: Request, res: Response, next: NextFunction) => {
+  console.log("user currently signed in is", req.user);
+  next();
+  console.log("finished calling next!");
+});
+
 export function requireLogin(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  console.log("requiring login", req.user);
+  console.log(
+    "requiring login",
+    req.user,
+    "user logged in: ",
+    req.isAuthenticated()
+  );
   return req.isAuthenticated() ? next() : res.redirect("/login");
 }
 
@@ -27,7 +38,12 @@ export function requireLogout(
   res: Response,
   next: NextFunction
 ): void {
-  console.log("requiring logout", req.user);
+  console.log(
+    "requiring logout",
+    req.user,
+    "user logged out: ",
+    !req.isAuthenticated()
+  );
   return !req.isAuthenticated() ? next() : res.redirect("/");
 }
 
@@ -37,95 +53,108 @@ export function requireAdmin(
   next: NextFunction
 ): void {
   const admins = [ACCESS.DESKCAPTAIN, ACCESS.DESKMANAGER, ACCESS.DESKMANAGER];
-  return (req as any).user && admins.includes((req as any).user.accessLevel)
+  return req.user && admins.includes((req as any).user.accessLevel)
     ? next()
     : res.redirect("/unauthorized");
 }
 
-router.use((req: Request, res: Response, next: NextFunction) => {
-  // console.log("Time: ", Date.now());
-  console.log("reached router auth middleware", "calling next function");
-  next();
-  console.log("finished calling next!");
-});
+async function signUp(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  const { firstName, lastName, email, password } = req.body;
+  const exists = await User.exists({ email: email });
+  console.log("signup from post", req.body);
+  if (exists) {
+    // we just redirect if a user exists -> TODO: throw error instead
+    return res.redirect("/login");
+  }
 
-router.post(
-  "/signup",
-  requireLogout,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { firstName, lastName, email, password } = req.body;
-    const exists = await User.exists({ email: email });
-    console.log("signup from post", req.body);
-    if (exists) {
-      res.redirect("/login");
-      return;
+  bcrypt.genSalt(10, function (err: Error, salt: number) {
+    if (err) return next(err);
+    bcrypt.hash(password, salt, async function (err: Error, hash: any) {
+      if (err) return next(err);
+
+      const newAdmin = new User({
+        firstName,
+        lastName,
+        email,
+        createdAt: Date.now(),
+        happinessLevel: Math.random() * 10,
+        password: hash,
+      });
+
+      newAdmin
+        .save()
+        .then(() => login(req, res, next))
+        .catch((err: Error) => {
+          console.log("Error received while trying to signup"); // TODO: is this what we want? consider trying to log in again
+        });
+    });
+  });
+}
+
+function login(req: Request, res: Response, next: NextFunction): void {
+  console.log("post login", req.body);
+  // regnerate session because of advice of https: stackoverflow.com/questions/6928648/what-is-the-point-of-unsetting-the-cookie-during-a-logout-from-a-php-session
+  req.session.regenerate((err: Error) => {
+    if (err) {
+      console.log(
+        "Error received while trying to regenerate session for login" // TODO: add error handling
+      );
+    }
+    passport.authenticate("local", {
+      successRedirect: "/success",
+      failureRedirect: "/login?error=true",
+      failWithError: true,
+    })(req, res, next);
+  });
+}
+
+function logout(req: Request, res: Response, next: NextFunction): void {
+  // remove cookies + session data; https: stackoverflow.com/questions/6928648/what-is-the-point-of-unsetting-the-cookie-during-a-logout-from-a-php-session
+  console.log("attempting to logout user", req.user);
+  // We login using cookies so calling doing this is effectively the same
+  req.session.destroy((err: Error): {} => {
+    res.clearCookie("connect.sid", { path: "/" });
+    req.logOut((err: Error) => {});
+
+    if (err) {
+      return res.send({ error: "Logout error" }); // TODO: try logging out again (need to cap this so doesn't lead to infinite loop)
     }
 
-    bcrypt.genSalt(10, function (err: Error, salt: number) {
-      if (err) return next(err);
-      bcrypt.hash(password, salt, function (err: Error, hash: any) {
-        if (err) return next(err);
+    return res.send({});
+  });
+}
 
-        const newAdmin = new User({
-          firstName,
-          lastName,
-          email,
-          createdAt: Date.now(),
-          happinessLevel: Math.random() * 10,
-          password: hash,
-        });
+router.post("/signup", requireLogout, signUp);
 
-        newAdmin.save().then(() => res.redirect("/login"));
-      });
-    });
+// Login
+router.post("/login", requireLogout, login);
+
+// Logout
+router.post("/logout", requireLogin, logout);
+
+router.get("/whoami", (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    // not logged in
+    return res.send({});
   }
-);
 
-router.post(
-  "/login",
-  requireLogout,
-  (
-    req: Request & any,
-    res: Response & Record<any, any>,
-    next: NextFunction
-  ) => {
-    console.log("added attrbutes");
-    console.log("post login", req.body);
-    passport.authenticate(
-      "local",
-      {
-        successRedirect: "/sucesssss",
-        failureRedirect: "/login?error=true",
-        // failWithError: true,
-      }
-      // (err: Error, user: any, info: any) => {
-      //   console.log(`failed because of erorr: ${err}, ${user}, ${info}`);
-      //   console.log(info);
-      //   // req.session.cookie = "new cooke";
-      //   // // req.session.id = "new id!";
-      //   res.sendStatus(200);
-      // }
-    )(req, res, next);
-    next();
-  }
-);
-
-router.get(
-  "/login?error=true",
-  (req: Request, res: Response & Record<any, any>) => {
-    console.log("login get request", res.body);
-    console.log("req params", req.params);
-    res.send();
-  }
-);
+  return res.send(req.user);
+});
 
 router.get(
   "/unauthorized",
   (req: Request, res: Response, next: NextFunction) => {
-    console.log("Cannot authorize this page. Redirecting soon", req.user);
+    console.log(
+      "Oops! You cannot authorize this page. Will redirect you in 5 seconds.",
+      req.user
+    );
 
     setTimeout(() => {
-      res.redirect("/login"), 5000;
+      res.redirect("/"), 5000;
     });
   }
 );

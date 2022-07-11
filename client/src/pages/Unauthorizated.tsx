@@ -1,6 +1,6 @@
 import React from "react";
 
-const Unauthorized = () => {
+const Home = () => {
   return (
     <div
       className="u-flex u-flexColumn u-flex-justifyCenter u-flex-alignCenter u-center-container"
@@ -14,4 +14,4 @@ const Unauthorized = () => {
   );
 };
 
-export default Unauthorized;
+export default Home;

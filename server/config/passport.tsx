@@ -6,11 +6,20 @@ const passport = require("passport");
 
 const LocalStrategy = require("passport-local").Strategy;
 
+// import { User } from "express";
 import { Callback } from "mongoose";
 import { User, UserInterface } from "../models/user";
 
-export let PassportUser: UserInterface &
-  typeof User & { id: string; email: string };
+type MongooseUser = typeof User;
+
+export interface PassportUser
+  extends Express.User,
+    UserInterface,
+    MongooseUser {
+  id: string;
+  email: string;
+  password: string;
+}
 
 passport.use(
   new LocalStrategy(
@@ -24,42 +33,40 @@ passport.use(
       password: string,
       done: (
         err: Error | null,
-        user?: typeof PassportUser | false,
+        user?: PassportUser | boolean,
         info?: { message: string }
-      ) => any
+      ) => void
     ) {
-      console.log("from locale start", email, password);
-      // console.log(User.findById(email: email))
-      User.findOne(
-        { email: email },
-        function (err: Error, user: typeof PassportUser) {
-          if (err) return done(err);
-          if (!user)
-            return done(null, false, { message: "Incorrect username." });
-
-          bcrypt.compare(
-            password,
-            user.password,
-            function (err: any, res: any) {
-              if (err) return done(err);
-              if (res === false)
-                return done(null, false, { message: "Incorrect password." });
-
-              return done(null, user);
-            }
-          );
-        }
+      console.log(
+        `Local Strategy: email is, ${email}\npassword is ${password}`
       );
+      // console.log(User.findById(email: email))
+      User.findOne({ email }, function (err: Error, user: PassportUser) {
+        if (err) return done(err);
+        if (!user) return done(null, false, { message: "Incorrect username." });
+
+        bcrypt.compare(
+          password,
+          user.password,
+          function (err: Error, res: boolean) {
+            if (err) return done(err);
+            if (res === false)
+              return done(null, false, { message: "Incorrect password." });
+
+            return done(null, user);
+          }
+        );
+      });
     }
   )
 );
 
-passport.serializeUser(function (user: typeof PassportUser, done: Callback) {
+passport.serializeUser(function (user: PassportUser, done: Callback) {
   done(null, user.id);
 });
 
 passport.deserializeUser(function (id: string, done: Callback) {
-  User.findById(id, function (err: Error, user: typeof PassportUser) {
+  User.findById(id, function (err: Error, user: Express.User) {
     done(err, user);
   });
 });

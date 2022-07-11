@@ -38,6 +38,7 @@ export async function post(
   endpoint: RequestInfo | URL,
   params: Record<any, any> = {}
 ): Promise<JSON> {
+  console.log("posting");
   return fetch(endpoint, {
     method: "post",
     headers: { "Content-type": "application/json" },
@@ -50,6 +51,10 @@ export async function post(
       logErrors(error);
       throw `POST request to ${endpoint} failed with error:\n${error}`;
     });
+}
+
+export function getUser() {
+  get("/who");
 }
 
 // Other functions?
