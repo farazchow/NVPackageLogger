@@ -20,7 +20,7 @@ const packageSchema = new Schema<DevPackage>({
   createdAt: { type: Date, immutable: true },
 });
 
-const Package = model<DevPackage>("User", packageSchema);
+const Package = model<DevPackage>("package", packageSchema, "packages");
 
 export { Package };
 export type { DevPackage };
