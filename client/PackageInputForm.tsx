@@ -3,8 +3,9 @@ import React from "react";
 import SelectInput from "./SelectInput";
 import { Package } from "../server/models/package";
 
-export function packageInputForm() {
+export function PackageInputForm() {
   // TODO: link this to backend and submit form data
+  // TODO: data validation
   return (
     <form>
       <label htmlFor="id">Tracking: </label>
