@@ -7,9 +7,9 @@ import {
   Link
 } from "react-router-dom";
 // import "../styles/App.css"
-import CheckInOut from "./Resident";
 import { Home } from "./Home";
 import { LogPackages } from "./LogPackages";
+import { CheckInOut } from "./Resident";
 
 // require("react-bootstrap/lib/NavbarHeader");
 

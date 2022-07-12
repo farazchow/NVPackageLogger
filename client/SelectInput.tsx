@@ -1,28 +1,10 @@
-import React from "react"
-
-class SelectInput extends React.Component<any,any> {
-    // generic dropdown menu
-    constructor(props: {}){
-      super(props);
-      
-      this.handleChange = this.handleChange.bind(this);
-    }
-  
-    handleChange(event: any) {
-      this.props.onChange(event);
-    }
-  
-    override render() {
-      return (
-        <select name={this.props.name} value={this.props.value} onChange={this.handleChange} id={this.props.id}>
-          {this.props.options.map(
-            (option: any, key: number) => {
-              return <option key={key} value={option}>{option}</option>
-            }
-            )}
-        </select>
-      )
-      }
+export default function SelectInput(name: string, options: Array<string>) {
+  function makeOptions() {
+    return options.map((i) => <option value={i}>{i}</option>)
   }
-
-export default SelectInput;
+  return (
+    <select name={name}>
+      {makeOptions()}
+    </select>
+  )
+}

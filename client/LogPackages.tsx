@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IPackage } from "../server/models/package";
+import { DevPackage } from "../server/models/package";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -7,7 +7,7 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 
 export function LogPackages() {
 
-    const [data, setData] = useState<IPackage[]>([]);
+    const [data, setData] = useState<DevPackage[]>([]);
 
   // dummy load data for data fetching
   useEffect(() => {

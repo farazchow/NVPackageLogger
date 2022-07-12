@@ -10,6 +10,6 @@ const userSchema = new Schema<DevUser>({
   createdAt: { type: Date, immutable: true },
 });
 
-const User = model<DevUser>("User", userSchema);
+const User = model<DevUser>("user", userSchema, "users");
 
-export { User };
+export { User, userSchema };
