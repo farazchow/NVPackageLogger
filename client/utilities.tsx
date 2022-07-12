@@ -53,8 +53,8 @@ export async function post(
     });
 }
 
-export function getUser() {
-  get("/who");
+export async function getUser() {
+  return await get("api/auth/whoami");
 }
 
 // Other functions?

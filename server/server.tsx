@@ -60,8 +60,6 @@ app.use("/api/auth", auth, () => {
   console.log("authentication");
 }); // authentication
 
-
-
 // Error Handling
 app.use(
   (
@@ -108,4 +106,4 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-export {};
+// export {};

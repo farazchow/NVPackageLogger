@@ -137,12 +137,7 @@ router.post("/login", requireLogout, login);
 router.post("/logout", requireLogin, logout);
 
 router.get("/whoami", (req: Request, res: Response, next: NextFunction) => {
-  if (!req.user) {
-    // not logged in
-    return res.send({});
-  }
-
-  return res.send(req.user);
+  return !req.user ? res.send({}) : res.send(req.user);
 });
 
 router.get(
