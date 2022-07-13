@@ -96,14 +96,14 @@ class CheckInOutInputForm extends React.Component<any, any> {
               onChange={this.handleChange}
             />
           </label>
-          <label>
+          {/* <label>
             Type:{" "}
             <SelectInput
               name="type"
               onChange={this.handleChange}
               options={["Check-in", "Check-out"]}
             />
-          </label>
+          </label> */}
           <input type="submit" value="Submit" />
         </form>
       </>
