@@ -1,14 +1,20 @@
 import { Schema, model } from "mongoose";
 
 interface IPackage {
-  name: String;
+  shipping_id: String;
   recipient: String;
+  shipper: String;
+  location: String;
+  notes: String;
   createdAt: Date;
 }
 
 const packageSchema = new Schema<IPackage>({
-  name: String,
+  shipping_id: String,
   recipient: String,
+  shipper: String,
+  location: String,
+  notes: String,
   createdAt: { type: Date, immutable: true },
 });
 
