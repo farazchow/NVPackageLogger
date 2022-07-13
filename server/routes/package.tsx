@@ -33,6 +33,7 @@ router.post("/postPackage", (req: any, res: Response) => {
     notes: req.body.notes,
     name: req.body.name,
     recipient: req.body.recipient,
+    worker: req.body.worker,
     createdAt: Date.now(), //req.body.createdAt, <-- change
   });
   newPackage

@@ -51,6 +51,9 @@ export function LogPackages() {
                       Time
                     </th>
                     <th scope="col" className="border-0">
+                      Worker
+                    </th>
+                    <th scope="col" className="border-0">
                       Notes
                     </th>
                   </tr>
@@ -66,6 +69,7 @@ export function LogPackages() {
                           <td>{pckage.shipping_id}</td>
                           <td>{pckage.location}</td>
                           <td>{JSON.stringify(pckage.createdAt)}</td>
+                          <td>{pckage.worker}</td>
                           <td>{pckage.notes}</td>
                         </tr>
                       );
