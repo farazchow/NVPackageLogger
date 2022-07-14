@@ -7,12 +7,14 @@ const express = require("express");
 
 // Mongoose Models //
 import { User } from "./models/user";
+import { Package } from "./models/package";
 
 // ENV Variables //
 require("dotenv/config");
 
 // Route Handlers
 const auth = require("./routes/auth");
+const pckge = require("./routes/package");
 
 const PORT = process.env.PORT || 3000;
 const app: Application = express();
@@ -30,16 +32,6 @@ mongoose
 // dummy function to post simple data to MongoDB
 (async function run() {
   console.log("connected to database");
-
-  // const user: typeof User = mongoose.createUser({ name: "Paul" });
-  const user = new User({ name: "Paul", createdAt: Date.now() });
-  // const user = User.create({ name: "Paul" });
-  await user
-    .save()
-    .then(() => console.log("User saved"))
-    .catch((e: Error) => console.log("error occurred", e));
-  // console.log("finished sending user");
-  // const object = { testing: "apple", other: "remaining" };
 })();
 
 // Middleware //
@@ -48,6 +40,7 @@ app.use(express.urlencoded({ extended: true })); // allow encoded posts/puts lik
 
 // Routes
 app.use("/api/auth", auth); // authentication
+app.use("/api/package", pckge); // authentication
 
 // TODO: Error Handling: https://expressjs.com/en/guide/error-handling.html
 

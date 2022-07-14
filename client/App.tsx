@@ -1,27 +1,19 @@
 import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import CardHeader from "react-bootstrap/esm/CardHeader";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 // import "../styles/App.css"
+import CheckInOut from "./Resident";
+import { Home } from "./Home";
+import { LogPackages } from "./LogPackages";
 
-import { DevUser } from "../server/models/user";
-import { PackageInputForm } from "./PackageInputForm"
+import { UserInterface } from "../server/models/user";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
 const App = () => {
   /*
    */
-  const [data, setData] = useState<DevUser[]>([]);
+  const [data, setData] = useState<UserInterface[]>([]);
 
   // dummy load data for data fetching
   useEffect(() => {
@@ -38,141 +30,43 @@ const App = () => {
   }, []);
   return (
     <>
-    <br></br>
-    <div className="container-fluid text-sm-center p-5 bg-light">
-         {/* <!-- bg-light is background color & p-5 is padding --> */}
-         <h1 className="display-2">MIT Housing and Residential Services</h1>
-         <p className="lead">Contributors: !</p>
-    </div>
-    <Router>
-      <div>
-      <Nav fill variant="tabs" defaultActiveKey="/home">
-         <Nav.Item>
-           <Link to="/">Home</Link>
-         </Nav.Item>
-         <Nav.Item>
-           <Link to="/logpackages">Log Packages Page</Link>
-         </Nav.Item>
-         <Nav.Item>
-           <Link to="/lenddesk">Lend Desk Item</Link>
-         </Nav.Item>
-         <Nav.Item>
-           <Nav.Link eventKey="disabled" disabled>
-             Disabled
-           </Nav.Link>
-         </Nav.Item>
-       </Nav>
-
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Routes>
-          <Route path="/" element={<Home />}/>
-          <Route path="/logpackages" element={<LogPackages />}/>
-          <Route path="/lenddesk" element={<LendDesk />}/>
-        </Routes>
+      <br></br>
+      <div className="container-fluid text-sm-center p-5 bg-light">
+        {/* <!-- bg-light is background color & p-5 is padding --> */}
+        <h1 className="display-2">MIT Housing and Residential Services</h1>
+        <p className="lead">Contributors: !</p>
       </div>
-    </Router>
+      <Router>
+        <div>
+          <Nav fill variant="tabs" defaultActiveKey="/home">
+            <Nav.Item>
+              <Link to="/">Home</Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Link to="/logpackages">Log Packages Page</Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Link to="/lenddesk">Lend Desk Item</Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="disabled" disabled>
+                Disabled
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/logpackages" element={<LogPackages />} />
+            <Route path="/lenddesk" element={<LendDesk />} />
+          </Routes>
+        </div>
+      </Router>
     </>
-    
   );
 
-  function Home() {
-    return (
-      <Row>
-        <Col>
-          <Card className="mb-4">
-            <CardHeader className="border-bottom">
-              <h6 className="m-0">MongoDB Data</h6>
-            </CardHeader>
-            {PackageInputForm()}
-            <Card.Body className="p-0 pb-3">
-              <table data-size="small" className="table mb-0">
-                <thead className="bg-light">
-                  <tr>
-                    <th scope="col" className="border-0">
-                      _id
-                    </th>
-                    <th scope="col" className="border-0">
-                      Name
-                    </th>
-                    <th scope="col" className="border-0">
-                      Time
-                    </th>
-                    <th scope="col" className="border-0">
-                      __v
-                    </th>
-                    <th scope="col" className="border-0">
-                      Notes
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data ? (
-                    data.map((user: any, key: number) => {
-                      console.log("user is", user);
-                      return (
-                        <tr key={key}>
-                          <td>{user._id}</td>
-                          <td>{user.name}</td>
-                          <td>{JSON.stringify(user.createdAt)}</td>
-                          <td>{user.__v}</td>
-                        </tr>
-                      );
-                    })
-                  ) : (
-                    <tr>
-                      <td align={"center"}>No data available</td>
-                    </tr>
-                  )}
-
-                  {/* {data && data.length > 0 ? (
-                    data &&
-                    data.map((item, key) => {
-                      return (
-                        <tr key={key}>
-                          <td>{key + 1}</td>
-                          <td>{item.name}</td>
-                          <td>{item.price}</td>
-                          <td>
-                            {item.notes ? ReactHtmlParser(item.notes) : "N/A"}
-                          </td>
-                          <td>
-                            <i
-                              className="material-icons edit-icon"
-                              onClick={() => editOrder(key)}
-                            >
-                              edit
-                            </i>
-                            <i
-                              className="material-icons delete-icon"
-                              onClick={() => deleteOrder(key)}
-                            >
-                              delete
-                            </i>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  ) : (
-                    <tr>
-                      <td align={"center"}>
-                        No data available
-                      </td>
-                    </tr>
-                  )} */}
-                </tbody>
-              </table>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    );
-  }
-  
-  function LogPackages() {
-    return <h2>LogPackages</h2>;
-  }
-  
   function LendDesk() {
     return <h2>LendDesk</h2>;
   }

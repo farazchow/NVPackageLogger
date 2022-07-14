@@ -1,16 +1,15 @@
 import { Schema, model } from "mongoose";
 
-interface DevUser {
+export interface UserInterface {
   name: String;
   createdAt: Date;
 }
 
-const userSchema = new Schema<DevUser>({
+const userSchema = new Schema<UserInterface>({
   name: String,
   createdAt: { type: Date, immutable: true },
 });
 
-const User = model<DevUser>("User", userSchema);
+const User = model<UserInterface>("User", userSchema);
 
 export { User };
-export type { DevUser };
