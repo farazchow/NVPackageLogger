@@ -8,6 +8,8 @@ import { Routes, Route } from "react-router-dom";
 import NotFound from "./src/pages/NotFound";
 import Unauthorized from "./src/pages/Unauthorizated";
 import Home from "./src/pages/Home";
+import LogPackages from "./src/views/LogPackages";
+import LendDesk from "./src/views/LendDesk";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
@@ -30,7 +32,6 @@ const App: FunctionComponent = () => {
 
     getData();
   }, []);
-
   return (
     <>
       <NavBar />
@@ -40,11 +41,11 @@ const App: FunctionComponent = () => {
         <Route path="/residents" element={<div>Residents</div>} />
 
         <Route path="package">
-          <Route path="in" element={<div>Check In Package</div>} />
-          <Route path="out" element={<div>Deliver Package</div>} />
+          <Route path="in" element={<LogPackages />} />
+          <Route path="out" element={<LogPackages />} />
         </Route>
 
-        <Route path="/lend/items" element={<div>Lend Desk Items</div>} />
+        <Route path="/lend/items" element={<LendDesk />} />
         <Route path="resident">
           <Route path="in" element={<div>Check In Resident</div>} />
           <Route path="out" element={<div>Check Out Resident</div>} />

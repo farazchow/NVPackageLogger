@@ -13,6 +13,7 @@ require("dotenv/config");
 
 // Route Handlers
 const auth = require("./routes/auth");
+const pckge = require("./routes/package");
 
 const PORT = process.env.PORT || 3000;
 const app: Application = express();
@@ -59,6 +60,7 @@ require("./config/passport"); // use the passport config file
 app.use("/api/auth", auth, () => {
   console.log("authentication");
 }); // authentication
+app.use("/api/package", pckge); // packages
 
 // Error Handling
 app.use(
@@ -105,5 +107,3 @@ app.use(express.static(__dirname + "/client/images"));
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
-// export {};
