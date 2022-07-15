@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { PackageInterface } from "../models/package";
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -18,7 +19,7 @@ router.get("/", (req: Request, res: Response) => {
 
 router.get("/getPackages", (req: Request, res: Response) => {
   console.log("Sending package data back to you!");
-  Package.find().then((pkg: any) => {
+  Package.find().then((pkg: PackageInterface) => {
     res.send(pkg);
   });
 });
@@ -38,11 +39,25 @@ router.post("/postPackage", (req: any, res: Response) => {
   });
   newPackage
     .save()
-    .then((pkg: any) => res.send(pkg))
+    .then((pkg: PackageInterface) => res.send(pkg))
     .catch((err: any) => {
       console.log("error posting package", err);
       res.status(500).send({ message: "unknown error" });
     });
 });
+
+router.post("/deletePackage", (req: Request, res: Response) => {
+  Package.deleteOne({ _id: req.body._id })
+    .then((pkg: PackageInterface) => {
+      console.log("deleting package");
+      res.send(pkg);
+    })
+    .catch((err: any) => {
+      console.log("error deleting package ", err);
+      res.status(500).send({ message: "unknown error" });
+    });
+});
+
+// todo: archive package after deleting
 
 module.exports = router;

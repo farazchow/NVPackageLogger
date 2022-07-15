@@ -5,7 +5,6 @@ import { post } from "../src/utilities";
 
 export function PackageInputForm() {
   // TODO: dropdown for residents
-  // TODO:clear entries after submit
   // TODO: add worker when submitting (not to inputform)
   return (
     <form name="packageInputForm">
@@ -72,7 +71,11 @@ const clickHandler = () => {
       console.log(body);
       post("/api/package/postPackage", body).then((res) => {
         console.log("posted");
-        // TODO insert code here to clear boxes from HTML
+        (document.getElementById("id") as HTMLInputElement).value = "";
+        (document.getElementById("resident") as HTMLInputElement).value = "";
+        (document.getElementById("shipper") as HTMLInputElement).value = "";
+        (document.getElementById("location") as HTMLInputElement).value = "";
+        (document.getElementById("notes") as HTMLInputElement).value = "";
       });
     } else {
       console.log("Must fill out all fields!");

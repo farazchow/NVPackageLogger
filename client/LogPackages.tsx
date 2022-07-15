@@ -12,10 +12,9 @@ export function LogPackages() {
   // data fetching
   useEffect(() => {
     async function getData() {
-      console.log("starting to fetch data");
-      const result = await (await fetch("/api/package/getPackages")).json();
-      console.log("data retried", result);
-      setData(result);
+      fetch("/api/package/getPackages")
+        .then((res) => res.json())
+        .then((data) => setData(data));
     }
     getData();
   }, []);
@@ -32,9 +31,6 @@ export function LogPackages() {
               <table data-size="small" className="table mb-0">
                 <thead className="bg-light">
                   <tr>
-                    {/* <th scope="col" className="border-0">
-                      Name
-                    </th> */}
                     <th scope="col" className="border-0">
                       Recipient
                     </th>
@@ -63,7 +59,6 @@ export function LogPackages() {
                     data.map((pckage: any, key: number) => {
                       return (
                         <tr key={key}>
-                          {/* <td>{pckage.name}</td> */}
                           <td>{pckage.recipient}</td>
                           <td>{pckage.shipper}</td>
                           <td>{pckage.shipping_id}</td>
