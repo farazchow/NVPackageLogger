@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { PackageInterface } from "../server/models/package";
+import { PackageInterface } from "../../../server/models/package";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
-import { get } from "../src/utilities";
+import { get } from "../../../src/utilities";
 
 export function LogPackages() {
   const [data, setData] = useState<PackageInterface[]>([]);
@@ -88,3 +88,5 @@ export function LogPackages() {
     </>
   );
 }
+
+export default LogPackages;

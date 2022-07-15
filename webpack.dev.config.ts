@@ -19,12 +19,12 @@ const config: Configuration = {
   output: {
     publicPath: "/",
   },
-  entry: "./src/index.tsx",
+  entry: path.join(__dirname, "client", "index.tsx"),
   module: {
     rules: [
       {
         test: /\.(ts|js)x?$/i,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
@@ -38,6 +38,10 @@ const config: Configuration = {
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
     ],
   },
   resolve: {
@@ -45,7 +49,7 @@ const config: Configuration = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/index.html",
+      template: "client/src/index.html",
     }),
     new HotModuleReplacementPlugin(),
     new ForkTsCheckerWebpackPlugin({
@@ -61,9 +65,9 @@ const config: Configuration = {
     historyApiFallback: true,
     port: process.env.WEBPORT,
     open: false,
-    hot: true,
+    // hot: true, automatically applies
     proxy: {
-      "*": "http://localhost:3000",
+      "/api": "http://localhost:3000",
     },
   },
 };
