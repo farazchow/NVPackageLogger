@@ -1,5 +1,5 @@
 import path from "path";
-import { Configuration } from "webpack";
+import { Configuration, ProvidePlugin } from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
@@ -9,7 +9,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 
 const config: Configuration = {
   mode: "production",
-  entry: "./src/index.tsx",
+  entry: "./client/index.tsx",
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "[name].[contenthash].js",
@@ -38,7 +38,7 @@ const config: Configuration = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/index.html",
+      template: "client/src/index.html",
     }),
     new ForkTsCheckerWebpackPlugin({
       async: false,
@@ -46,6 +46,9 @@ const config: Configuration = {
     new ESLintPlugin({
       extensions: ["js", "jsx", "ts", "tsx"],
     }),
+
+    new ProvidePlugin({ React: "react" }),
+
     new CleanWebpackPlugin(),
   ],
 };
