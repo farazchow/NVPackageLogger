@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
-import { Nav, NavLink } from "react-bootstrap";
-// import "./landing.css";
 import "../../utilities.css";
 
-const userLoggedIn = true;
 const navigations = [
   { path: "/", info: "Home" },
   { path: "/profile", info: "Profile" },

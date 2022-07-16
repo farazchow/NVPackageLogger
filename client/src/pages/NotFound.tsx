@@ -1,6 +1,10 @@
-import React from "react";
+import { ReactElement } from "react";
 
-const NotFound = () => {
+interface Props {
+  props?: any;
+}
+
+const NotFound = (props: Props): ReactElement => {
   return (
     <div
       className="u-flex u-flexColumn u-flex-justifyCenter u-flex-alignCenter u-center-container"
@@ -8,7 +12,7 @@ const NotFound = () => {
     >
       <h1 className="u-header-text u-bold">404 Not Found</h1>
       <p className="u-letter-spacing" style={{ fontSize: "var(--xl)" }}>
-        The page you requested couldn't be found.
+        The page you requested couldn&apos;t be found.
       </p>
     </div>
   );

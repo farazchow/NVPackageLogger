@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import { post } from "../../utilities";
 import "../css/login.css";
 
-const Login = () => {
-  const [signup, setSignup] = useState(false);
+interface Props {
+  props?: any;
+}
 
-  useEffect(() => {}, [signup]);
+const Login = (props: Props): ReactElement => {
+  const [signup, setSignup] = useState(false);
 
   const handleSubmit = async () => {
     return await (signup
@@ -82,7 +84,7 @@ const Login = () => {
             }}
             className="signup"
           >
-            Signup
+            {signup ? "Signup" : "Login"}
           </span>
           <span className="forgot-pswd">Forgot Password</span>
         </div>
