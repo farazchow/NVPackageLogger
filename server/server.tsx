@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
+const path = require("path");
 
 // ENV Variables //
 require("dotenv/config");
@@ -36,6 +37,14 @@ app.use(express.urlencoded({ extended: true })); // allow encoded posts/puts lik
 if (process.env.NODE_ENV === "production") {
   app.set("trust-proxy", 1);
 }
+// Routes
+app.use("/api/auth", auth); // authentication
+app.use("/api/package", pckge); // authentication
+app.use(express.static("client/build"));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "build", "./src/index.html"));
+});
 
 app.use(
   session({
