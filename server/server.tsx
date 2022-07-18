@@ -37,14 +37,6 @@ app.use(express.urlencoded({ extended: true })); // allow encoded posts/puts lik
 if (process.env.NODE_ENV === "production") {
   app.set("trust-proxy", 1);
 }
-// Routes
-app.use("/api/auth", auth); // authentication
-app.use("/api/package", pckge); // authentication
-app.use(express.static("client/build"));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "client", "build", "./src/index.html"));
-});
 
 app.use(
   session({
@@ -66,10 +58,8 @@ app.use(passport.session());
 require("./config/passport"); // use the passport config file
 
 // Routes
-app.use("/api/auth", auth, () => {
-  console.log("authentication");
-}); // authentication
-app.use("/api/package", pckge); // packages
+app.use("/api/auth", auth); // authentication
+app.use("/api/package", pckge); // authentication
 
 // Error Handling
 app.use(
@@ -112,6 +102,10 @@ process.on("SIGBREAK", () => {
 
 // Static files for images
 app.use(express.static(__dirname + "/client/images"));
+app.use(express.static("build"));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "build", "index.html"));
+// });
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
