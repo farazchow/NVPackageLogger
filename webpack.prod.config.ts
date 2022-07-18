@@ -9,7 +9,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 
 const config: Configuration = {
   mode: "production",
-  entry: "./client/index.tsx",
+  entry: path.resolve(__dirname, "client", "index.tsx"),
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "[name].[contenthash].js",
@@ -44,9 +44,9 @@ const config: Configuration = {
     new HtmlWebpackPlugin({
       template: "client/src/index.html",
     }),
-    new ForkTsCheckerWebpackPlugin({
-      async: false,
-    }),
+    // new ForkTsCheckerWebpackPlugin({
+    //   async: false,
+    // }),
     new ESLintPlugin({
       extensions: ["js", "jsx", "ts", "tsx"],
     }),
