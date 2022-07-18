@@ -19,7 +19,7 @@ const config: Configuration = {
     rules: [
       {
         test: /\.(ts|js)x?$/i,
-        exclude: [/node_modules/, /test/],
+        exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
