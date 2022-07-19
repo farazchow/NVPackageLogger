@@ -2,7 +2,7 @@ import React from "react";
 
 import SelectInput from "./SelectInput";
 import { post } from "../src/utilities";
-
+console.log(232);
 export function PackageInputForm() {
   // TODO: dropdown for residents
   // TODO:clear entries after submit

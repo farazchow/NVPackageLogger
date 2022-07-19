@@ -31,6 +31,11 @@ const config: Configuration = {
           },
         },
       },
+
+      {
+        test: /\.(gif|svg|jpg|png)$/,
+        loader: "file-loader",
+      }
     ],
   },
   resolve: {
