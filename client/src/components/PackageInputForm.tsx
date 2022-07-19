@@ -1,7 +1,7 @@
 import React from "react";
 
 import SelectInput from "./SelectInput";
-import { post } from "../src/utilities";
+import { post } from "../../utilities";
 
 export function PackageInputForm() {
   // TODO: dropdown for residents
