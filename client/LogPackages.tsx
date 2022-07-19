@@ -63,7 +63,7 @@ export function LogPackages() {
                           <td>{pckage.shipper}</td>
                           <td>{pckage.shipping_id}</td>
                           <td>{pckage.location}</td>
-                          <td>{JSON.stringify(pckage.createdAt)}</td>
+                          <td>{pckage.createdAt}</td>
                           <td>{pckage.worker}</td>
                           <td>{pckage.notes}</td>
                         </tr>

@@ -64,9 +64,8 @@ const clickHandler = () => {
         location: (document.getElementById("location") as HTMLInputElement)
           .value,
         notes: (document.getElementById("notes") as HTMLInputElement).value,
-        createdAt: `${date.getFullYear()}-${
-          date.getMonth() + 1
-        }-${date.getDate()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}Z`,
+        workerIn: "temporaryWorkerID",
+        createdAt: date,
       };
       console.log(body);
       post("/api/package/postPackage", body).then((res) => {
