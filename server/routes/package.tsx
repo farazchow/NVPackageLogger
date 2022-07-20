@@ -48,7 +48,7 @@ router.post("/postPackage", (req: any, res: Response) => {
 });
 
 router.post("/deletePackage", (req: Request, res: Response) => {
-  Package.deleteOne({ _id: req.body._id })
+  Package.deleteOne({ shipping_id: req.body.shipping_id })
     .then((pkg: PackageInterface) => {
       console.log("deleting package");
       res.send(pkg);
