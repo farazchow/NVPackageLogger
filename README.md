@@ -1,5 +1,11 @@
 ## NVPackageLogger
 
+### Before You Begin Working
+- Run git pull. This will get and sync all changes that have been pushed. 
+- Run npm i. This will install and update all dependencies that have changed.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 The Web Stack is: MERN - MongoDB, ExpressJS, ReactJS, and NodeJS
 
 This Web App uses Webpack as a module bundler (it takes javascript files and serves it to a browser so the browser can understand and render the code). Webpack has a feature (hot-module replacement) that allows it to listen for changes in the code and update the browser in real-time. It only replaces the components that change instead of refreshing the whole page.
