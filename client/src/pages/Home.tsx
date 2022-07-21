@@ -10,7 +10,13 @@ const Home = () => {
           <p className="lead">Contributors: !</p>
         </div>
         <div>
-          <Link to="/Shibboleth.sso/Login">Login Here</Link>
+          <button
+              onClick={() => {
+                post("/Shibboleth.sso/Login/");
+              }}
+            >
+              Login
+          </button>
           <br />
           <button
             onClick={() => {
