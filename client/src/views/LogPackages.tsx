@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import { PackageInterface } from "../../../server/models/package";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
+import { PackageInputForm } from "../components/PackageInputForm";
+import { post } from "../../utilities";
 
 export function LogPackages() {
   const [data, setData] = useState<PackageInterface[]>([]);
@@ -17,6 +19,31 @@ export function LogPackages() {
     }
     getData();
   }, []);
+
+  async function deliverOne(evt: SyntheticEvent, key: number) {
+    const pckage = data[key];
+    const date = new Date();
+
+    const body = {
+      shipping_id: pckage.shipping_id,
+      shipper: pckage.shipper,
+      location: pckage.location,
+      notes: pckage.notes,
+      recipient: pckage.recipient,
+      workerIn: pckage.workerIn,
+      workerOut: "temporaryWorkerOut",
+      createdAt: pckage.createdAt,
+      deliveredAt: date,
+    };
+    post("/api/package/archivePackage", body).then((res) => {
+      console.log("Package archived!");
+    });
+    post("/api/package/deletePackage", body).then((res) => {
+      console.log(`Package deleted from working db`);
+      document.location.reload();
+    });
+  }
+
   return (
     <>
       <h2>LogPackages</h2>
@@ -25,11 +52,15 @@ export function LogPackages() {
           <Card className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">MongoDB Data</h6>
+              {PackageInputForm()}
             </CardHeader>
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
                 <thead className="bg-light">
                   <tr>
+                    <th scope="col" className="border-0">
+                      Select
+                    </th>
                     <th scope="col" className="border-0">
                       Recipient
                     </th>
@@ -51,6 +82,9 @@ export function LogPackages() {
                     <th scope="col" className="border-0">
                       Notes
                     </th>
+                    <th scope="col" className="border-end">
+                      Deliver Package
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -58,6 +92,7 @@ export function LogPackages() {
                     data.map((pckage: any, key: number) => {
                       return (
                         <tr key={key}>
+                          <input type="checkbox" />
                           <td>{pckage.recipient}</td>
                           <td>{pckage.shipper}</td>
                           <td>{pckage.shipping_id}</td>
@@ -65,6 +100,15 @@ export function LogPackages() {
                           <td>{pckage.createdAt}</td>
                           <td>{pckage.worker}</td>
                           <td>{pckage.notes}</td>
+                          <button
+                            type="button"
+                            className="btn btn-dark btn-sm d-flex justify-content-center"
+                            onClick={(evt) => {
+                              deliverOne(evt, key);
+                            }}
+                          >
+                            Deliver
+                          </button>
                         </tr>
                       );
                     })

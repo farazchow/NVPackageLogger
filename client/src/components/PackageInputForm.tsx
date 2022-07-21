@@ -75,6 +75,7 @@ const clickHandler = () => {
         (document.getElementById("shipper") as HTMLInputElement).value = "";
         (document.getElementById("location") as HTMLInputElement).value = "";
         (document.getElementById("notes") as HTMLInputElement).value = "";
+        document.location.reload();
       });
     } else {
       console.log("Must fill out all fields!");
