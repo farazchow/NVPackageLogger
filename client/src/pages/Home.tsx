@@ -10,7 +10,7 @@ const Home = () => {
           <p className="lead">Contributors: !</p>
         </div>
         <div>
-          <Link to="/login">Login Here</Link>
+          <Link to="/Shibboleth.sso/Login">Login Here</Link>
           <br />
           <button
             onClick={() => {
