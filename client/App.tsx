@@ -40,10 +40,7 @@ const App: FunctionComponent = () => {
         <Route path="/profile" element={<div>Profile</div>} />
         <Route path="/residents" element={<div>Residents</div>} />
 
-        <Route path="package">
-          <Route path="in" element={<LogPackages />} />
-          <Route path="out" element={<LogPackages />} />
-        </Route>
+        <Route path="/package" element={<LogPackages />} />
 
         <Route path="/lend/items" element={<LendDesk />} />
         <Route path="resident">

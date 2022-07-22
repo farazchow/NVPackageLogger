@@ -1,5 +1,3 @@
-import { urlencoded } from "express";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { post } from "../../utilities";
 import "../css/home.css";
@@ -16,13 +14,14 @@ const Home = () => {
             />
           </h1>
         </div>
-
-        <p className="lead">Contributors: !</p>
-
-        <div className="userButtons">
-          <Link to="/login">
-            <button className="button-17">Login Here</button>
-          </Link>
+        <div>
+          <button
+              onClick={() => {
+                post("/Shibboleth.sso/Login/");
+              }}
+            >
+              Login
+          </button>
           <br />
           <button
             className="button-17"

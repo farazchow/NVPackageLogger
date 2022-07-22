@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
+const path = require("path");
 
 // ENV Variables //
 require("dotenv/config");
@@ -57,10 +58,8 @@ app.use(passport.session());
 require("./config/passport"); // use the passport config file
 
 // Routes
-app.use("/api/auth", auth, () => {
-  console.log("authentication");
-}); // authentication
-app.use("/api/package", pckge); // packages
+app.use("/api/auth", auth); // authentication
+app.use("/api/package", pckge); // authentication
 
 // Error Handling
 app.use(
@@ -103,6 +102,10 @@ process.on("SIGBREAK", () => {
 
 // Static files for images
 app.use(express.static(__dirname + "/client/images"));
+app.use(express.static("build"));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "build", "index.html"));
+// });
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

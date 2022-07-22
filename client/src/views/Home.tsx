@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { UserInterface } from "../server/models/user";
+import { UserInterface } from "../../../server/models/user";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
-import SelectInput from "./SelectInput";
-import { PackageInputForm } from "./PackageInputForm";
-import { PackageInterface } from "../server/models/package";
+import SelectInput from "../components/SelectInput";
+import { PackageInputForm } from "../components/PackageInputForm";
+import { PackageInterface } from "../../../server/models/package";
 
 export function Home() {
   const [data, setData] = useState<PackageInterface[]>([]);
