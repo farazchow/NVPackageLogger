@@ -1,70 +1,104 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import CardHeader from "react-bootstrap/esm/CardHeader";
+import { NotesInterface } from "../../../server/models/notes";
 import { post } from "../../utilities";
 
 export const DailyNotes: FunctionComponent = () => {
-  return (
+  const [data, setData] = useState<NotesInterface[]>([]);
+
+    useEffect(() => {
+      async function getData() {
+        fetch("/api/notes/getNotes")
+        .then((res) => res.json())
+        .then((data) => setData(data));
+      }
+      getData();
+    }, []);
+
+    return (
       <>
-        <h1>Daily Notes</h1>
-        <DailyNotesForm/><br></br>
+        <Row>
+        <Col>
+          <Card className="mb-4">
+            <CardHeader className="border-bottom">
+              <h6 className="m-0">MongoDB Data</h6>
+              <DailyNotesForm/>
+            </CardHeader>
+            <Card.Body className="p-0 pb-3">
+              <table data-size="small" className="table mb-0">
+                <thead className="bg-light">
+                  <tr>
+                    <th scope="col" className="border-0">
+                      Note
+                    </th>
+                    <th scope="col" className="border-0">
+                      Deskworker
+                    </th>
+                    <th scope="col" className="border-0">
+                      Date
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data ? (
+                    data.map((note: any, key: number) => {
+                      return (
+                        <tr key={key}>
+                          <td>{note.note}</td>
+                          <td>{note.deskworker}</td>
+                          <td>{note.createdAt}</td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td align={"center"}>No data available</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </Card.Body>
+          </Card>
+        </Col>
+  </Row>
       </>
     )
   }
 
-
-type State = {
-  note: string,
-  deskworker: string,
-  createdAt: Date,
-};
-
-class DailyNotesForm extends React.Component<{}, State> {
-    override state = {
-      note: "",
-      deskworker: "",
-      createdAt: new Date(),
-    };
-    
-    override render() {
-        return (
-            <>
-            <br>
-            </br>
-            <div>
-            <form onSubmit={(e: React.SyntheticEvent) => {
-                e.preventDefault();
-                const target = e.target as typeof e.target & {
-                  note: { value: string },
-                  deskworker: { value: string },
-                  createdAt: {value: Date},
-                };
-                this.state.note = target.note.value;
-                this.state.deskworker = target.deskworker.value;
-                this.state.createdAt = new Date()
-
-                post("/api/notes/addNote", this.state).then((res) => {
-                  console.log("note added!");
-                });
-                console.log("submitted %s %s %s",this.state.note, this.state.deskworker, this.state.createdAt);
-            }}>
-            <p>
-                <label>
-                Note: <input type="text" name="note"/>
-                </label>
-            </p>
-            
-            <p>
-                <label>
-                Deskworker: <input type="text" name="deskworker" />
-                </label>
-            </p>
-
-            <input type="submit" value="Submit"/>
-            </form>
-            </div>
-            </>
-            
-        )
-    }
-    }
+const DailyNotesForm = () => {
+  return (
+      <>
+      <form onSubmit={(e: React.SyntheticEvent) => {
+                  e.preventDefault();
+                  const target = e.target as typeof e.target & {
+                    note: { value: string },
+                    deskworker: { value: string },
+                  };
+                  const note = {
+                    "note": target.note.value,
+                    "deskworker": target.deskworker.value,
+                    "createdAt": new Date()
+                  }
+                  post("/api/notes/addNote", note).then((res) => {
+                    console.log("note added!");
+                  });
+              }}>
+          <p>
+              <label>
+              Note: <input type="text" name="note"/>
+              </label>
+          </p>
+          <p>
+              <label>
+              Deskworker: <input type="text" name="deskworker" />
+              </label>
+          </p>
+          <input type="submit" value="Submit"/>
+          </form>
+      </>
+  )}
 
 export default DailyNotes;  

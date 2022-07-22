@@ -15,8 +15,15 @@ router.get("/", (req: Request, res: Response) => {
     res.send("Congrats, you've reached the home page of the dailynotes route");
   });
 
+router.get("/getNotes", (req: Request, res: Response) => {
+  Notes.find().then((notes: NotesInterface) => {
+    res.send(notes);
+  });
+});
+
+
 router.post("/addNote", (req: Request, res: Response) => {
-    console.log("Sending package data back to you!");
+    console.log("Sending note data back to you!");
     const newNote = new Notes({
       note: req.body.note,
       deskworker: req.body.deskworker,
