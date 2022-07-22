@@ -26,15 +26,13 @@ router.get("/getResident", (req: Request, res: Response) => {
 router.post("/postResident", (req: any, res: Response) => {
   console.log("posting resident");
   const newResident = new Resident({
-    name: req.body.name,
-    checkedIn: req.body.cI,
-    checkedOut: req.body.cO,
-    roomNumber: req.body.roomNumber,
-    forwardingAddress: req.body.address,
-    keyGiven: req.body.given,
-    keyReturned: req.body.returned,
-    studentId: req.body.sID,
-    YellowCardFilled: req.body.Yellow,
+    id: req.body.id,
+    resident: req.body.resident,
+    room: req.body.room,
+    year: req.body.year,
+    homeAddress: req.body.homeAddress,
+    forwardingAddress: req.body.forwardingAddress,
+    date: req.body.date,
   });
 
   newResident
