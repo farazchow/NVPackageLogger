@@ -9,7 +9,7 @@ export function PackageInputForm() {
   return (
     <form name="packageInputForm">
       <label htmlFor="id">Tracking: </label>
-      <input type="text" id="id"></input>
+      <input type="text" autoFocus id="id"></input>
 
       <label htmlFor="shipper">Shipper: </label>
       {SelectInput("shipper", [
