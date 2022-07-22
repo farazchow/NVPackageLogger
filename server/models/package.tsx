@@ -5,6 +5,7 @@ interface PackageInterface {
   shipper: String;
   location: String;
   notes: String;
+  workerIn: String;
   createdAt: Date;
 }
 
@@ -14,6 +15,7 @@ const packageSchema = new Schema<PackageInterface>({
   shipper: String,
   location: String,
   notes: String,
+  workerIn: String,
   createdAt: { type: Date, immutable: true },
 });
 
