@@ -1,0 +1,265 @@
+/**
+* Welcome to your ✨𝔲𝔱𝔦𝔩𝔦𝔱𝔶 𝔰𝔱𝔶𝔩𝔢𝔰✨!
+* This file includes utility classes that are super simple
+* and can be used to add general styles; variable definitions
+* for colors; and styles to html, body, and other high level
+* DOMs.
+* 
+* All utility classes start with a `u-` and all do
+* one basic CSS thing (for example, making the font-weight
+* 600 for bolding) or are super generic.
+* 
+* This is 𝙉𝙊𝙏 the place to define classes for components or
+* do rigorous styling. You shoud not need to change this file
+* much after initial creation.
+*/
+
+/* TODO: REPLACE WITH FONT! */
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+/* @import "mainfont" from "./fonts/EvilEmpire-4BBVK.ttf" */
+
+/* @font-face {
+  font-family: "title_font";
+  src: local("title_font"), url("./fonts/EvilEmpire-4BBVK.ttf") format("truetype");
+} */
+
+:root {
+  --primary: #81612c;
+  --primary--dim: #a8997d;
+  /* --darkgrey: #d4d4d4; */
+  --medgrey: #ced0ce;
+  --grey: #e6e8e6;
+  --white: rgb(255, 255, 255);
+
+  --xs: 4px;
+  --s: 8px;
+  --m: 16px;
+  --l: 24px;
+  --xl: 40px;
+  --xxl: 48px;
+  --xxxl: 80px;
+}
+
+h1,
+h2,
+p,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0px;
+  /* background-image: url(); */
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/*.appBody {
+  /* position: relative; */
+
+/* background-repeat: no-repeat; */
+/*background-position: center center; */
+
+* {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+form {
+  flex-grow: 1;
+}
+
+.u-flex {
+  display: flex;
+}
+
+.u-flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.u-flex-justifyCenter {
+  justify-content: center;
+}
+
+.u-flex-justifyEvenly {
+  justify-content: space-evenly;
+}
+
+.u-flex-justifyBetween {
+  justify-content: space-between;
+}
+
+.u-flex-alignCenter {
+  align-items: center;
+}
+
+.u-inlineBlock {
+  display: inline-block;
+}
+
+.u-bold {
+  font-weight: bold;
+  font-size: 200;
+}
+
+.u-textCenter {
+  text-align: center;
+}
+
+.u-text-UpperCase {
+  text-transform: uppercase;
+}
+
+.u-header-text {
+  font-size: var(--xxl);
+  color: var(--white);
+  margin: var(--xxxl) 0;
+  letter-spacing: var(--m);
+  text-transform: uppercase;
+  position: relative;
+}
+
+.u-letter-spacing {
+  letter-spacing: var(--xs);
+}
+
+.u-relative {
+  position: relative;
+}
+
+.u-pointer {
+  cursor: pointer;
+}
+
+.u-link {
+  color: var(--primary);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.u-link:hover {
+  color: var(--primary--dim);
+  background-color: var(--medgrey);
+}
+
+.u-button {
+  background-color: var(--grey);
+  border: 0px;
+  box-sizing: border-box;
+  border-radius: var(--xs);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: var(--primary);
+  /* font-family: title_font; */
+}
+
+.u-center-container {
+  min-height: 100vh;
+}
+
+.u-width-container {
+  width: 60vw;
+}
+
+.u-timer-blink {
+  animation: blink 1s linear infinite;
+}
+
+.u-slow-blink {
+  animation: blink 3s linear infinite;
+}
+
+@keyframes blink {
+  30% {
+    opacity: 0;
+  }
+}
+
+/* close buttons */
+.u-close-button:hover {
+  opacity: 1;
+}
+.u-close-button:before,
+.u-close-button:after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 40px;
+  width: 4px;
+}
+.u-close-button:before {
+  transform: rotate(45deg);
+}
+.u-close-button:after {
+  transform: rotate(-45deg);
+}
+
+/*light background*/
+.u-close-button-light-background {
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+
+.u-close-button-light-background::before,
+.u-close-button-light-background::after {
+  background-color: #333;
+}
+
+/*dark background*/
+.u-close-button-dark-background {
+  position: absolute;
+  right: 32px;
+  top: calc(
+    var(--xxxl) + 8px
+  ); /* = (height of margin + 1/2 height of the font-size for u-header-text(*/
+  width: 32px;
+  height: 32px;
+  opacity: 0.5;
+}
+
+.u-close-button-dark-background::before,
+.u-close-button-dark-background::after {
+  background-color: var(--white);
+}
+
+/* close buttons */
+
+/* Loading button */
+.u-Loading {
+  color: var(--white);
+  font-size: var(--xxl);
+}
+
+/* https://martinwolf.org/before-2018/blog/2015/01/pure-css-savingloading-dots-animation/ */
+@keyframes loading {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.u-Loading span {
+  animation-name: loading;
+  animation-duration: 1.4s;
+  animation-iteration-count: infinite;
+}
+
+.u-Loading span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.u-Loading span:nth-child(3) {
+  animation-delay: 0.4s;
+}

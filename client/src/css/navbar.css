@@ -1,0 +1,35 @@
+/* * {
+  border-radius: 5px;
+}
+
+body.thumb {
+  transform: scale(0.4);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+main {
+  min-height: 80vh;
+}
+
+[class*="container"] {
+  border: 1px dashed #eee;
+  background-clip: content-box;
+}
+
+.row [class*="col"] {
+  background-color: #efefef;
+  background-clip: content-box;
+}
+
+.nav-item {
+  background-color: #eeeeff;
+  background-clip: content-box;
+} */
+
+.navBar {
+  position: relative;
+  margin-top: 20px;
+  box-shadow: 0 0 20px 0 #000;
+  margin-left: 10px;
+  margin-right: 10px;
+}

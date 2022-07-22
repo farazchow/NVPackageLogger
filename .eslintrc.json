@@ -11,7 +11,10 @@
   ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
+    "typescript-eslint/no-explicit-any": "off",
+    "typescript-eslint/no-non-null-assertion": "off",
     "react-hooks/exhaustive-deps": "warn",
+    "react/react-in-jsx-scope": "off",
     "react/prop-types": "off"
   },
   "settings": {
