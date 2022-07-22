@@ -46,8 +46,9 @@ class DailyNotesForm extends React.Component<{}, State> {
                 this.state.deskworker = target.deskworker.value;
                 this.state.date = target.date.value;
                 this.state.time = target.time.value;
+                this.state.isSubmitted = true;
 
-                console.log("submitted %s %s %s",this.state.note, this.state.deskworker, this.state.date, this.state.time);
+                console.log("submitted %s %s %s",this.state.note, this.state.deskworker, this.state.date, this.state.time, this.state.isSubmitted);
             }}>
             <p>
                 <label>
@@ -82,4 +83,4 @@ class DailyNotesForm extends React.Component<{}, State> {
     }
     }
 
-export default DailyNotes;
+export default DailyNotes;  
