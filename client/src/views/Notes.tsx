@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
+import { post } from "../../utilities";
 
 export const DailyNotes: FunctionComponent = () => {
   return (
@@ -14,18 +14,14 @@ export const DailyNotes: FunctionComponent = () => {
 type State = {
   note: string,
   deskworker: string,
-  date: string,
-  time: string,
-  isSubmitted: boolean
+  createdAt: Date,
 };
 
 class DailyNotesForm extends React.Component<{}, State> {
     override state = {
       note: "",
       deskworker: "",
-      date: "",
-      time: "",
-      isSubmitted: false
+      createdAt: new Date(),
     };
     
     override render() {
@@ -37,18 +33,18 @@ class DailyNotesForm extends React.Component<{}, State> {
             <form onSubmit={(e: React.SyntheticEvent) => {
                 e.preventDefault();
                 const target = e.target as typeof e.target & {
-                note: { value: string },
-                deskworker: { value: string },
-                date: { value: string },
-                time: { value: string }
+                  note: { value: string },
+                  deskworker: { value: string },
+                  createdAt: {value: Date},
                 };
                 this.state.note = target.note.value;
                 this.state.deskworker = target.deskworker.value;
-                this.state.date = target.date.value;
-                this.state.time = target.time.value;
-                this.state.isSubmitted = true;
+                this.state.createdAt = new Date()
 
-                console.log("submitted %s %s %s",this.state.note, this.state.deskworker, this.state.date, this.state.time, this.state.isSubmitted);
+                post("/api/notes/addNote", this.state).then((res) => {
+                  console.log("note added!");
+                });
+                console.log("submitted %s %s %s",this.state.note, this.state.deskworker, this.state.createdAt);
             }}>
             <p>
                 <label>
@@ -60,18 +56,6 @@ class DailyNotesForm extends React.Component<{}, State> {
                 <label>
                 Deskworker: <input type="text" name="deskworker" />
                 </label>
-            </p>
-            
-            <p>
-            <label>
-                Date: <input type="text" name="date"/>
-            </label>
-            </p>
-
-            <p>
-            <label>
-                Time: <input type="text" name="time"/>
-            </label>
             </p>
 
             <input type="submit" value="Submit"/>

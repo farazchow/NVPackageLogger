@@ -1,13 +1,10 @@
 import { Application, NextFunction, Request, Response } from "express";
-import { Session } from "express-session";
-import { PassportStatic } from "passport";
 
 // Packages
 const mongoose = require("mongoose");
 const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
-const path = require("path");
 
 // ENV Variables //
 require("dotenv/config");
@@ -15,6 +12,7 @@ require("dotenv/config");
 // Route Handlers
 const auth = require("./routes/auth");
 const pckge = require("./routes/package");
+const notes = require("./routes/notes");
 
 const PORT = process.env.PORT || 3000;
 const app: Application = express();
@@ -60,6 +58,7 @@ require("./config/passport"); // use the passport config file
 // Routes
 app.use("/api/auth", auth); // authentication
 app.use("/api/package", pckge); // authentication
+app.use("/api/notes", notes); // authentication
 
 // Error Handling
 app.use(
