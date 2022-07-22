@@ -8,6 +8,7 @@ const express = require("express");
 // Mongoose Models //
 import { User } from "./models/user";
 import { Resident } from "./models/resident";
+import { Package } from "./models/package";
 
 // ENV Variables //
 require("dotenv/config");
@@ -15,6 +16,7 @@ require("dotenv/config");
 // Route Handlers
 const auth = require("./routes/auth");
 const rsdnt = require("./routes/resident");
+const pckge = require("./routes/package");
 
 const PORT = process.env.PORT || 3000;
 const app: Application = express();
@@ -42,6 +44,16 @@ mongoose
     .catch((e: Error) => console.log("error occurred", e));
   // console.log("finished sending user");
   // const object = { testing: "apple", other: "remaining" };
+
+  const pckage = new Package({
+    name: "package1",
+    createdAt: Date.now(),
+    recipient: "cathy",
+  });
+  await pckage
+    .save()
+    .then(() => console.log("User saved"))
+    .catch((e: Error) => console.log("error occurred", e));
 })();
 
 // Middleware //
@@ -51,6 +63,7 @@ app.use(express.urlencoded({ extended: true })); // allow encoded posts/puts lik
 // Routes
 app.use("/api/auth", auth); // authentication
 app.use("/api/resident", rsdnt); // residents
+app.use("/api/package", pckge); // authentication
 
 // TODO: Error Handling: https://expressjs.com/en/guide/error-handling.html
 
