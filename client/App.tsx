@@ -10,6 +10,7 @@ import Unauthorized from "./src/pages/Unauthorizated";
 import Home from "./src/pages/Home";
 import LogPackages from "./src/views/LogPackages";
 import LendDesk from "./src/views/LendDesk";
+import DailyNotes from "./src/views/DailyNotes";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
@@ -50,7 +51,7 @@ const App: FunctionComponent = () => {
 
         <Route path="/desk/workers" element={<div>Desk Workers</div>} />
         <Route path="/lost/items" element={<div>Lost Items</div>} />
-
+        <Route path="/dailynotes" element={<DailyNotes />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<div>Logout</div>} />
 
