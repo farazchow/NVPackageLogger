@@ -5,8 +5,7 @@ import "../css/navbar.css";
 const navigations = [
   { path: "/", info: "Home" },
   { path: "/profile", info: "Profile" },
-  { path: "/package/in", info: "Check In Package" },
-  { path: "/package/out", info: "Deliver Package" },
+  { path: "/package", info: "Packages" },
   { path: "/lend/items", info: "Lend Desk Items" },
   { path: "/resident/in", info: "Check In Resident" },
   { path: "/resident/out", info: "Check Out Resident" },
