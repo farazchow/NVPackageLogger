@@ -1,0 +1,242 @@
+.mainLogo {
+  /* font-family: "Arial";
+  color: white;
+  text-align: center;
+  font-size: 20;
+  background-color: rgb(0, 0, 0); 
+  background-color: rgba(0, 0, 0, 0); Black w/opacity/see-through */
+  /* color: black;
+  font-weight: bold; */
+  /* border: 5px solid #f1f1f1;
+  border-radius: 20px; */
+  /* position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 80%;
+  padding: 20px;
+  text-align: center; */
+  width: 600px;
+  height: auto;
+  padding: 20px 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 #000;
+  margin: auto;
+  position: relative;
+  text-align: center;
+  margin-top: 100px;
+  animation: mainLogo 1s ease-out;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes mainLogo {
+  0% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.footer {
+  /* width: 600px;
+  height: auto;
+  padding: 20px 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 #000;
+  margin: auto;
+  position: relative;
+  text-align: center;
+  margin-top: 100px; */
+  position: relative;
+}
+
+.mainText {
+  color: black;
+  font-family: Marker Felt;
+}
+
+.boxIcon {
+  width: 60px;
+}
+.container {
+  display: flexbox;
+}
+
+body {
+  /* background-image: linear-gradient(180deg, #eb6734, #d14e26, #a83816, #a83f16); */
+  background-image: linear-gradient(
+    130deg,
+    #fc4903,
+    #d1500a,
+    #e36019,
+    #d1320a,
+    #e36d19,
+    #e38119,
+    #b54504
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.userButtons {
+  display: inline;
+}
+.outline {
+  width: 1000px;
+  height: 1000px;
+  line-height: 175px;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.button-17 {
+  align-items: center;
+  appearance: none;
+  background-color: #fff;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+    rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-block;
+  fill: currentcolor;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 48px;
+  justify-content: center;
+  letter-spacing: 0.25px;
+  line-height: normal;
+  max-width: 100%;
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: auto;
+  will-change: transform, opacity;
+  z-index: 0;
+}
+
+.button-17:hover {
+  background: #f6f9fe;
+  color: #174ea6;
+}
+
+.button-17:active {
+  box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%),
+    0 8px 12px 6px rgb(60 64 67 / 15%);
+  outline: none;
+}
+
+.button-17:focus {
+  outline: none;
+  border: 2px solid #4285f4;
+}
+
+.button-17:not(:disabled) {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.button-17:not(:disabled):hover {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 2px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 6px 10px 4px;
+}
+
+.button-17:not(:disabled):focus {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.button-17:not(:disabled):active {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+}
+
+.button-17:disabled {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+svg {
+  position: absolute;
+  margin-left: -150px;
+  bottom: 0px;
+  left: 50%;
+}
+
+.outline {
+  stroke: white;
+  stroke-width: 20px;
+  stroke-dashoffset: -2000;
+  stroke-dasharray: 2000;
+  animation-name: outline;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes outline {
+  0% {
+    stroke-dashoffset: -2000;
+    stroke: white;
+  }
+  30% {
+    stroke: white;
+  }
+  50% {
+    stroke: white;
+  }
+  70% {
+    stroke: white;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    stroke: white;
+  }
+}
+
+.footer {
+  /* position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center; */
+  margin-top: 50px;
+}
+
+.nvOutline {
+  width: 100%;
+  height: auto;
+  position: fixed;
+  bottom: 0px;
+  z-index: 1;
+}
