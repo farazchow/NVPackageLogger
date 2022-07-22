@@ -1,115 +1,169 @@
-import React, { useEffect, useState } from "react";
-import SelectInput from "../../SelectInput";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { post } from "../../utilities";
 
-class CheckInOut extends React.Component<any, any> {
-  override render(): React.ReactNode {
+export const CheckInOut: FunctionComponent = () => {
+  return (
+    <>
+      <h1>Resident Check-in/Check-out</h1>
+      <section>
+        <div>
+          <p>
+            A few things to be aware of...
+            <br />
+            <br />
+            - New Vassar Desk cannot directly forward packages (other than
+            USPS), and we cannot forward mail internationally (so if you will be
+            living internationally, please provide a C/O residing in the US if
+            possible).
+            <br />
+            - In general, if you want your mail to be forwarded to someone who
+            is not you or you would like to authorize your mail pick up to
+            someone who is not you, include "C/O Firstname Lastname".
+            <br />
+            - Directly call Ganatra at (𝟐𝟓𝟔) 𝟐𝟓𝟖-𝟗𝟔𝟑𝟎 or email out to the desk
+            supervisors' mailing list 𝐧𝐯-𝐝𝐞𝐬𝐤@𝐦𝐢𝐭.𝐞𝐝𝐮 if you have any questions
+            concerning this form.
+            <br />
+            <br />
+            [Note: In the event you are corresponding with affiliates of New
+            Vassar Desk via phone [𝟔𝟏𝟕-𝟐𝟓𝟑-𝟗𝟓𝟎𝟓] or via email
+            (𝐧𝐯-𝐝𝐞𝐬𝐤𝐰𝐨𝐫𝐤𝐞𝐫𝐬@𝐦𝐢𝐭.𝐞𝐝𝐮 or 𝐧𝐯-𝐬𝐮𝐦𝐦𝐞𝐫𝐝𝐞𝐬𝐤@𝐦𝐢𝐭.𝐞𝐝𝐮) to arrange a
+            one-off mail/package pickup, if you wish to confirm/denote
+            authorization for someone else to pickup (or be forwarded) your mail
+            on your behalf we ask that you please provide their Full Name &amp;
+            cc' and/or provide reference details for them as needed with respect
+            to the medium of communication]
+            <br />
+            <br />
+            Thanks, Ganatra
+          </p>
+          <p>
+            Please fill out the following form as part of the checkout process
+          </p>
+          <p>
+            Please pay attention to forwarding address as we will use this for
+            forwarding mail and packages when you are not here. The forwarding
+            address must be of the form Street, City, State, Zip Code
+          </p>
+        </div>
+      </section>
+
+      <CheckInOutInputForm />
+      <br></br>
+    </>
+  );
+};
+
+type State = {
+  id: string;
+  resident: string;
+  room: string;
+  year: string;
+  homeAddress: string;
+  forwardingAddress: string;
+  date: string;
+};
+
+class CheckInOutInputForm extends React.Component<{}, State> {
+  override state = {
+    id: "",
+    resident: "",
+    room: "",
+    year: "",
+    homeAddress: "",
+    forwardingAddress: "",
+    date: "",
+  };
+
+  override render() {
     return (
       <>
-        <h1>Resident Check-in/Check-out</h1>
-        {/* <CheckInOutInputForm /> */}
         <br></br>
+        <div>
+          <form
+            onSubmit={(e: React.SyntheticEvent) => {
+              e.preventDefault();
+              const target = e.target as typeof e.target & {
+                id: { value: string };
+                resident: { value: string };
+                room: { value: string };
+                type: { value: string };
+                year: { value: string };
+                homeAddress: { value: string };
+                forwardingAddress: { value: string };
+                date: { value: string };
+              };
+              this.state.id = target.id.value;
+              this.state.resident = target.resident.value;
+              this.state.room = target.room.value;
+              this.state.year = target.year.value;
+              this.state.homeAddress = target.homeAddress.value;
+              this.state.forwardingAddress = target.forwardingAddress.value;
+              this.state.date = target.date.value;
+
+              post("/api/resident/postResident", target).then((res) => {
+                console.log("Posted!");
+              });
+
+              console.log(
+                "submitted %s %s %s",
+                this.state.id,
+                this.state.resident,
+                this.state.room,
+                this.state.year,
+                this.state.homeAddress,
+                this.state.forwardingAddress,
+                this.state.date
+              );
+            }}
+          >
+            <p>
+              <label>
+                MIT ID: <input type="text" name="id" />
+              </label>
+            </p>
+
+            <p>
+              <label>
+                Resident Name: <input type="text" name="resident" />
+              </label>
+            </p>
+
+            <p>
+              <label>
+                Room #: <input type="text" name="room" />
+              </label>
+            </p>
+
+            <p>
+              <label>
+                Class Year: <input type="text" name="year" />
+              </label>
+            </p>
+
+            <p>
+              <label>
+                Home Address: <input type="text" name="homeAddress" />
+              </label>
+            </p>
+
+            <p>
+              <label>
+                Forwarding Address:{" "}
+                <input type="text" name="forwardingAddress" />
+              </label>
+            </p>
+
+            <p>
+              <label>
+                Date: <input type="text" name="date" />
+              </label>
+            </p>
+
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
       </>
     );
   }
 }
-
-// TO-DO: will be rewritten
-
-// class CheckInOutInputForm extends React.Component<any, any> {
-//   // TODO: MAKE 'NAMES' A DROPDOWN MENU USING RESIDENT INFO
-//   constructor(props: {}) {
-//     super(props);
-//     this.state = {
-//       id: "",
-//       resident: "",
-//       room: "",
-//     };
-
-//     this.handleChange = this.handleChange.bind(this);
-//     this.handleSubmit = this.handleSubmit.bind(this);
-//     this.handleValidation = this.handleValidation.bind(this);
-//   }
-//   handleChange(event: any) {
-//     this.setState({ [event.target.name]: event.target.value });
-//   }
-
-//   handleSubmit(event: any) {
-//     // TODO: FIGURE OUT HOW TO SUBMIT MONGO FORMS
-//     /*
-//         const postURL = 'http://localhost:3000/';
-//         const date = new Date();
-//         fetch(postURL, {
-//             method: 'POST',
-//             headers: {
-//               'Accept': 'application/json',
-//               'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({
-//               __v: 0,
-//               _id: this.state.id,
-//               createdAt: `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}Z`,
-//               name: this.state.resident,
-//             })
-//         })
-//         */
-//     event.preventDefault();
-//     if (this.handleValidation()) {
-//       this.setState({
-//         id: "",
-//         resident: "",
-//         room: "",
-//       });
-//     } else console.log("Must fill out all fields!");
-//   }
-//   handleValidation() {
-//     return Object.keys(this.state).every(
-//       (key: string) => this.state[key] !== ""
-//     );
-//   }
-
-//   override render() {
-//     return (
-//       <>
-//         <form onSubmit={this.handleSubmit}>
-//           <label>
-//             ID:{" "}
-//             <input
-//               type="text"
-//               name="id"
-//               value={this.state.id}
-//               onChange={this.handleChange}
-//             />
-//           </label>
-//           <label>
-//             Resident:{" "}
-//             <input
-//               type="text"
-//               name="resident"
-//               value={this.state.resident}
-//               onChange={this.handleChange}
-//             />
-//           </label>
-//           <label>
-//             Room:{" "}
-//             <input
-//               type="text"
-//               name="room"
-//               value={this.state.room}
-//               onChange={this.handleChange}
-//             />
-//           </label>
-//           {/* <label>
-//             Type:{" "}
-//             <SelectInput
-//               name="type"
-//               onChange={this.handleChange}
-//               options={["Check-in", "Check-out"]}
-//             />
-//           </label> */}
-//           <input type="submit" value="Submit" />
-//         </form>
-//       </>
-//     );
-//   }
-// }
-export default CheckInOut;
