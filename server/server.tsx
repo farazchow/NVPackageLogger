@@ -7,7 +7,6 @@ const express = require("express");
 
 // Mongoose Models //
 import { User } from "./models/user";
-import { Package } from "./models/package";
 import { Resident } from "./models/resident";
 
 // ENV Variables //
@@ -15,7 +14,6 @@ require("dotenv/config");
 
 // Route Handlers
 const auth = require("./routes/auth");
-const pckge = require("./routes/package");
 const rsdnt = require("./routes/resident");
 
 const PORT = process.env.PORT || 3000;
@@ -52,8 +50,7 @@ app.use(express.urlencoded({ extended: true })); // allow encoded posts/puts lik
 
 // Routes
 app.use("/api/auth", auth); // authentication
-app.use("/api/package", pckge);
-app.use("/api/resident", rsdnt);
+app.use("/api/resident", rsdnt); // residents
 
 // TODO: Error Handling: https://expressjs.com/en/guide/error-handling.html
 
