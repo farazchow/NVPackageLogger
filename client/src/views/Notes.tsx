@@ -6,17 +6,17 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 import { NotesInterface } from "../../../server/models/notes";
 import { post } from "../../utilities";
 
-export const DailyNotes: FunctionComponent = () => {
+export function DailyNotes () {
   const [data, setData] = useState<NotesInterface[]>([]);
 
-    useEffect(() => {
-      async function getData() {
-        fetch("/api/notes/getNotes")
+  useEffect(() => {
+    async function getData() {
+      fetch("/api/notes/getNotes")
         .then((res) => res.json())
         .then((data) => setData(data));
-      }
-      getData();
-    }, []);
+    }
+    getData();
+  }, []);
 
     return (
       <>
@@ -84,6 +84,7 @@ const DailyNotesForm = () => {
                   }
                   post("/api/notes/addNote", note).then((res) => {
                     console.log("note added!");
+                    document.location.reload();
                   });
               }}>
           <p>
