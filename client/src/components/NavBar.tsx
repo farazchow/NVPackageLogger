@@ -9,7 +9,7 @@ const navigations = [
   { path: "/lend/items", info: "Lend Desk Items" },
   { path: "/resident/in", info: "Check In Resident" },
   { path: "/resident/out", info: "Check Out Resident" },
-  { path: "/daily/notes", info: "Daily Notes" },
+  { path: "/notes", info: "Notes" },
   { path: "/desk/workers", info: "Desk Workers" },
   { path: "/lost/items", info: "Lost Items" },
 ];

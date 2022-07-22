@@ -5,6 +5,7 @@ import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { NotesInterface } from "../../../server/models/notes";
 import { post } from "../../utilities";
+import "../css/forms.css";
 
 export const DailyNotes: FunctionComponent = () => {
   const [data, setData] = useState<NotesInterface[]>([]);
@@ -24,8 +25,8 @@ export const DailyNotes: FunctionComponent = () => {
         <Col>
           <Card className="mb-4">
             <CardHeader className="border-bottom">
-              <h6 className="m-0">MongoDB Data</h6>
               <DailyNotesForm/>
+              <h6 className="m-0">MongoDB Data</h6>
             </CardHeader>
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
@@ -71,6 +72,7 @@ export const DailyNotes: FunctionComponent = () => {
 const DailyNotesForm = () => {
   return (
       <>
+      <div id = "div-form">
       <form onSubmit={(e: React.SyntheticEvent) => {
                   e.preventDefault();
                   const target = e.target as typeof e.target & {
@@ -98,6 +100,7 @@ const DailyNotesForm = () => {
           </p>
           <input type="submit" value="Submit"/>
           </form>
+      </div>
       </>
   )}
 
