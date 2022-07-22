@@ -15,6 +15,7 @@ require("dotenv/config");
 // Route Handlers
 const auth = require("./routes/auth");
 const pckge = require("./routes/package");
+const rsdnt = require("./routes/resident");
 
 const PORT = process.env.PORT || 3000;
 const app: Application = express();
