@@ -10,6 +10,7 @@ import Unauthorized from "./src/pages/Unauthorizated";
 import Home from "./src/pages/Home";
 import LogPackages from "./src/views/LogPackages";
 import LendDesk from "./src/views/LendDesk";
+import { CheckInOut } from "./src/views/Resident";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
@@ -44,7 +45,7 @@ const App: FunctionComponent = () => {
 
         <Route path="/lend/items" element={<LendDesk />} />
         <Route path="resident">
-          <Route path="in" element={<div>Check In Resident</div>} />
+          <Route path="in" element={<CheckInOut />} />
           <Route path="out" element={<div>Check Out Resident</div>} />
         </Route>
 
