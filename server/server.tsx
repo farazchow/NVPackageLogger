@@ -15,6 +15,7 @@ require("dotenv/config");
 // Route Handlers
 const auth = require("./routes/auth");
 const pckge = require("./routes/package");
+const deskItem = require("./routes/deskItem");
 
 const PORT = process.env.PORT || 3000;
 const app: Application = express();
@@ -59,7 +60,8 @@ require("./config/passport"); // use the passport config file
 
 // Routes
 app.use("/api/auth", auth); // authentication
-app.use("/api/package", pckge); // authentication
+app.use("/api/package", pckge);
+app.use("/api/deskItem", deskItem);
 
 // Error Handling
 app.use(
