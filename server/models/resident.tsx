@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 interface IResident {
-  id: String;
+  studentId: String;
   resident: String;
   room: String;
   year: String;
@@ -11,7 +11,7 @@ interface IResident {
 }
 
 const residentSchema = new Schema<IResident>({
-  id: String,
+  studentId: String,
   resident: String,
   room: String,
   year: String,
