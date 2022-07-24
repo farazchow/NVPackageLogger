@@ -101,7 +101,7 @@ class CheckInOutInputForm extends React.Component<{}, State> {
               this.state.forwardingAddress = target.forwardingAddress.value;
               this.state.date = target.date.value;
 
-              post("/api/resident/postResident", target).then((res) => {
+              post("/api/resident/postResident", this.state).then((res) => {
                 console.log("Posted!");
               });
 

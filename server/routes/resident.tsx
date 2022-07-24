@@ -26,7 +26,7 @@ router.get("/getResident", (req: Request, res: Response) => {
 router.post("/postResident", (req: any, res: Response) => {
   console.log("posting resident");
   const newResident = new Resident({
-    id: req.body.id,
+    studentId: req.body.id,
     resident: req.body.resident,
     room: req.body.room,
     year: req.body.year,
