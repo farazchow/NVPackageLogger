@@ -1,6 +1,7 @@
 import { Application, NextFunction, Request, Response } from "express";
 import { Session } from "express-session";
 import { PassportStatic } from "passport";
+import { alignPropType } from "react-bootstrap/esm/types";
 
 // Packages
 const mongoose = require("mongoose");
@@ -13,7 +14,7 @@ const path = require("path");
 require("dotenv/config");
 
 // Route Handlers
-const auth = require("./routes/auth");
+const auth = require("./ro  utes/auth");
 const pckge = require("./routes/package");
 const rsdnt = require("./routes/resident");
 
@@ -61,6 +62,7 @@ require("./config/passport"); // use the passport config file
 // Routes
 app.use("/api/auth", auth); // authentication
 app.use("/api/package", pckge); // authentication
+app.use("/api/resident", rsdnt);
 
 // Error Handling
 app.use(
