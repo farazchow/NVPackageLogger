@@ -23,10 +23,17 @@ router.get("/getResident", (req: Request, res: Response) => {
   });
 });
 
+router.get("/getResidentById", (req: Request, res: Response) => {
+  console.log("Sending resident data back to you!");
+  Resident.findById(req.body._id).then((resi: any) => {
+    res.send(resi);
+  });
+});
+
 router.post("/postResident", (req: any, res: Response) => {
   console.log("posting resident");
   const newResident = new Resident({
-    studentId: req.body.id,
+    studentId: req.body.studentId,
     resident: req.body.resident,
     room: req.body.room,
     year: req.body.year,
