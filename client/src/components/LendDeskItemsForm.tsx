@@ -1,182 +1,69 @@
-import React from "react";
-
 import SelectInput from "./SelectInput";
+import React, { useEffect, useState } from "react";
+import { DeskItemInterface } from "../../../server/models/deskItem";
 import { post } from "../../utilities";
 
+type Dictionary = {
+  [x: string]: Dictionary;
+};
+
 export function LendDeskItemsForm() {
-  // TODO: dropdown for residents
-  // TODO:clear entries after submit
-  // TODO: add worker when submitting (not to inputform)
+  const [itemsDict, setItemsDict] = useState<Dictionary>({});
+  const [itemNames, setItemNames] = useState<string[]>([""]);
+
+  // TODO: dropdown for resients
+  useEffect(() => {
+    async function getData() {
+      console.log("starting to fetch available items");
+      const result = await (
+        await fetch("/api/deskItem/getAvailableItems")
+      ).json();
+
+      for (let key in result) {
+        setItemNames((itemNames) => [...itemNames, result[key].itemName]);
+        setItemsDict((itemsDict) => {
+          itemsDict[result[key].itemName] = result[key];
+          return itemsDict;
+        });
+      }
+    }
+    getData();
+  }, []);
+
+  console.log(itemsDict);
+
+  const clickHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    console.log("hi");
+    console.log(itemsDict);
+    console.log(document);
+    console.log(document.getElementById("item") as HTMLInputElement);
+    const date = new Date();
+    const body = {
+      itemId:
+        itemsDict[(document.getElementById("item") as HTMLInputElement).value]
+          ._id,
+      residentId: (document.getElementById("resident") as HTMLInputElement)
+        .value,
+      lastBorrowed: date,
+    };
+    console.log(body);
+    post("/api/deskItem/lendItem", body).then((res) => {
+      // reset stuff
+      (document.getElementById("item") as HTMLInputElement).value = "";
+      (document.getElementById("resident") as HTMLInputElement).value = "";
+      document.location.reload();
+    });
+  };
+
   return (
-    <form name="packageInputForm">
+    <form name="lendDeskItemsForm">
       <label htmlFor="resident">Resident: </label>
-      <input type="text" id="resident"></input>  
+      <input type="text" id="resident"></input>
+      <label htmlFor="item">Item: </label>
+      {SelectInput("item", itemNames)}
 
-
-      <label htmlFor="shipper">Desk Item: </label>
-      {SelectInput("shipper", [
-        "",
-        "Broom",
-        "Vacuum Cleaner",
-        "Mop",
-        "Moving Bin 1",
-        "Moving Bin 2",
-        "Biliardo",
-        "Tennis Balls",
-      ])}
-    
-           
-
-      <input type="submit" value="Submit" onClick={clickHandler()} />
+      <input type="submit" value="Submit" onClick={clickHandler} />
     </form>
   );
 }
-
-const clickHandler = () => {
-  return (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (handleValidation(document)) {
-      const date = new Date();
-      const body = {
-        shipping_id: (document.getElementById("id") as HTMLInputElement).value,
-        recipient: (document.getElementById("resident") as HTMLInputElement)
-          .value,
-        shipper: (document.getElementById("shipper") as HTMLInputElement).value,
-        location: (document.getElementById("location") as HTMLInputElement)
-          .value,
-        notes: (document.getElementById("notes") as HTMLInputElement).value,
-        createdAt: `${date.getFullYear()}-${
-          date.getMonth() + 1
-        }-${date.getDate()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}Z`,
-      };
-      console.log(body);
-      post("/api/package/postPackage", body).then((res) => {
-        console.log("posted");
-        // TODO insert code here to clear boxes from HTML
-      });
-    } else {
-      console.log("Must fill out all fields!");
-    }
-  };
-};
-
-function handleValidation(document: Document) {
-  const allElements = ["id", "resident", "shipper", "location", "notes"];
-  for (var i = 0; i < allElements.length; i++) {
-    const el = allElements[i];
-    if (!document.body.contains(document.getElementById(el))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { DropDownList, DropDownListChangeEvent } from "@progress/kendo-react-dropdowns";
-import { dataCategories, dataProducts} from "../src/data";
-
-export function LendDeskItems() {
-
-    const defaultItemCategory = { categoryName: "Select Category ..." };
-    const defaultItemProduct = { productName: "Select Product ..." };
-
-    const App = () => {
-    const [state, setState] = React.useState({
-        category: null,
-        product: null,
-        products: dataProducts
-    });
-
-    const categoryChange = (event: DropDownListChangeEvent) => {
-        const category = event.target.value;
-        const products = dataProducts.filter(
-        product => product.categoryId === category.categoryId
-        );
-
-        setState({
-        ...state,
-        category: category,
-        products: products,
-        product: null,
-        });
-    };
-
-    const productChange = (event: DropDownListChangeEvent) => {
-        setState({ ...state, product: event.target.value });
-    };
-
-    const category = state.category;
-    const product = state.product;
-
-
-
-
-    const hasCategory = category && category !== defaultItemCategory;
-    const hasProduct = product && product !== defaultItemProduct;
-
-    return (
-        <div>
-        <div style={{ display: "inline-block" }}>
-            Categories
-            <br />
-            <DropDownList
-            style={{ width: '300px' }}
-            data={dataCategories}
-            textField="categoryName"
-            onChange={categoryChange}
-            defaultItem={defaultItemCategory}
-            value={category}
-            />
-        </div>
-        <div style={{ display: "inline-block", marginLeft: "30px" }}>
-            Products
-            <br />
-            <DropDownList
-            style={{ width: '300px' }}
-            disabled={!hasCategory}
-            data={state.products}
-            textField="productName"
-            onChange={productChange}
-            defaultItem={defaultItemProduct}
-            value={product}
-            />
-        </div>
-        </div>
-    );
-    };
-
-}
-
-ReactDOM.render(<App />, document.querySelector("my-app")); */
