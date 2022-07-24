@@ -9,6 +9,7 @@ import { post } from "../../utilities";
 
 export function LogPackages() {
   const [data, setData] = useState<PackageInterface[]>([]);
+  var checkedIndexes = new Set<number>();
 
   // data fetching
   useEffect(() => {
@@ -44,6 +45,22 @@ export function LogPackages() {
     });
   }
 
+  async function deliverMany(evt: SyntheticEvent) {
+    if (checkedIndexes.size === 0)
+      window.alert(
+        `There are no checked boxes you idiot. You buffoon. Who raised you? Do you think I exist just for you to laugh at? Well I don't. I have a soul. A family. And you spit on my kindness by making me deliver zero packages for your own amusement. Rethink your life before you ask me to do anything for you again.`
+      );
+    checkedIndexes.forEach((index) => {
+      deliverOne(evt, index);
+      checkedIndexes.delete(index);
+    });
+  }
+
+  function onCheckboxClick(evt: SyntheticEvent, index: number) {
+    if (checkedIndexes.has(index)) checkedIndexes.delete(index);
+    else checkedIndexes.add(index);
+  }
+
   return (
     <>
       <h2>LogPackages</h2>
@@ -52,6 +69,13 @@ export function LogPackages() {
           <Card className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">MongoDB Data</h6>
+              <button
+                type="button"
+                className="btn btn-dark"
+                onClick={deliverMany}
+              >
+                Deliver Checked
+              </button>
               {PackageInputForm()}
             </CardHeader>
             <Card.Body className="p-0 pb-3">
@@ -93,7 +117,14 @@ export function LogPackages() {
                       return (
                         <tr key={key}>
                           <td>
-                            <input type="checkbox" />
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              id={`checkbox-${key}`}
+                              onClick={(evt) => {
+                                onCheckboxClick(evt, key);
+                              }}
+                            />{" "}
                           </td>
                           <td>{pckage.recipient}</td>
                           <td>{pckage.shipper}</td>
