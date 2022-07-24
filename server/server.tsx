@@ -14,7 +14,7 @@ const path = require("path");
 require("dotenv/config");
 
 // Route Handlers
-const auth = require("./ro  utes/auth");
+const auth = require("./routes/auth");
 const pckge = require("./routes/package");
 const rsdnt = require("./routes/resident");
 
