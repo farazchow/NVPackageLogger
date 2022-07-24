@@ -16,7 +16,6 @@ require("dotenv/config");
 const auth = require("./routes/auth");
 const pckge = require("./routes/package");
 const deskItem = require("./routes/deskItem");
-const rsdnt = require("./routes/resident");
 
 const PORT = process.env.PORT || 3000;
 const app: Application = express();
