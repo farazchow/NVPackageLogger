@@ -87,7 +87,7 @@ function handleValidation(document: Document) {
   const allElements = ["id", "resident", "shipper", "location", "notes"];
   for (var i = 0; i < allElements.length; i++) {
     const el = allElements[i];
-    if (!document.body.contains(document.getElementById(el))) {
+    if ((document.getElementById(el) as HTMLInputElement).value == "") {
       return false;
     }
   }

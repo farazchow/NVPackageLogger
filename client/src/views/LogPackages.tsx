@@ -92,7 +92,9 @@ export function LogPackages() {
                     data.map((pckage: any, key: number) => {
                       return (
                         <tr key={key}>
-                          <input type="checkbox" />
+                          <td>
+                            <input type="checkbox" />
+                          </td>
                           <td>{pckage.recipient}</td>
                           <td>{pckage.shipper}</td>
                           <td>{pckage.shipping_id}</td>
@@ -100,15 +102,17 @@ export function LogPackages() {
                           <td>{pckage.createdAt}</td>
                           <td>{pckage.worker}</td>
                           <td>{pckage.notes}</td>
-                          <button
-                            type="button"
-                            className="btn btn-dark btn-sm d-flex justify-content-center"
-                            onClick={(evt) => {
-                              deliverOne(evt, key);
-                            }}
-                          >
-                            Deliver
-                          </button>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-dark btn-sm d-flex justify-content-center"
+                              onClick={(evt) => {
+                                deliverOne(evt, key);
+                              }}
+                            >
+                              Deliver
+                            </button>
+                          </td>
                         </tr>
                       );
                     })
