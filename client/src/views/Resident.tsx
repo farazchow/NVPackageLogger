@@ -1,12 +1,14 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { post } from "../../utilities";
 
+import "../css/residentCheckIn.css";
+
 export const CheckInOut: FunctionComponent = () => {
   return (
     <>
       <h1>Resident Check-in/Check-out</h1>
       <section>
-        <div>
+        <div className="information">
           <p>
             A few things to be aware of...
             <br />
