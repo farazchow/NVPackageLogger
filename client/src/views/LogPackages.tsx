@@ -76,7 +76,7 @@ export function LogPackages() {
               >
                 Deliver Checked
               </button>
-              {PackageInputForm()}
+              <PackageInputForm />
             </CardHeader>
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
