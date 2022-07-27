@@ -1,22 +1,4 @@
 .mainLogo {
-  /* font-family: "Arial";
-  color: white;
-  text-align: center;
-  font-size: 20;
-  background-color: rgb(0, 0, 0); 
-  background-color: rgba(0, 0, 0, 0); Black w/opacity/see-through */
-  /* color: black;
-  font-weight: bold; */
-  /* border: 5px solid #f1f1f1;
-  border-radius: 20px; */
-  /* position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  width: 80%;
-  padding: 20px;
-  text-align: center; */
   width: 600px;
   height: auto;
   padding: 20px 30px;
@@ -24,7 +6,6 @@
   border-radius: 10px;
   box-shadow: 0 0 20px 0 #000;
   margin: auto;
-  position: relative;
   text-align: center;
   margin-top: 100px;
   animation: mainLogo 1s ease-out;
@@ -42,23 +23,9 @@
   }
 }
 
-.footer {
-  /* width: 600px;
-  height: auto;
-  padding: 20px 30px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 20px 0 #000;
-  margin: auto;
-  position: relative;
-  text-align: center;
-  margin-top: 100px; */
-  position: relative;
-}
-
 .mainText {
   color: black;
-  font-family: Marker Felt;
+  font-family: Apple Chancery;
 }
 
 .boxIcon {
@@ -69,8 +36,7 @@
 }
 
 body {
-  /* background-image: linear-gradient(180deg, #eb6734, #d14e26, #a83816, #a83f16); */
-  background-image: linear-gradient(
+  background: linear-gradient(
     130deg,
     #fc4903,
     #d1500a,
@@ -80,6 +46,7 @@ body {
     #e38119,
     #b54504
   );
+
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
 }
@@ -98,13 +65,6 @@ body {
 
 .userButtons {
   display: inline;
-}
-.outline {
-  width: 1000px;
-  height: 1000px;
-  line-height: 175px;
-  text-align: center;
-  vertical-align: bottom;
 }
 
 .button-17 {
@@ -184,59 +144,63 @@ body {
     rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
 }
 
-svg {
-  position: absolute;
-  margin-left: -150px;
-  bottom: 0px;
-  left: 50%;
-}
-
 .outline {
   stroke: white;
   stroke-width: 20px;
   stroke-dashoffset: -2000;
   stroke-dasharray: 2000;
   animation-name: outline;
-  animation-duration: 4s;
+  animation-duration: 3s;
   animation-iteration-count: infinite;
   animation-direction: alternate-reverse;
 }
 
-@keyframes outline {
+/* @keyframes outline {
   0% {
     stroke-dashoffset: -2000;
-    stroke: white;
+    stroke: #559f93;
   }
   30% {
-    stroke: white;
+    stroke: #3b9a63;
   }
   50% {
-    stroke: white;
+    stroke: #889100;
   }
   70% {
-    stroke: white;
+    stroke: #dfb536;
   }
   100% {
     stroke-dashoffset: 0;
     stroke: white;
   }
-}
+} */
 
-.footer {
-  /* position: fixed;
+/* .footer {
+  position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
   background-color: red;
   color: white;
-  text-align: center; */
+  text-align: center;
   margin-top: 50px;
+} */
+
+.bgImage {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
 }
 
-.nvOutline {
-  width: 100%;
-  height: auto;
-  position: fixed;
-  bottom: 0px;
-  z-index: 1;
+.bgImage svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  min-width: 50%;
+  min-height: 50%;
 }
