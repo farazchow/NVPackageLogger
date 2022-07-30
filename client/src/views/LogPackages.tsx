@@ -8,7 +8,7 @@ import { PackageInputForm } from "../components/PackageInputForm";
 import { post } from "../../utilities";
 
 export function LogPackages() {
-  const [data, setData] = useState<PackageInterface[]>([]);
+  const [data, setPackageData] = useState<PackageInterface[]>([]);
   var checkedIndexes = new Set<number>();
 
   // data fetching
@@ -16,7 +16,7 @@ export function LogPackages() {
     async function getData() {
       fetch("/api/package/getPackages")
         .then((res) => res.json())
-        .then((data) => setData(data));
+        .then((data) => setPackageData(data));
     }
     getData();
   }, []);
@@ -69,6 +69,7 @@ export function LogPackages() {
           <Card className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">MongoDB Data</h6>
+              <PackageInputForm user="temporary desk worker" />
               <button
                 type="button"
                 className="btn btn-dark"
@@ -76,7 +77,6 @@ export function LogPackages() {
               >
                 Deliver Checked
               </button>
-              <PackageInputForm />
             </CardHeader>
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
