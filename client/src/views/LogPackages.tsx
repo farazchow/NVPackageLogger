@@ -1,5 +1,6 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { PackageInterface } from "../../../server/models/package";
+import { IResident } from "../../../server/models/resident";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -9,6 +10,7 @@ import { post } from "../../utilities";
 
 export function LogPackages() {
   const [data, setPackageData] = useState<PackageInterface[]>([]);
+  const [resData, setResidentData] = useState<IResident[]>([]);
   var checkedIndexes = new Set<number>();
 
   // data fetching
@@ -17,6 +19,10 @@ export function LogPackages() {
       fetch("/api/package/getPackages")
         .then((res) => res.json())
         .then((data) => setPackageData(data));
+      fetch("/api/resident/getResident").then((res) =>
+        res.json().then((resData) => setResidentData(resData))
+      );
+      console.log(resData);
     }
     getData();
   }, []);
@@ -69,7 +75,10 @@ export function LogPackages() {
           <Card className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">MongoDB Data</h6>
-              <PackageInputForm user="temporary desk worker" />
+              <PackageInputForm
+                user="temporary desk worker"
+                residents={resData}
+              />
               <button
                 type="button"
                 className="btn btn-dark"

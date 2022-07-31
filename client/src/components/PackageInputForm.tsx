@@ -1,4 +1,5 @@
 import React from "react";
+import { IResident } from "../../../server/models/resident";
 
 import SelectInput from "./SelectInput";
 import { post } from "../../utilities";
@@ -15,6 +16,7 @@ type State = {
 
 type Props = {
   user: string;
+  residents: IResident[];
 };
 
 export class PackageInputForm extends React.Component<Props, State> {
@@ -53,6 +55,7 @@ export class PackageInputForm extends React.Component<Props, State> {
                 location: "",
                 notes: "",
               });
+              document.location.reload();
             });
           } else {
             console.log("Must fill out all fields!");
@@ -92,15 +95,21 @@ export class PackageInputForm extends React.Component<Props, State> {
           ))}
         </select>
         Resident:
-        <input
-          type="text"
+        <select
           value={this.state.recipient}
           onChange={(event: React.SyntheticEvent) => {
             this.setState({
               recipient: (event.target as HTMLTextAreaElement).value,
             });
           }}
-        />
+        >
+          <option></option>
+          {this.props.residents.map((resident) => (
+            <option value={resident.studentId as string}>
+              {(resident.resident as string) + " (" + resident.room + ")"}
+            </option>
+          ))}
+        </select>
         Location:
         <select
           value={this.state.location}
