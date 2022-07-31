@@ -1,12 +1,11 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { post } from "../../utilities";
-
 import "../css/residentCheckIn.css";
 
 export const CheckInOut: FunctionComponent = () => {
   return (
     <>
-      <h1 className="information1">Resident Check-in/Check-out</h1>
+      <h1 className="informationTitle">Resident Check-in/Check-out</h1>
 
       <section>
         <div className="information2">
@@ -120,7 +119,7 @@ class CheckInOutInputForm extends React.Component<{}, State> {
               );
             }}
           >
-            <p className="title">Checkout Form</p>
+            <p className="title">Check-in/Check-out Form</p>
             <p>
               <label>
                 MIT ID:{" "}
