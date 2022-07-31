@@ -19,6 +19,12 @@ export function DailyNotes () {
     getData();
   }, []);
 
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleOnChange = () => {
+    setIsChecked(!isChecked);
+  };
+
     return (
       <>
         <Row>
@@ -72,7 +78,7 @@ export function DailyNotes () {
 const DailyNotesForm = () => {
   return (
       <>
-      <div id = "div-form">
+      <div>
       <form onSubmit={(e: React.SyntheticEvent) => {
                   e.preventDefault();
                   const target = e.target as typeof e.target & {
@@ -88,10 +94,10 @@ const DailyNotesForm = () => {
                     console.log("note added!");
                     document.location.reload();
                   });
-              }}>
+              }} className = "form-inline">
           <p>
               <label>
-              Note: <input type="text" name="note"/>
+              Note: <input type="text" id = "note-textbox" name="note"/>
               </label>
           </p>
           <p>
