@@ -6,9 +6,10 @@ import "../css/residentCheckIn.css";
 export const CheckInOut: FunctionComponent = () => {
   return (
     <>
-      <h1>Resident Check-in/Check-out</h1>
+      <h1 className="information1">Resident Check-in/Check-out</h1>
+
       <section>
-        <div className="information">
+        <div className="information2">
           <p>
             A few things to be aware of...
             <br />
@@ -119,50 +120,74 @@ class CheckInOutInputForm extends React.Component<{}, State> {
               );
             }}
           >
+            <p className="title">Checkout Form</p>
             <p>
               <label>
-                MIT ID: <input type="text" name="id" />
+                MIT ID:{" "}
+                <input type="text" name="id" placeholder="9-digit number" />
               </label>
             </p>
 
             <p>
               <label>
-                Resident Name: <input type="text" name="resident" />
+                Resident Name:{" "}
+                <input
+                  type="text"
+                  name="resident"
+                  placeholder="First Name Last Name"
+                />
               </label>
             </p>
 
             <p>
               <label>
-                Room #: <input type="text" name="room" />
+                Building-Room #:{" "}
+                <input type="text" name="room" placeholder="W46-####" />
               </label>
             </p>
 
             <p>
               <label>
-                Class Year: <input type="text" name="year" />
+                Class Year: <input type="text" name="year" placeholder="YYYY" />
               </label>
             </p>
 
             <p>
               <label>
-                Home Address: <input type="text" name="homeAddress" />
+                Home Address:{" "}
+                <input
+                  type="text"
+                  name="homeAddress"
+                  placeholder="Street, City, State, Zip Code"
+                />
               </label>
             </p>
 
             <p>
               <label>
                 Forwarding Address:{" "}
-                <input type="text" name="forwardingAddress" />
+                <input
+                  type="text"
+                  name="forwardingAddress"
+                  placeholder="Street, City, State, Zip Code"
+                />
               </label>
             </p>
 
             <p>
               <label>
-                Date: <input type="text" name="date" />
+                Date: <input type="text" name="date" placeholder="MM/DD/YYYY" />
               </label>
             </p>
 
-            <input type="submit" value="Submit" />
+            <button
+              className="button-17"
+              onClick={() => {
+                post("/Shibboleth.sso/Login/");
+              }}
+            >
+              Submit
+            </button>
           </form>
         </div>
       </>
