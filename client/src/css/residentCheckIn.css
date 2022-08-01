@@ -50,6 +50,10 @@
   z-index: 2;
 }
 
+.information2 p {
+  font-family: "Courier New", Courier, monospace;
+}
+
 @keyframes mainLogoLeft {
   0% {
     transform: translateX(-200%);
@@ -205,9 +209,8 @@ input:focus {
 }
 
 label {
-  float: left;
-  font-family: Century "Franklin Gothic Medium", "Arial Narrow", Arial,
-    sans-serif;
+  display: inline;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .bgImage {
