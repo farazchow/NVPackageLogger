@@ -9,7 +9,7 @@
   position: relative;
   text-align: center;
   margin-top: 100px;
-  animation: mainLogoLeft 1s ease-out;
+  animation: mainLogoLeft 1s ease-in;
   overflow: hidden;
   position: relative;
   z-index: 2;
@@ -44,7 +44,7 @@
   position: relative;
   text-align: center;
   margin-top: 100px;
-  animation: mainLogoRight 1s ease-out;
+  animation: mainLogoRight 1s ease-in;
   overflow: hidden;
   position: relative;
   z-index: 2;
@@ -85,7 +85,7 @@ form {
   position: relative;
   text-align: center;
   margin-top: 100px;
-  animation: mainLogoRight 1s ease-out;
+  animation: mainLogoRight 1s ease-in;
   overflow: hidden;
   position: relative;
   z-index: 2;
