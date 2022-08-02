@@ -1,5 +1,6 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { PackageInterface } from "../../../server/models/package";
+import { IResident } from "../../../server/models/resident";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -8,14 +9,20 @@ import { PackageInputForm } from "../components/PackageInputForm";
 import { post } from "../../utilities";
 
 export function LogPackages() {
-  const [data, setData] = useState<PackageInterface[]>([]);
+  const [data, setPackageData] = useState<PackageInterface[]>([]);
+  const [resData, setResidentData] = useState<IResident[]>([]);
+  var checkedIndexes = new Set<number>();
 
   // data fetching
   useEffect(() => {
     async function getData() {
       fetch("/api/package/getPackages")
         .then((res) => res.json())
-        .then((data) => setData(data));
+        .then((data) => setPackageData(data));
+      fetch("/api/resident/getResident").then((res) =>
+        res.json().then((resData) => setResidentData(resData))
+      );
+      console.log(resData);
     }
     getData();
   }, []);
@@ -44,6 +51,22 @@ export function LogPackages() {
     });
   }
 
+  async function deliverMany(evt: SyntheticEvent) {
+    if (checkedIndexes.size === 0)
+      window.alert(
+        `There are no checked boxes you idiot. You buffoon. Who raised you? Do you think I exist just for you to laugh at? Well I don't. I have a soul. A family. And you spit on my kindness by making me deliver zero packages for your own amusement. Rethink your life before you ask me to do anything for you again.`
+      );
+    checkedIndexes.forEach((index) => {
+      deliverOne(evt, index);
+      checkedIndexes.delete(index);
+    });
+  }
+
+  function onCheckboxClick(evt: SyntheticEvent, index: number) {
+    if (checkedIndexes.has(index)) checkedIndexes.delete(index);
+    else checkedIndexes.add(index);
+  }
+
   return (
     <>
       <h2>LogPackages</h2>
@@ -52,7 +75,17 @@ export function LogPackages() {
           <Card className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">MongoDB Data</h6>
-              {PackageInputForm()}
+              <PackageInputForm
+                user="temporary desk worker"
+                residents={resData}
+              />
+              <button
+                type="button"
+                className="btn btn-dark"
+                onClick={deliverMany}
+              >
+                Deliver Checked
+              </button>
             </CardHeader>
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
@@ -92,7 +125,16 @@ export function LogPackages() {
                     data.map((pckage: any, key: number) => {
                       return (
                         <tr key={key}>
-                          <input type="checkbox" />
+                          <td>
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              id={`checkbox-${key}`}
+                              onClick={(evt) => {
+                                onCheckboxClick(evt, key);
+                              }}
+                            />{" "}
+                          </td>
                           <td>{pckage.recipient}</td>
                           <td>{pckage.shipper}</td>
                           <td>{pckage.shipping_id}</td>
@@ -100,15 +142,17 @@ export function LogPackages() {
                           <td>{pckage.createdAt}</td>
                           <td>{pckage.worker}</td>
                           <td>{pckage.notes}</td>
-                          <button
-                            type="button"
-                            className="btn btn-dark btn-sm d-flex justify-content-center"
-                            onClick={(evt) => {
-                              deliverOne(evt, key);
-                            }}
-                          >
-                            Deliver
-                          </button>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-dark btn-sm d-flex justify-content-center"
+                              onClick={(evt) => {
+                                deliverOne(evt, key);
+                              }}
+                            >
+                              Deliver
+                            </button>
+                          </td>
                         </tr>
                       );
                     })
