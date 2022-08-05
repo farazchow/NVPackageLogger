@@ -31,6 +31,9 @@ export function DailyNotes () {
     };
     post("/api/notes/archiveNote", body).then((res) => {
       console.log("Note archived!");
+    });
+    post("/api/notes/deleteNote", body).then((res) => {
+      console.log(`Package deleted from working db`);
       document.location.reload();
     });
   }
@@ -64,7 +67,6 @@ export function DailyNotes () {
                     data.map((note: any, key: number) => {
                       return (
                         <tr key={key}>
-                          <input type="checkbox" />
                           <td>{note.note}</td>
                           <td>{note.deskworker}</td>
                           <td>{note.createdAt}</td>

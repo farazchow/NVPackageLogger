@@ -41,6 +41,18 @@ router.post("/addNote", (req: Request, res: Response) => {
         });
   });
 
+  router.post("/deleteNote", (req: Request, res: Response) => {
+     Notes.deleteOne({ note: req.body.note })
+      .then((note: NotesInterface) => {
+        console.log("deleting note");
+        res.send(note);
+      })
+      .catch((err: any) => {
+        console.log("error deleting note ", err);
+        res.status(500).send({ message: "unknown error" });
+      });
+  });
+
   router.post("/archiveNote", (req: any, res: Response) => {
     console.log("archiving note");
     const newArchiveNote = new ArchiveNote({
