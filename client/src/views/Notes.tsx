@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { SyntheticEvent, FunctionComponent, useEffect, useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -19,11 +19,21 @@ export function DailyNotes () {
     getData();
   }, []);
 
-  const [isChecked, setIsChecked] = useState(false);
+  async function archiveNote(evt: SyntheticEvent, key: number) {
+    const note = data[key];
+    const date = new Date();
 
-  const handleOnChange = () => {
-    setIsChecked(!isChecked);
-  };
+    const body = {
+      note: note.note,
+      deskworker: note.deskworker,
+      createdAt: note.createdAt,
+      loggedAt: date,
+    };
+    post("/api/notes/archiveNote", body).then((res) => {
+      console.log("Note archived!");
+      document.location.reload();
+    });
+  }
 
     return (
       <>
@@ -54,9 +64,19 @@ export function DailyNotes () {
                     data.map((note: any, key: number) => {
                       return (
                         <tr key={key}>
+                          <input type="checkbox" />
                           <td>{note.note}</td>
                           <td>{note.deskworker}</td>
                           <td>{note.createdAt}</td>
+                          <button
+                            type="button"
+                            className="btn btn-dark btn-sm d-flex justify-content-center"
+                            onClick={(evt) => {
+                              archiveNote(evt, key);
+                            }}
+                          >
+                            Archive
+                          </button>
                         </tr>
                       );
                     })

@@ -9,7 +9,7 @@ interface NotesInterface {
 const notesSchema = new Schema<NotesInterface>({
     note: String,
     deskworker: String,
-    createdAt: Date
+    createdAt: { type: Date, immutable: true },
 });
 
 const Notes = model<NotesInterface>("note", notesSchema, "notes");
