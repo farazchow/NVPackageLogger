@@ -8,6 +8,7 @@ interface IResident {
   homeAddress: String;
   forwardingAddress: String;
   date: String;
+  checkedIn: Boolean;
 }
 
 const residentSchema = new Schema<IResident>({
@@ -18,6 +19,7 @@ const residentSchema = new Schema<IResident>({
   homeAddress: String,
   forwardingAddress: String,
   date: String,
+  checkedIn: Boolean,
 });
 
 const Resident = model<IResident>("Resident", residentSchema);

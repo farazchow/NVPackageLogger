@@ -55,7 +55,7 @@ export const CheckInOut: FunctionComponent = () => {
 };
 
 type State = {
-  id: string;
+  studentId: string;
   resident: string;
   room: string;
   year: string;
@@ -66,13 +66,14 @@ type State = {
 
 class CheckInOutInputForm extends React.Component<{}, State> {
   override state = {
-    id: "",
+    studentId: "",
     resident: "",
     room: "",
     year: "",
     homeAddress: "",
     forwardingAddress: "",
     date: "",
+    checkedIn: true,
   };
 
   override render() {
@@ -84,7 +85,7 @@ class CheckInOutInputForm extends React.Component<{}, State> {
             onSubmit={(e: React.SyntheticEvent) => {
               e.preventDefault();
               const target = e.target as typeof e.target & {
-                id: { value: string };
+                studentId: { value: string };
                 resident: { value: string };
                 room: { value: string };
                 type: { value: string };
@@ -93,13 +94,14 @@ class CheckInOutInputForm extends React.Component<{}, State> {
                 forwardingAddress: { value: string };
                 date: { value: string };
               };
-              this.state.id = target.id.value;
+              this.state.studentId = target.studentId.value;
               this.state.resident = target.resident.value;
               this.state.room = target.room.value;
               this.state.year = target.year.value;
               this.state.homeAddress = target.homeAddress.value;
               this.state.forwardingAddress = target.forwardingAddress.value;
               this.state.date = target.date.value;
+              this.state.checkedIn = true;
 
               post("/api/resident/postResident", this.state).then((res) => {
                 console.log("Posted!");
@@ -107,19 +109,20 @@ class CheckInOutInputForm extends React.Component<{}, State> {
 
               console.log(
                 "submitted %s %s %s",
-                this.state.id,
+                this.state.studentId,
                 this.state.resident,
                 this.state.room,
                 this.state.year,
                 this.state.homeAddress,
                 this.state.forwardingAddress,
-                this.state.date
+                this.state.date,
+                this.state.checkedIn
               );
             }}
           >
             <p>
               <label>
-                MIT ID: <input type="text" name="id" />
+                MIT ID: <input type="text" name="studentId" />
               </label>
             </p>
 

@@ -40,6 +40,7 @@ router.post("/postResident", (req: any, res: Response) => {
     homeAddress: req.body.homeAddress,
     forwardingAddress: req.body.forwardingAddress,
     date: req.body.date,
+    checkedIn: req.body.checkedIn,
   });
 
   newResident
@@ -48,6 +49,21 @@ router.post("/postResident", (req: any, res: Response) => {
     .catch((err: any) => {
       console.log("error posting resident", err);
       res.status(500).send({ message: "unknown error" });
+    });
+});
+
+router.post("/putResident", (req: Request, res: Response) => {
+  console.log("Updating Resident");
+  Resident.updateOne(
+    { studentId: req.body.studentId },
+    { $set: { checkedIn: false } }
+  )
+    .then((resi: any) => {
+      res.send(resi);
+    })
+    .catch((err: any) => {
+      console.log("error putting resident: ", err);
+      res.status(500).send({ message: "unkown error" });
     });
 });
 
