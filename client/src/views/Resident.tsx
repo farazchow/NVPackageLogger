@@ -125,7 +125,8 @@ class CheckInOutInputForm extends React.Component<{}, State> {
             <p className="title">Check-in/Check-out Form</p>
             <p>
               <label>
-                MIT ID: <input type="text" name="id" />
+                MIT ID:{" "}
+                <input type="text" name="id" placeholder="9-digit number" />
               </label>
             </p>
 
