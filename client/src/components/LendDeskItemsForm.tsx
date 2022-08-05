@@ -2,6 +2,7 @@ import SelectInput from "./SelectInput";
 import React, { useEffect, useState } from "react";
 import { DeskItemInterface } from "../../../server/models/deskItem";
 import { post } from "../../utilities";
+import { AddButton } from "../components/AddButton";
 
 type Dictionary = {
   [x: string]: Dictionary;
@@ -64,6 +65,10 @@ export function LendDeskItemsForm() {
       {SelectInput("item", itemNames)}
 
       <input type="submit" value="Submit" onClick={clickHandler} />
+      
+      { AddButton() }
+      
     </form>
+
   );
 }

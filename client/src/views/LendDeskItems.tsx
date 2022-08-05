@@ -35,7 +35,7 @@ export function LendDeskItems() {
 
     post("/api/deskItem/returnItem", body).then((res) => {
       console.log("desk Item returned");
-      document.location.reload();
+      // document.location.reload();
     });
   }
 
