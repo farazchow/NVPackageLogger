@@ -15,6 +15,7 @@ export const GetUpdate: FunctionComponent = () => {
   return (
     <>
       <GetUpdateForm />
+      <ResidentTable />
     </>
   );
 };
@@ -23,20 +24,30 @@ type State = {
   studentId: string;
 };
 
-class ResidentTable extends React.Component<{}, State> {
+class ResidentTable extends React.Component {
+  override state = {
+    data: [],
+  };
+  override componentDidMount() {
+    // const [data, setData] = useState<IResident[]>([]);
+
+    // // data fetching
+    // useEffect(() => {
+    //   async function getData() {
+    //     fetch("/api/resident/getResident")
+    //       .then((res) => res.json())
+    //       .then((data) => setData(data));
+    //   }
+    //   getData();
+    // }, []);
+    fetch("/api/resident/getResident")
+      .then((res) => res.json())
+      .then((residentList) => {
+        this.setState({ data: residentList });
+      });
+  }
+
   override render() {
-    const [data, setData] = useState<IResident[]>([]);
-
-    // data fetching
-    useEffect(() => {
-      async function getData() {
-        fetch("/api/resident/getResident")
-          .then((res) => res.json())
-          .then((data) => setData(data));
-      }
-      getData();
-    }, []);
-
     return (
       <>
         <Row>
@@ -46,8 +57,39 @@ class ResidentTable extends React.Component<{}, State> {
               <Card.Body className="p-0 pb-3">
                 <table data-size="small" className="table mb-0">
                   <thead className="bg-light">
-                    <tr></tr>
+                    <tr>
+                      <th scope="col" className="border-0">
+                        Student ID
+                      </th>
+                      <th scope="col" className="border-0">
+                        Resident Name
+                      </th>
+                      <th scope="col" className="border-0">
+                        Room
+                      </th>
+                      <th scope="col" className="border-0">
+                        Year
+                      </th>
+                    </tr>
                   </thead>
+                  <tbody>
+                    {this.state.data ? (
+                      this.state.data.map((rsdnt: any, key: number) => {
+                        return (
+                          <tr key={key}>
+                            <td>{rsdnt.studentId}</td>
+                            <td>{rsdnt.resident}</td>
+                            <td>{rsdnt.room}</td>
+                            <td>{rsdnt.year}</td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td align={"center"}>No data available</td>
+                      </tr>
+                    )}
+                  </tbody>
                 </table>
               </Card.Body>
             </Card>
