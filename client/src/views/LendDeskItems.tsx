@@ -6,18 +6,45 @@ import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { LendDeskItemsForm } from "../components/LendDeskItemsForm";
 import { AddDeskItemsForm } from "../components/AddDeskItemsForm";
+import { IResident } from "../../../server/models/resident";
 import { ModalButton } from "../components/ModalButton";
 import { get, post } from "../../utilities";
 
+type Dictionary = {
+  [x: string]: Dictionary;
+};
+
 export function LendDeskItems() {
   const [data, setData] = useState<DeskItemInterface[]>([]);
+  const [availableItemsDict, setAvailableItemsDict] = useState<Dictionary>({});
+  const [availableItemNames, setAvailableItemNames] = useState<string[]>([""]);
+  const [resData, setResidentData] = useState<IResident[]>([]);
 
   // data fetching
   useEffect(() => {
     async function getData() {
-      fetch("/api/deskItem/getAllItems")
-        .then((res) => res.json())
-        .then((data) => setData(data));
+      await Promise.all([
+        get("/api/deskItem/getAvailableItems").then((avail: any) => {
+          for (let key in avail) {
+            setAvailableItemNames((itemNames) => [
+              ...itemNames,
+              avail[key].itemName,
+            ]);
+            setAvailableItemsDict((itemsDict) => {
+              itemsDict[avail[key].itemName] = avail[key];
+              return itemsDict;
+            });
+          }
+        }),
+
+        get("/api/deskItem/getAllItems").then((item: any) => {
+          setData(item);
+        }),
+
+        get("/api/resident/getResident").then((residents: any) => {
+          setResidentData(residents);
+        }),
+      ]);
     }
     getData();
   }, []);
@@ -48,7 +75,13 @@ export function LendDeskItems() {
           <Card className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">Lend Items</h6>
-              {<LendDeskItemsForm />}
+              {
+                <LendDeskItemsForm
+                  itemsDict={availableItemsDict}
+                  itemNames={availableItemNames}
+                  residents={resData}
+                />
+              }
               {ModalButton(
                 <AddDeskItemsForm currentItems={data} />,
                 "Add Item"

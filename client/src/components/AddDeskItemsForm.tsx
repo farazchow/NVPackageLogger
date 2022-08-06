@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  createElement,
-  Component,
-  SyntheticEvent,
-  ElementType,
-  JSXElementConstructor,
-} from "react";
+import React, { createElement, Component } from "react";
 import { DeskItemInterface } from "../../../server/models/deskItem";
 import { post } from "../../utilities";
 
