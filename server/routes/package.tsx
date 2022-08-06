@@ -16,7 +16,7 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 // This defines the home page the this route; route would not work without it
 router.get("/", (req: Request, res: Response) => {
   console.log("reached home page");
-  res.send("Congrats, you've reached the home page of the auth route");
+  res.send("Congrats, you've reached the home page of the package route");
 });
 
 router.get("/getPackages", (req: Request, res: Response) => {
@@ -36,7 +36,7 @@ router.post("/postPackage", (req: any, res: Response) => {
     notes: req.body.notes,
     recipient: req.body.recipient,
     workerIn: req.body.worker,
-    createdAt: req.body.createdAt,
+    // createdAt: req.body.createdAt, // mongoose runs default function in schema which is date.now
   });
   newPackage
     .save()

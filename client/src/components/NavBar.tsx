@@ -5,6 +5,7 @@ import "../css/navbar.css";
 const navigations = [
   { path: "/", info: "Home" },
   { path: "/profile", info: "Profile" },
+  { path: "/package", info: "Package" },
   { path: "/package/in", info: "Check In Package" },
   { path: "/package/out", info: "Deliver Package" },
   { path: "/lend/items", info: "Lend Desk Items" },
