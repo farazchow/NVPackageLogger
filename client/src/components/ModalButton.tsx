@@ -9,7 +9,7 @@ export const ModalButton = (form: React.ReactElement, title: string) => {
     <div className="modalButton">
       <button onClick={() => setModalIsOpen(true)}>{title}</button>
       {/* <Modal isOpen={modalIsOpen} onRequestClose = {()=> setModalIsOpen(false)}> */}
-      <Modal isOpen={modalIsOpen}>
+      <Modal isOpen={modalIsOpen} ariaHideApp={false}>
         <h2>{title}</h2>
         {form}
         <div>

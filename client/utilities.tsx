@@ -25,9 +25,8 @@ async function convertToJSON(res: Response): Promise<JSON> {
 export async function get(
   endpoint: RequestInfo | URL,
   params: Record<any, any> = {}
-  
 ): Promise<JSON> {
-  return fetch(endpoint + new URLSearchParams(params).toString())
+  return fetch(endpoint + "?" + new URLSearchParams(params).toString())
     .then(convertToJSON)
     .catch((error): never => {
       logErrors(error);

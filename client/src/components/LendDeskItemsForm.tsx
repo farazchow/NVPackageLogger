@@ -4,9 +4,10 @@ import { DeskItemInterface } from "../../../server/models/deskItem";
 import { post } from "../../utilities";
 import { ModalButton } from "./ModalButton";
 import { IResident } from "../../../server/models/resident";
+import { PathEnumOrString } from "mongoose/types/inferschematype";
 
-type Dictionary = {
-  [x: string]: Dictionary;
+type DeskItemDictionary = {
+  [x: string]: DeskItemInterface[];
 };
 
 interface Notes {
@@ -15,14 +16,16 @@ interface Notes {
 
 type DeskItemsState = {
   lastBorrowed: Date;
-  item: string;
+  itemId: string;
   resident: string;
+  category: string;
+  categoryItems: DeskItemInterface[];
 };
 
 type DeskItemsProps = {
-  itemsDict: Dictionary;
-  itemNames: string[];
+  availableItems: DeskItemDictionary;
   residents: IResident[];
+  categories: string[];
 };
 
 export class LendDeskItemsForm extends Component<
@@ -32,7 +35,13 @@ export class LendDeskItemsForm extends Component<
   constructor(props: DeskItemsProps) {
     super(props);
 
-    this.state = { item: "", resident: "", lastBorrowed: new Date() };
+    this.state = {
+      itemId: "",
+      resident: "",
+      category: "",
+      categoryItems: [],
+      lastBorrowed: new Date(),
+    };
   }
   override render() {
     return (
@@ -42,16 +51,20 @@ export class LendDeskItemsForm extends Component<
           e.preventDefault();
 
           if (!this.isValidated()) {
-            alert("Please enter item that is not in table!!");
+            alert("Please select a resident and an item!!");
             return;
           }
 
-          post("/api/deskItem/lendItem", this.state).then((res) => {
-            this.setState({
-              item: "",
-              resident: "",
-            });
-          });
+          post("/api/deskItem/lendItem", this.state)
+            .then((res) => {
+              this.setState({
+                itemId: "",
+                resident: "",
+                category: "",
+                categoryItems: [],
+              });
+            })
+            .then(() => document.location.reload());
         }}
       >
         Resident:
@@ -59,11 +72,15 @@ export class LendDeskItemsForm extends Component<
           "select",
           {
             value: this.state.resident,
+            // todo: fix this -- current being stored as resident (room#) not studentId
             children: (
               <>
                 <option></option>
                 {this.props.residents.map((resident) => (
-                  <option value={resident.studentId as string}>
+                  <option
+                    value={resident.studentId as string}
+                    key={Math.random()}
+                  >
                     {(resident.resident as string) + " (" + resident.room + ")"}
                   </option>
                 ))}
@@ -72,11 +89,43 @@ export class LendDeskItemsForm extends Component<
           },
           "resident"
         )}
+        Category
+        {this.makeElement(
+          "select",
+          {
+            value: this.state.category,
+            children: (
+              <>
+                <option> </option>
+                {this.props.categories.map((cat) => (
+                  <option value={cat as string} key={cat}>
+                    {cat as string}
+                  </option>
+                ))}
+              </>
+            ),
+          },
+          "category"
+        )}
         Item:
         {this.makeElement(
-          "input",
-          { type: "text", value: this.state.item },
-          "item"
+          "select",
+          {
+            value: this.state.itemId,
+            children: (
+              <>
+                <option> </option>
+                {this.state.categoryItems
+                  ? this.state.categoryItems.map((item) => (
+                      <option value={item._id as string} key={item._id}>
+                        {item.itemName as string}
+                      </option>
+                    ))
+                  : []}
+              </>
+            ),
+          },
+          "itemId"
         )}
         <input type="submit" value="Submit" />
       </form>
@@ -90,6 +139,15 @@ export class LendDeskItemsForm extends Component<
           ...prevState,
           [key]: (event.target as HTMLTextAreaElement).value,
         }));
+        if (key === "category") {
+          this.setState((prevState) => ({
+            ...prevState,
+            categoryItems:
+              this.props.availableItems[
+                (event.target as HTMLTextAreaElement).value
+              ],
+          }));
+        }
       },
       ...props,
     };

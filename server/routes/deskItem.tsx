@@ -17,11 +17,12 @@ router.get("/", (req: Request, res: Response) => {
 router.get("/getAllItems", (req: Request, res: Response) => {
   DeskItem.find(
     {},
-    { _id: 1, itemName: 1, currentStatus: 1, lastBorrowed: 1 }
+    { _id: 1, itemCategory: 1, itemName: 1, currentStatus: 1, lastBorrowed: 1 }
   ).then(
     (
       value: (DeskItemInterface & {
         _id: String;
+        itemCategory: String;
         itemName: String;
         currentStatus: String;
         lastBorrowed: Date;
@@ -35,12 +36,13 @@ router.get("/getAllItems", (req: Request, res: Response) => {
 router.get("/getAvailableItems", (req: Request, res: Response) => {
   DeskItem.find(
     { currentStatus: "Available" },
-    { _id: 1, itemName: 1, currentStatus: 1 }
+    { _id: 1, itemName: 1, itemCategory: 1, currentStatus: 1 }
   ).then(
     (
       value: (DeskItemInterface & {
         _id: String;
         itemName: String;
+        itemCategory: String;
         currentStatus: String;
       })[]
     ) => {
@@ -49,10 +51,48 @@ router.get("/getAvailableItems", (req: Request, res: Response) => {
   );
 });
 
+router.get("/getBorrowedItems", (req: Request, res: Response) => {
+  DeskItem.find(
+    { currentStatus: { $ne: "Available" } },
+    { _id: 1, itemName: 1, itemCategory: 1, currentStatus: 1 }
+  ).then(
+    (
+      value: (DeskItemInterface & {
+        _id: String;
+        itemName: String;
+        itemCategory: String;
+        currentStatus: String;
+      })[]
+    ) => {
+      res.send(value);
+    }
+  );
+});
+
+router.get("/getCategoryAvailableItems", (req: Request, res: Response) => {
+  DeskItem.find(
+    { currentStatus: "Available", itemCategory: req.query.itemCategory },
+    { _id: 1, itemName: 1, currentStatus: 1 }
+  ).then(
+    (
+      value: (DeskItemInterface & {
+        _id: String;
+        itemName: String;
+        itemCategory: String;
+        currentStatus: String;
+      })[]
+    ) => {
+      console.log("getting available items", req.body.itemCategory);
+      res.send(value);
+    }
+  );
+});
+
 router.post("/postNewItem", (req: any, res: Response) => {
-  console.log('body is', req.body)
+  console.log("body is", req.body);
   const newItem = new DeskItem({
     itemName: req.body.itemName,
+    itemCategory: req.body.itemCategory,
     currentStatus: "Available",
     lastBorrowed: req.body.lastBorrowed,
     log: [],
@@ -72,7 +112,7 @@ router.post("/lendItem", (req: any, res: Response) => {
       if (!item || item === null) {
         console.log("couldn't find item by id");
       } else {
-        item.currentStatus = req.body.residentId;
+        item.currentStatus = req.body.resident;
         item.lastBorrowed = req.body.lastBorrowed;
         item.save().then((lentItem: DeskItemInterface) => {
           console.log("item lended", lentItem);
@@ -111,19 +151,16 @@ router.post("/returnItem", (req: any, res: Response) => {
     });
 });
 
-
 router.post("/delete/desk-item", (req: any, res: Response) => {
-
-  console.log('id is', req.body._id)
-  DeskItem.deleteOne({_id: req.body._id}).then( (item) => {
-    console.log('item found is', item);
-    res.send(item)
-  }
-  )
-    .catch( (err: Error) => {
-    res.status(500).send({message: "Unknown Error!"})
-  })
-
-})
+  console.log("id is", req.body._id);
+  DeskItem.deleteOne({ _id: req.body._id })
+    .then((item) => {
+      console.log("item found is", item);
+      res.send(item);
+    })
+    .catch((err: Error) => {
+      res.status(500).send({ message: "Unknown Error!" });
+    });
+});
 
 module.exports = router;

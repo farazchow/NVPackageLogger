@@ -9,34 +9,42 @@ import { AddDeskItemsForm } from "../components/AddDeskItemsForm";
 import { IResident } from "../../../server/models/resident";
 import { ModalButton } from "../components/ModalButton";
 import { get, post } from "../../utilities";
+import { createBootstrapComponent } from "react-bootstrap/esm/ThemeProvider";
 
-type Dictionary = {
-  [x: string]: Dictionary;
+enum Categories {
+  CLEANING = "Cleaning",
+  WHEELS = "Wheels",
+  TOOLS = "Tools",
+  GAMES = "Games",
+  SPORTS = "Sports Equipment",
+  KEYS = "Keys",
+  MOVIES = "Movies",
+  OTHER = "Other",
+}
+
+type DeskItemDictionary = {
+  [x: string]: DeskItemInterface[];
 };
 
 export function LendDeskItems() {
   const [data, setData] = useState<DeskItemInterface[]>([]);
-  const [availableItemsDict, setAvailableItemsDict] = useState<Dictionary>({});
-  const [availableItemNames, setAvailableItemNames] = useState<string[]>([""]);
+  const [availableItems, setAvailableItems] = useState<DeskItemDictionary>({});
   const [resData, setResidentData] = useState<IResident[]>([]);
 
   // data fetching
   useEffect(() => {
     async function getData() {
+      Object.values(Categories).forEach((cat: Categories) => {
+        get("/api/deskItem/getCategoryAvailableItems", {
+          itemCategory: cat,
+        }).then((item: any) =>
+          setAvailableItems((availableItems: DeskItemDictionary) => {
+            availableItems[cat] = item;
+            return availableItems;
+          })
+        );
+      });
       await Promise.all([
-        get("/api/deskItem/getAvailableItems").then((avail: any) => {
-          for (let key in avail) {
-            setAvailableItemNames((itemNames) => [
-              ...itemNames,
-              avail[key].itemName,
-            ]);
-            setAvailableItemsDict((itemsDict) => {
-              itemsDict[avail[key].itemName] = avail[key];
-              return itemsDict;
-            });
-          }
-        }),
-
         get("/api/deskItem/getAllItems").then((item: any) => {
           setData(item);
         }),
@@ -62,6 +70,7 @@ export function LendDeskItems() {
     };
 
     post("/api/deskItem/returnItem", body).then((res) => {
+      document.location.reload();
       console.log("desk Item returned");
       // document.location.reload();
     });
@@ -77,13 +86,16 @@ export function LendDeskItems() {
               <h6 className="m-0">Lend Items</h6>
               {
                 <LendDeskItemsForm
-                  itemsDict={availableItemsDict}
-                  itemNames={availableItemNames}
+                  availableItems={availableItems}
                   residents={resData}
+                  categories={Object.values(Categories)}
                 />
               }
               {ModalButton(
-                <AddDeskItemsForm currentItems={data} />,
+                <AddDeskItemsForm
+                  currentItems={data}
+                  categories={Object.values(Categories)}
+                />,
                 "Add Item"
               )}
             </CardHeader>

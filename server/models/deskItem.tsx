@@ -2,6 +2,7 @@ import { Schema, model, Document } from "mongoose";
 
 export interface DeskItemInterface extends Document {
   itemName: String;
+  itemCategory: String;
   currentStatus: String; // residentId or Available
   lastBorrowed: Date;
   log: [
@@ -16,6 +17,7 @@ export interface DeskItemInterface extends Document {
 
 const deskItemSchema = new Schema<DeskItemInterface>({
   itemName: String,
+  itemCategory: String,
   currentStatus: String, // residentId or Available
   lastBorrowed: Date,
   log: [

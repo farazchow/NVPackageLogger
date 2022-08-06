@@ -8,11 +8,13 @@ interface Notes {
 
 type DeskItemsState = {
   itemName: string;
+  itemCategory: string;
   lastBorrowed: Date;
 };
 
 type DeskItemsProps = {
   currentItems: DeskItemInterface[];
+  categories: string[];
 };
 
 export class AddDeskItemsForm extends Component<
@@ -22,7 +24,7 @@ export class AddDeskItemsForm extends Component<
   constructor(props: DeskItemsProps) {
     super(props);
 
-    this.state = { itemName: "", lastBorrowed: new Date() };
+    this.state = { itemName: "", itemCategory: "", lastBorrowed: new Date() };
   }
 
   override render() {
@@ -40,10 +42,29 @@ export class AddDeskItemsForm extends Component<
           post("/api/deskItem/postNewItem", this.state).then((res) => {
             this.setState({
               itemName: "",
+              itemCategory: "",
             });
           });
         }}
       >
+        Item Category:
+        {this.makeElement(
+          "select",
+          {
+            value: this.state.itemCategory,
+            children: (
+              <>
+                <option> </option>
+                {this.props.categories.map((cat) => (
+                  <option value={cat as string} key={cat}>
+                    {cat as string}
+                  </option>
+                ))}
+              </>
+            ),
+          },
+          "itemCategory"
+        )}
         Item Name:
         {this.makeElement(
           "input",
