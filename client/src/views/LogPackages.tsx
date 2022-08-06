@@ -132,6 +132,9 @@ export const LogPackages = () => {
                               type="checkbox"
                               id={`checkbox-${key}`}
                               onClick={(evt) => {
+                                document
+                                  .getElementById(`checkbox-${key}`)
+                                  ?.click();
                                 onCheckboxClick(evt, key);
                               }}
                             />
