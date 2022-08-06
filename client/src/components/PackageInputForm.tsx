@@ -1,4 +1,4 @@
-import React from "react";
+import {createElement, Component, SyntheticEvent, ElementType} from "react";
 import { IResident } from "../../../server/models/resident";
 
 import SelectInput from "./SelectInput";
@@ -19,10 +19,11 @@ type Props = {
   residents: IResident[];
 };
 
-export class PackageInputForm extends React.Component<Props, State> {
+export class PackageInputForm extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    console.log('props', this.props)
     this.state = {
       shipping_id: "",
       recipient: "",
@@ -32,6 +33,7 @@ export class PackageInputForm extends React.Component<Props, State> {
       workerIn: this.props.user,
       createdAt: new Date(),
     };
+
   }
 
   override render() {
@@ -41,11 +43,13 @@ export class PackageInputForm extends React.Component<Props, State> {
         onSubmit={(e: React.SyntheticEvent) => {
           e.preventDefault();
 
-          if (this.handleValidation()) {
+          if (this.isValidated()) {
             const date = new Date();
             this.setState({
               createdAt: date,
             });
+
+            // print("state before", this.state)
 
             post("/api/package/postPackage", this.state).then((res) => {
               this.setState({
@@ -63,7 +67,7 @@ export class PackageInputForm extends React.Component<Props, State> {
         }}
       >
         Tracking:
-        <input
+        {/* <input
           type="text"
           value={this.state.shipping_id}
           onChange={(event: React.SyntheticEvent) => {
@@ -71,7 +75,12 @@ export class PackageInputForm extends React.Component<Props, State> {
               shipping_id: (event.target as HTMLTextAreaElement).value,
             });
           }}
-        />
+        /> */}
+        { this.makeSelect( "input" , {type: "text", value: this.state.shipping_id}, "shipping_id" )}
+
+        
+        {/* this.makeSelect(input, {key: this.state.shipping_id }, ) */}
+
         Shipper:
         <select
           value={this.state.shipper}
@@ -152,20 +161,50 @@ export class PackageInputForm extends React.Component<Props, State> {
     );
   }
 
-  handleValidation() {
-    const allElements = [
-      this.state.shipping_id,
-      this.state.recipient,
-      this.state.shipper,
-      this.state.location,
-    ];
-    for (var i = 0; i < allElements.length; i++) {
-      const el = allElements[i];
-      if (el == "") {
-        return false;
-      }
-    }
-    return true;
+  makeSelect(T: string, props: object, key: keyof State) {
+    return (
+    
+    T === "input" ? 
+    <input
+    {...props}
+    onChange={(event: SyntheticEvent) => {
+      this.setState({
+        ...this.state,
+        [key]: (event.target as HTMLTextAreaElement).value,
+      } )
+    }}      
+    /> :
+    <select
+      {...props}
+      onChange={(event: SyntheticEvent) => {
+        this.setState({
+          ...this.state,
+          [key]: (event.target as HTMLTextAreaElement).value,
+        } )
+      }}   
+    />
+    )
+
+  }
+
+  isValidated() {
+    // const allElements = [
+    //   this.state.shipping_id,
+    //   this.state.recipient,
+    //   this.state.shipper,
+    //   this.state.location,
+    // ];
+    // for (var i = 0; i < allElements.length; i++) {
+    //   const el = allElements[i];
+    //   if (el == "") {
+    //     return false;
+    //   }
+    // }
+
+    return Object.values(this.state).every( (state) => {
+      state !== ""
+    })
+
   }
 }
 

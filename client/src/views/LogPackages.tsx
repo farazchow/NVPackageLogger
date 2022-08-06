@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { PackageInputForm } from "../components/PackageInputForm";
-import { post } from "../../utilities";
+import { get, post } from "../../utilities";
 
 export function LogPackages() {
   const [data, setPackageData] = useState<PackageInterface[]>([]);
@@ -16,12 +16,21 @@ export function LogPackages() {
   // data fetching
   useEffect(() => {
     async function getData() {
-      fetch("/api/package/getPackages")
-        .then((res) => res.json())
-        .then((data) => setPackageData(data));
-      fetch("/api/resident/getResident").then((res) =>
-        res.json().then((resData) => setResidentData(resData))
-      );
+      // fetch("/api/package/getPackages")
+      //   .then((pack) => pack.json())
+        
+      //   .then((data) => setPackageData(data));
+      
+      get("/api/package/getPackages").then( (pckgs: any) => setPackageData(pckgs))
+      get("/api/package/getResident").then( (residents: any) => setResidentData(residents))
+
+      // fetch("/api/resident/getResident").then((res) =>
+      //   res.json().then((resData) => setResidentData(resData)).then(()=>console.log(resData))
+      // );
+      
+      // fetch("/api/resident/getResident").then(async (res) => {
+      //   console.log('res is', await res.json()) }
+      // );
       console.log(resData);
     }
     getData();
