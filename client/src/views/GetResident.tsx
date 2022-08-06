@@ -30,7 +30,7 @@ class ResidentTable extends React.Component {
   };
 
   override componentDidMount() {
-    fetch("/api/resident/getResident")
+    fetch("/api/resident/getResidents")
       .then((res) => res.json())
       .then((residentList) => {
         this.setState({ data: residentList });

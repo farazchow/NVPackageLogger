@@ -46,19 +46,14 @@ class ResidentView extends Component<objectID, State> {
 
   override componentDidMount() {
     get("/api/resident/getResidentById", { id: this.props.id }).then(
-      (res: any) => this.setState(res, () => {})
+      (res: any) => this.setState(res)
     );
   }
 
   override render() {
     return (
       <>
-        <div>
-          <p>
-            <>Hello World {this.props.id}</>
-          </p>
-          {deconstruct(this.state)}
-        </div>
+        <div>{deconstruct(this.state)}</div>
       </>
     );
   }

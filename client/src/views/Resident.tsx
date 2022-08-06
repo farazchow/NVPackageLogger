@@ -87,7 +87,7 @@ class CheckInOutInputForm extends React.Component<{}, State> {
             onSubmit={(e: React.SyntheticEvent) => {
               e.preventDefault();
               const target = e.target as typeof e.target & {
-                studentId: { value: string };
+                id: { value: string };
                 resident: { value: string };
                 room: { value: string };
                 type: { value: string };
@@ -96,7 +96,7 @@ class CheckInOutInputForm extends React.Component<{}, State> {
                 forwardingAddress: { value: string };
                 date: { value: string };
               };
-              this.state.studentId = target.studentId.value;
+              this.state.studentId = target.id.value;
               this.state.resident = target.resident.value;
               this.state.room = target.room.value;
               this.state.year = target.year.value;
