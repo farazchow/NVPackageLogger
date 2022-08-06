@@ -6,6 +6,7 @@ import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { LendDeskItemsForm } from "../components/LendDeskItemsForm";
 import { AddDeskItemsForm } from "../components/AddDeskItemsForm";
+import { ModalButton } from "../components/ModalButton";
 import { get, post } from "../../utilities";
 
 export function LendDeskItems() {
@@ -47,9 +48,11 @@ export function LendDeskItems() {
           <Card className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">Lend Items</h6>
-              {<LendDeskItemsForm/>}
-              <h6 className="m-0">Add Item</h6>
-              {<AddDeskItemsForm id="lendID"/>}
+              {<LendDeskItemsForm />}
+              {ModalButton(
+                <AddDeskItemsForm currentItems={data} />,
+                "Add Item"
+              )}
             </CardHeader>
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
@@ -92,8 +95,12 @@ export function LendDeskItems() {
                           <td>
                             <button
                               className="btn btn-dark btn-sm d-flex justify-content-center"
-                              onClick={ () => post("/api/deskItem/delete/desk-item", { _id: item._id})}
-                              >
+                              onClick={() =>
+                                post("/api/deskItem/delete/desk-item", {
+                                  _id: item._id,
+                                })
+                              }
+                            >
                               Delete Item!
                             </button>
                           </td>

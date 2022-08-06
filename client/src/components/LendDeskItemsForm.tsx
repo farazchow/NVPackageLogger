@@ -1,5 +1,10 @@
 import SelectInput from "./SelectInput";
-import { FunctionComponent, ReactComponentElement, useEffect, useState } from "react";
+import {
+  FunctionComponent,
+  ReactComponentElement,
+  useEffect,
+  useState,
+} from "react";
 import { DeskItemInterface } from "../../../server/models/deskItem";
 import { post } from "../../utilities";
 import { ModalButton } from "./ModalButton";
@@ -7,7 +12,6 @@ import { ModalButton } from "./ModalButton";
 type Dictionary = {
   [x: string]: Dictionary;
 };
-
 
 export const LendDeskItemsForm = () => {
   const [itemsDict, setItemsDict] = useState<Dictionary>({});
@@ -60,20 +64,13 @@ export const LendDeskItemsForm = () => {
 
   return (
     <>
-    <form name="lendDeskItemsForm">
-      <label htmlFor="resident">Resident: </label>
-      <input type="text" id="resident"></input>
-      <label htmlFor="item">Item: </label> 
-      {SelectInput("item", itemNames)}
-      <input type="submit" value="Submit" onClick={clickHandler} />
-      
-    </form>
-      
-      { <ModalButton/> }    
+      <form name="lendDeskItemsForm">
+        <label htmlFor="resident">Resident: </label>
+        <input type="text" id="resident"></input>
+        <label htmlFor="item">Item: </label>
+        {SelectInput("item", itemNames)}
+        <input type="submit" value="Submit" onClick={clickHandler} />
+      </form>
     </>
-
   );
-}
-
-
-
+};

@@ -1,43 +1,90 @@
-import React, { useState } from "react";
-
-import SelectInput from "./SelectInput";
+import React, {
+  useState,
+  createElement,
+  Component,
+  SyntheticEvent,
+  ElementType,
+  JSXElementConstructor,
+} from "react";
+import { DeskItemInterface } from "../../../server/models/deskItem";
 import { post } from "../../utilities";
 
-type DeskProps = {
-  id: string
+interface Notes {
+  value: string;
 }
 
-export const AddDeskItemsForm = (props: DeskProps) => {
-  // TODO: validate that there are no duplicates
-  const [propsState, setProps]  = useState("")
-
-  console.log('id is', props.id)
-  return (
-    <form name="addDeskItemsForm">
-      <label htmlFor="itemName">Item Name: </label>
-      <input type="text" id={props.id}></input>
-
-      <input type="submit" value="Submit" onClick={clickHandler(props.id)} /> 
-    </form>
-  );
-
-}
-
-const clickHandler = (id: string) => {
-  return (e: React.MouseEvent) => {
-    e.preventDefault();
-    console.log('gggid is', id)
-    const date = new Date();
-    console.log('element from ID', id, document.getElementById(id), 
-      'element from Id', (document.getElementById(id) as any).value)
-    const body = {
-      itemName: (document.getElementById(id) as HTMLInputElement).value,
-      lastBorrowed: date,
-    };
-    post("/api/deskItem/postNewItem", body).then((res) => {
-      // (document.getElementById(name) as HTMLInputElement).reset();
-    });
-  };
+type DeskItemsState = {
+  itemName: string;
+  lastBorrowed: Date;
 };
 
+type DeskItemsProps = {
+  currentItems: DeskItemInterface[];
+};
 
+export class AddDeskItemsForm extends Component<
+  DeskItemsProps,
+  DeskItemsState
+> {
+  constructor(props: DeskItemsProps) {
+    super(props);
+
+    this.state = { itemName: "", lastBorrowed: new Date() };
+  }
+
+  override render() {
+    return (
+      <form
+        name="addDeskItemsForm"
+        onSubmit={async (e: React.SyntheticEvent) => {
+          e.preventDefault();
+
+          if (!this.isValidated() || !this.isUnique()) {
+            alert("Please enter item that is not in table!!");
+            return;
+          }
+
+          post("/api/deskItem/postNewItem", this.state).then((res) => {
+            this.setState({
+              itemName: "",
+            });
+          });
+        }}
+      >
+        Item Name:
+        {this.makeElement(
+          "input",
+          { type: "text", value: this.state.itemName },
+          "itemName"
+        )}
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+
+  makeElement(T: string, props: any, key: keyof DeskItemsState) {
+    const propsWithListener = {
+      onChange: (event: Event) => {
+        this.setState((prevState) => ({
+          ...prevState,
+          [key]: (event.target as HTMLTextAreaElement).value,
+        }));
+      },
+      ...props,
+    };
+
+    return createElement(T, propsWithListener);
+  }
+
+  isValidated() {
+    return Object.values(this.state).every((state) => {
+      return state !== "";
+    });
+  }
+
+  isUnique() {
+    return this.props.currentItems.every((item) => {
+      return item.itemName !== this.state.itemName;
+    });
+  }
+}
