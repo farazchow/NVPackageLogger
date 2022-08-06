@@ -11,7 +11,7 @@ import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { IResident } from "../../../server/models/resident";
 
-export const GetUpdate: FunctionComponent = () => {
+export const CheckOutResident: FunctionComponent = () => {
   return (
     <>
       <GetUpdateForm />
@@ -24,17 +24,19 @@ type State = {
   studentId: string;
 };
 
-class ResidentTable extends React.Component {
+interface ResidentTableState {
+  data: IResident[];
+}
+
+class ResidentTable extends React.Component<{}, ResidentTableState> {
   override state = {
     data: [],
   };
 
   override componentDidMount() {
-    fetch("/api/resident/getResidents")
-      .then((res) => res.json())
-      .then((residentList) => {
-        this.setState({ data: residentList });
-      });
+    get("/api/resident/getResidents", { checkedIn: true }).then(
+      (residents: any) => this.setState({ data: residents })
+    );
   }
 
   override render() {
@@ -109,9 +111,11 @@ class GetUpdateForm extends React.Component<{}, State> {
               };
               this.state.studentId = target.studentId.value;
 
-              post("/api/resident/putResident", this.state).then((res) => {
-                console.log("Put!", res);
-              });
+              post("/api/resident/putResident", { ...this.state }).then(
+                (res) => {
+                  console.log("Put!", res);
+                }
+              );
 
               console.log("submitted", this.state.studentId);
             }}

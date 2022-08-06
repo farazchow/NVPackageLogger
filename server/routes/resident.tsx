@@ -20,11 +20,14 @@ router.get("/", (req: Request, res: Response) => {
 router.get("/getResidents", (req: Request, res: Response) => {
   console.log("Sending resident data back to you!");
 
-  const { checkedOut } = req.params || {};
+  const { checkedIn } = req.query;
+  console.log("checked in is", checkedIn);
 
-  Resident.find(checkedOut).then((resident: typeof Resident[]) => {
-    res.send(resident);
-  });
+  Resident.find({ checkedIn: checkedIn === "true" }).then(
+    (resident: typeof Resident[]) => {
+      res.send(resident);
+    }
+  );
 });
 
 router.get("/getResidentById", (req: Request, res: Response) => {

@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 import { post } from "../../utilities";
 import "../css/residentCheckIn.css";
 
@@ -67,6 +68,18 @@ type State = {
 };
 
 class CheckInOutInputForm extends React.Component<{}, State> {
+  isFormValid = () => {
+    console.log("IsValid Check");
+    console.log(this.state);
+    for (const val of Object.values(this.state)) {
+      console.log("val = ", val);
+      if (val == "") {
+        return false;
+      }
+    }
+    return true;
+  };
+
   override state = {
     studentId: "",
     resident: "",
@@ -105,21 +118,25 @@ class CheckInOutInputForm extends React.Component<{}, State> {
               this.state.date = target.date.value;
               this.state.checkedIn = true;
 
-              post("/api/resident/postResident", this.state).then((res) => {
-                console.log("Posted!");
-              });
+              if (this.isFormValid()) {
+                post("/api/resident/postResident", this.state).then((res) => {
+                  console.log("Posted!");
+                });
 
-              console.log(
-                "submitted %s %s %s",
-                this.state.studentId,
-                this.state.resident,
-                this.state.room,
-                this.state.year,
-                this.state.homeAddress,
-                this.state.forwardingAddress,
-                this.state.date,
-                this.state.checkedIn
-              );
+                console.log(
+                  "submitted %s %s %s",
+                  this.state.studentId,
+                  this.state.resident,
+                  this.state.room,
+                  this.state.year,
+                  this.state.homeAddress,
+                  this.state.forwardingAddress,
+                  this.state.date,
+                  this.state.checkedIn
+                );
+              } else {
+                window.alert("Not all Fields Filled");
+              }
             }}
           >
             <p className="title">Check-in/Check-out Form</p>
