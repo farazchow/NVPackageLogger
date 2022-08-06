@@ -4,11 +4,13 @@ import "../../utilities.css";
 const navigations = [
   { path: "/", info: "Home" },
   { path: "/profile", info: "Profile" },
+  { path: "/package", info: "Package" },
   { path: "/package/in", info: "Check In Package" },
   { path: "/package/out", info: "Deliver Package" },
   { path: "/lend/items", info: "Lend Desk Items" },
   { path: "/resident/in", info: "Check In Resident" },
   { path: "/resident/out", info: "Check Out Resident" },
+  { path: "/notes", info: "Notes" },
   { path: "/desk/workers", info: "Desk Workers" },
   { path: "/lost/items", info: "Lost Items" },
 ];
