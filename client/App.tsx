@@ -12,6 +12,7 @@ import LogPackages from "./src/views/LogPackages";
 import LendDesk from "./src/views/LendDesk";
 import { CheckInOut } from "./src/views/Resident";
 import { GetUpdate } from "./src/views/GetResident";
+import { SingleResidentView } from "./src/views/SingleResident";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
@@ -48,6 +49,7 @@ const App: FunctionComponent = () => {
         <Route path="resident">
           <Route path="in" element={<CheckInOut />} />
           <Route path="out" element={<GetUpdate />} />
+          <Route path="view/:id" element={<SingleResidentView />} />
         </Route>
 
         <Route path="/desk/workers" element={<div>Desk Workers</div>} />

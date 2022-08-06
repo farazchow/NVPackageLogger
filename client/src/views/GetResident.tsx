@@ -28,18 +28,8 @@ class ResidentTable extends React.Component {
   override state = {
     data: [],
   };
-  override componentDidMount() {
-    // const [data, setData] = useState<IResident[]>([]);
 
-    // // data fetching
-    // useEffect(() => {
-    //   async function getData() {
-    //     fetch("/api/resident/getResident")
-    //       .then((res) => res.json())
-    //       .then((data) => setData(data));
-    //   }
-    //   getData();
-    // }, []);
+  override componentDidMount() {
     fetch("/api/resident/getResident")
       .then((res) => res.json())
       .then((residentList) => {
@@ -78,7 +68,9 @@ class ResidentTable extends React.Component {
                         return (
                           <tr key={key}>
                             <td>{rsdnt.studentId}</td>
-                            <td>{rsdnt.resident}</td>
+                            <td>
+                              <a href={`view/${rsdnt._id}`}>{rsdnt.resident}</a>
+                            </td>
                             <td>{rsdnt.room}</td>
                             <td>{rsdnt.year}</td>
                           </tr>

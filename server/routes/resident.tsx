@@ -24,8 +24,11 @@ router.get("/getResident", (req: Request, res: Response) => {
 });
 
 router.get("/getResidentById", (req: Request, res: Response) => {
-  console.log("Sending resident data back to you!");
-  Resident.findById(req.body._id).then((resi: any) => {
+  console.log("Sending getResident data back to you!");
+  const { id } = req.params;
+  console.log("id to find by is", id);
+  Resident.findOne(id).then((resi: any) => {
+    console.log("resident sending backis", resi);
     res.send(resi);
   });
 });
