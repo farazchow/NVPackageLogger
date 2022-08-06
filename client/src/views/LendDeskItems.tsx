@@ -61,9 +61,6 @@ export function LendDeskItems() {
                     <th scope="col" className="border-0">
                       Current Status
                     </th>
-                    <th scope="col" className="border-0">
-                      Notes
-                    </th>
                   </tr>
                 </thead>
                 <tbody>

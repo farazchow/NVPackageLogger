@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import SelectInput from "./SelectInput";
 import { post } from "../../utilities";
@@ -9,15 +9,18 @@ type DeskProps = {
 
 export const AddDeskItemsForm = (props: DeskProps) => {
   // TODO: validate that there are no duplicates
+  const [propsState, setProps]  = useState("")
+
   console.log('id is', props.id)
   return (
     <form name="addDeskItemsForm">
       <label htmlFor="itemName">Item Name: </label>
       <input type="text" id={props.id}></input>
 
-      <input type="submit" value="Submit" onClick={clickHandler(props.id)} />
+      <input type="submit" value="Submit" onClick={clickHandler(props.id)} /> 
     </form>
   );
+
 }
 
 const clickHandler = (id: string) => {

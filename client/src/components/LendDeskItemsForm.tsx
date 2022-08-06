@@ -54,7 +54,6 @@ export const LendDeskItemsForm = () => {
       // reset stuff
       (document.getElementById("item") as HTMLInputElement).value = "";
       (document.getElementById("resident") as HTMLInputElement).value = "";
-      (document.getElementById("note") as HTMLInputElement).value = "";
       // document.location.reload();
     });
   };
@@ -66,16 +65,12 @@ export const LendDeskItemsForm = () => {
       <input type="text" id="resident"></input>
       <label htmlFor="item">Item: </label> 
       {SelectInput("item", itemNames)}
-      <label htmlFor = "note">Notes: </label>
-      <input type="text" id="note"></input>
-
       <input type="submit" value="Submit" onClick={clickHandler} />
       
     </form>
       
       { <ModalButton/> }    
     </>
-
 
   );
 }
