@@ -3,29 +3,38 @@ import React from "react";
 import SelectInput from "./SelectInput";
 import { post } from "../../utilities";
 
-export function AddDeskItemsForm() {
-  // TODO: validate that there are no duplicates
+type DeskProps = {
+  id: string
+}
 
+export const AddDeskItemsForm = (props: DeskProps) => {
+  // TODO: validate that there are no duplicates
+  console.log('id is', props.id)
   return (
     <form name="addDeskItemsForm">
       <label htmlFor="itemName">Item Name: </label>
-      <input type="text" id="itemName"></input>
+      <input type="text" id={props.id}></input>
 
-      <input type="submit" value="Submit" onClick={clickHandler()} />
+      <input type="submit" value="Submit" onClick={clickHandler(props.id)} />
     </form>
   );
 }
 
-const clickHandler = () => {
+const clickHandler = (id: string) => {
   return (e: React.MouseEvent) => {
     e.preventDefault();
+    console.log('gggid is', id)
     const date = new Date();
+    console.log('element from ID', id, document.getElementById(id), 
+      'element from Id', (document.getElementById(id) as any).value)
     const body = {
-      itemName: (document.getElementById("itemName") as HTMLInputElement).value,
+      itemName: (document.getElementById(id) as HTMLInputElement).value,
       lastBorrowed: date,
     };
     post("/api/deskItem/postNewItem", body).then((res) => {
-      (document.getElementById("itemName") as HTMLInputElement).value = "";
+      // (document.getElementById(name) as HTMLInputElement).reset();
     });
   };
 };
+
+

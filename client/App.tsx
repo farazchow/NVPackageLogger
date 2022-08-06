@@ -13,7 +13,7 @@ import LendDeskItems from "./src/views/LendDeskItems";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
-const App: FunctionComponent = () => {
+export const App: FunctionComponent = () => {
   /*
    */
   const [data, setData] = useState<UserInterface[]>([]);

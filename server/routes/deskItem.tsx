@@ -50,6 +50,7 @@ router.get("/getAvailableItems", (req: Request, res: Response) => {
 });
 
 router.post("/postNewItem", (req: any, res: Response) => {
+  console.log('body is', req.body)
   const newItem = new DeskItem({
     itemName: req.body.itemName,
     currentStatus: "Available",
@@ -109,5 +110,20 @@ router.post("/returnItem", (req: any, res: Response) => {
       res.status(500).send({ message: "unknown error" });
     });
 });
+
+
+router.post("/delete/desk-item", (req: any, res: Response) => {
+
+  console.log('id is', req.body._id)
+  DeskItem.deleteOne({_id: req.body._id}).then( (item) => {
+    console.log('item found is', item);
+    res.send(item)
+  }
+  )
+    .catch( (err: Error) => {
+    res.status(500).send({message: "Unknown Error!"})
+  })
+
+})
 
 module.exports = router;

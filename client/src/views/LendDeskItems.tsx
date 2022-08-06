@@ -47,9 +47,9 @@ export function LendDeskItems() {
           <Card className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">Lend Items</h6>
-              {LendDeskItemsForm()}
+              {<LendDeskItemsForm/>}
               <h6 className="m-0">Add Item</h6>
-              {AddDeskItemsForm()}
+              {<AddDeskItemsForm id="lendID"/>}
             </CardHeader>
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
@@ -60,6 +60,9 @@ export function LendDeskItems() {
                     </th>
                     <th scope="col" className="border-0">
                       Current Status
+                    </th>
+                    <th scope="col" className="border-0">
+                      Notes
                     </th>
                   </tr>
                 </thead>
@@ -87,6 +90,14 @@ export function LendDeskItems() {
                               }}
                             >
                               Return Item
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              className="btn btn-dark btn-sm d-flex justify-content-center"
+                              onClick={ () => post("/api/deskItem/delete/desk-item", { _id: item._id})}
+                              >
+                              Delete Item!
                             </button>
                           </td>
                         </tr>
