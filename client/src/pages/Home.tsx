@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { post } from "../../utilities";
 import "../css/home.css";
+import "../css/universal.css";
 const Home = () => {
   return (
     <>
@@ -10,10 +11,10 @@ const Home = () => {
         <div className="container">
           <h1 className="mainText">
             New Vassar Front Desk
-            {/* <img
+            <img
               className="boxIcon"
               src={require("../images/box.svg").default}
-            /> */}
+            />
           </h1>
         </div>
 

@@ -7,7 +7,7 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 import SelectInput from "./SelectInput";
 import { PackageInputForm } from "./PackageInputForm";
 import { PackageInterface } from "../server/models/package";
-
+import "..css/universal.css";
 export function Home() {
   const [data, setData] = useState<PackageInterface[]>([]);
 
