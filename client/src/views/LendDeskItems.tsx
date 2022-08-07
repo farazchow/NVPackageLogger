@@ -27,7 +27,8 @@ type DeskItemDictionary = {
 };
 
 export function LendDeskItems() {
-  const [data, setData] = useState<DeskItemInterface[]>([]);
+  const [allItems, setAllItems] = useState<DeskItemInterface[]>([]);
+  const [borrowedItems, setBorrowedItems] = useState<DeskItemInterface[]>([]);
   const [availableItems, setAvailableItems] = useState<DeskItemDictionary>({});
   const [resData, setResidentData] = useState<IResident[]>([]);
 
@@ -46,7 +47,11 @@ export function LendDeskItems() {
       });
       await Promise.all([
         get("/api/deskItem/getAllItems").then((item: any) => {
-          setData(item);
+          setAllItems(item);
+        }),
+
+        get("/api/deskItem/getBorrowedItems").then((item: any) => {
+          setBorrowedItems(item);
         }),
 
         get("/api/resident/getResident").then((residents: any) => {
@@ -58,7 +63,7 @@ export function LendDeskItems() {
   }, []);
 
   async function returnItem(evt: SyntheticEvent, key: number) {
-    const item = data[key];
+    const item = borrowedItems[key];
     const date = new Date();
 
     const body = {
@@ -93,10 +98,10 @@ export function LendDeskItems() {
               }
               {ModalButton(
                 <AddDeskItemsForm
-                  currentItems={data}
+                  currentItems={allItems}
                   categories={Object.values(Categories)}
                 />,
-                "Add Item"
+                "Edit Items"
               )}
             </CardHeader>
             <Card.Body className="p-0 pb-3">
@@ -107,16 +112,20 @@ export function LendDeskItems() {
                       Item Name
                     </th>
                     <th scope="col" className="border-0">
+                      Item Category
+                    </th>
+                    <th scope="col" className="border-0">
                       Current Status
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data ? (
-                    data.map((item: any, key: number) => {
+                  {borrowedItems ? (
+                    borrowedItems.map((item: any, key: number) => {
                       return (
                         <tr key={item._id}>
                           <td>{item.itemName}</td>
+                          <td>{item.itemCategory}</td>
                           <td>
                             {item.currentStatus == "Available"
                               ? item.currentStatus
@@ -137,7 +146,7 @@ export function LendDeskItems() {
                               Return Item
                             </button>
                           </td>
-                          <td>
+                          {/* <td>
                             <button
                               className="btn btn-dark btn-sm d-flex justify-content-center"
                               onClick={() =>
@@ -148,7 +157,7 @@ export function LendDeskItems() {
                             >
                               Delete Item!
                             </button>
-                          </td>
+                          </td> */}
                         </tr>
                       );
                     })

@@ -24,55 +24,61 @@ export class AddDeskItemsForm extends Component<
   constructor(props: DeskItemsProps) {
     super(props);
 
-    this.state = { itemName: "", itemCategory: "", lastBorrowed: new Date() };
+    this.state = {
+      itemName: "",
+      itemCategory: "",
+      lastBorrowed: new Date(),
+    };
   }
 
   override render() {
     return (
-      <form
-        name="addDeskItemsForm"
-        onSubmit={async (e: React.SyntheticEvent) => {
-          e.preventDefault();
+      <td>
+        <form
+          name="addDeskItemsForm"
+          onSubmit={async (e: React.SyntheticEvent) => {
+            e.preventDefault();
 
-          if (!this.isValidated() || !this.isUnique()) {
-            alert("Please enter item that is not in table!!");
-            return;
-          }
+            if (!this.isValidated() || !this.isUnique()) {
+              alert("Please enter item that is not in table!!");
+              return;
+            }
 
-          post("/api/deskItem/postNewItem", this.state).then((res) => {
-            this.setState({
-              itemName: "",
-              itemCategory: "",
+            post("/api/deskItem/postNewItem", this.state).then((res) => {
+              this.setState({
+                itemName: "",
+                itemCategory: "",
+              });
             });
-          });
-        }}
-      >
-        Item Category:
-        {this.makeElement(
-          "select",
-          {
-            value: this.state.itemCategory,
-            children: (
-              <>
-                <option> </option>
-                {this.props.categories.map((cat) => (
-                  <option value={cat as string} key={cat}>
-                    {cat as string}
-                  </option>
-                ))}
-              </>
-            ),
-          },
-          "itemCategory"
-        )}
-        Item Name:
-        {this.makeElement(
-          "input",
-          { type: "text", value: this.state.itemName },
-          "itemName"
-        )}
-        <input type="submit" value="Submit" />
-      </form>
+          }}
+        >
+          Item Category:
+          {this.makeElement(
+            "select",
+            {
+              value: this.state.itemCategory,
+              children: (
+                <>
+                  <option> </option>
+                  {this.props.categories.map((cat) => (
+                    <option value={cat as string} key={cat}>
+                      {cat as string}
+                    </option>
+                  ))}
+                </>
+              ),
+            },
+            "itemCategory"
+          )}
+          Item Name:
+          {this.makeElement(
+            "input",
+            { type: "text", value: this.state.itemName },
+            "itemName"
+          )}
+          <input type="submit" value="Submit" />
+        </form>
+      </td>
     );
   }
 
