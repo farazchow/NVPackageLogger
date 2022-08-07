@@ -1,13 +1,13 @@
 import { Schema, model } from "mongoose";
 
 interface IResident {
-  studentId: String;
-  resident: String;
-  room: String;
-  year: String;
-  homeAddress: String;
-  forwardingAddress: String;
-  date: String;
+  studentId: string;
+  resident: string;
+  room: string;
+  year: string;
+  homeAddress: string;
+  forwardingAddress: string;
+  date: string;
   checkedIn: Boolean;
 }
 

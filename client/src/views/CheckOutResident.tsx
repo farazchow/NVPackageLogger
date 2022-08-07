@@ -3,6 +3,7 @@ import React, {
   SyntheticEvent,
   useEffect,
   useState,
+  Component,
 } from "react";
 import { get, post } from "../../utilities";
 import Row from "react-bootstrap/Row";
@@ -14,7 +15,7 @@ import { IResident } from "../../../server/models/resident";
 export const CheckOutResident: FunctionComponent = () => {
   return (
     <>
-      <GetUpdateForm />
+      {/* <GetUpdateForm /> */}
       <ResidentTable />
     </>
   );
@@ -25,23 +26,46 @@ type State = {
 };
 
 interface ResidentTableState {
-  data: IResident[];
+  allResidents: IResident[];
+  filteredResidents: IResident[];
 }
 
 class ResidentTable extends React.Component<{}, ResidentTableState> {
   override state = {
-    data: [],
+    allResidents: [],
+    filteredResidents: [],
   };
 
   override componentDidMount() {
     get("/api/resident/getResidents", { checkedIn: true }).then(
-      (residents: any) => this.setState({ data: residents })
+      (residents: any) => {
+        this.setState({
+          allResidents: residents,
+          filteredResidents: residents,
+        });
+      }
     );
+  }
+
+  filterData(value: string) {
+    return this.setState({
+      filteredResidents: this.state.allResidents.filter((data: IResident) =>
+        data.resident.startsWith(value)
+      ),
+    });
   }
 
   override render() {
     return (
       <>
+        <h3> Search Resident Name </h3>
+        <input
+          type="text"
+          onChange={(event: SyntheticEvent) =>
+            this.filterData((event.target as HTMLInputElement).value)
+          }
+        />
+
         <Row>
           <Col>
             <Card className="mb-4">
@@ -65,19 +89,23 @@ class ResidentTable extends React.Component<{}, ResidentTableState> {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.data ? (
-                      this.state.data.map((rsdnt: any, key: number) => {
-                        return (
-                          <tr key={key}>
-                            <td>{rsdnt.studentId}</td>
-                            <td>
-                              <a href={`view/${rsdnt._id}`}>{rsdnt.resident}</a>
-                            </td>
-                            <td>{rsdnt.room}</td>
-                            <td>{rsdnt.year}</td>
-                          </tr>
-                        );
-                      })
+                    {this.state.filteredResidents ? (
+                      this.state.filteredResidents.map(
+                        (rsdnt: any, key: number) => {
+                          return (
+                            <tr key={key}>
+                              <td>{rsdnt.studentId}</td>
+                              <td>
+                                <a href={`view/${rsdnt._id}`}>
+                                  {rsdnt.resident}
+                                </a>
+                              </td>
+                              <td>{rsdnt.room}</td>
+                              <td>{rsdnt.year}</td>
+                            </tr>
+                          );
+                        }
+                      )
                     ) : (
                       <tr>
                         <td align={"center"}>No data available</td>
@@ -94,41 +122,37 @@ class ResidentTable extends React.Component<{}, ResidentTableState> {
   }
 }
 
-class GetUpdateForm extends React.Component<{}, State> {
-  override state = {
-    studentId: "",
-  };
-  override render() {
-    return (
-      <>
-        <br></br>
-        <div>
-          <form
-            onSubmit={(e: React.SyntheticEvent) => {
-              e.preventDefault();
-              const target = e.target as typeof e.target & {
-                studentId: { value: string };
-              };
-              this.state.studentId = target.studentId.value;
+// class GetUpdateForm extends React.Component<{}, State> {
+//   // override state = {
+//   //   studentId: "",
+//   // };
 
-              post("/api/resident/putResident", { ...this.state }).then(
-                (res) => {
-                  console.log("Put!", res);
-                }
-              );
+//   constructor(props: { form: Component }) {
+//     super(props);
+//   }
 
-              console.log("submitted", this.state.studentId);
-            }}
-          >
-            <p>
-              <label>
-                MIT ID: <input type="text" name="studentId" />
-              </label>
-            </p>
-            <input type="submit" value="Submit" />
-          </form>
-        </div>
-      </>
-    );
-  }
-}
+//   override render() {
+//     return (
+//       <>
+//         <br></br>
+//         <div>
+//           <form>
+//             <p>
+//               <label>
+//                 MIT ID:{" "}
+//                 <input
+//                   type="text"
+//                   name="studentId"
+//                   onChange={(event: Event) => {
+//                     this.props.form.setState();
+//                   }}
+//                 />
+//               </label>
+//             </p>
+//             <input type="submit" value="Submit" />
+//           </form>
+//         </div>
+//       </>
+//     );
+//   }
+// }

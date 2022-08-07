@@ -134,6 +134,7 @@ class CheckInOutInputForm extends React.Component<{}, State> {
                   this.state.date,
                   this.state.checkedIn
                 );
+                document.location.reload();
               } else {
                 window.alert("Not all Fields Filled");
               }
