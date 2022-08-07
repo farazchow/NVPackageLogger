@@ -5,14 +5,15 @@ import Login from "./src/components/Login";
 import { UserInterface } from "../server/models/user";
 import { Routes, Route } from "react-router-dom";
 
-import NotFound from "./src/pages/NotFound";
-import Unauthorized from "./src/pages/Unauthorizated";
-import Home from "./src/pages/Home";
+import NotFound from "./src/views/NotFound";
+import Unauthorized from "./src/views/Unauthorizated";
+import Home from "./src/views/Home";
 import LogPackages from "./src/views/LogPackages";
-import LendDesk from "./src/views/LendDesk";
-import { CheckInOut } from "./src/views/Resident";
-
-// require("react-bootstrap/lib/NavbarHeader");
+import LendDeskItems from "./src/views/LendDeskItems";
+import { CheckInResident } from "./src/views/CheckInResident";
+import { CheckOutResident } from "./src/views/CheckOutResident";
+import { SingleResidentView } from "./src/views/SingleResident";
+import { DailyNotes } from "./src/views/Notes";
 
 const App: FunctionComponent = () => {
   /*
@@ -43,14 +44,17 @@ const App: FunctionComponent = () => {
 
         <Route path="/package" element={<LogPackages />} />
 
-        <Route path="/lend/items" element={<LendDesk />} />
+        <Route path="/lend/items" element={<LendDeskItems />} />
         <Route path="resident">
-          <Route path="in" element={<CheckInOut />} />
-          <Route path="out" element={<div>Check Out Resident</div>} />
+          <Route path="in" element={<CheckInResident />} />
+          <Route path="out" element={<CheckOutResident />} />
+          <Route path="view/:id" element={<SingleResidentView />} />
         </Route>
 
         <Route path="/desk/workers" element={<div>Desk Workers</div>} />
         <Route path="/lost/items" element={<div>Lost Items</div>} />
+
+        <Route path="/notes" element={<DailyNotes />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<div>Logout</div>} />
