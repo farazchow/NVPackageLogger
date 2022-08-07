@@ -16,7 +16,7 @@ import { SingleResidentView } from "./src/views/SingleResident";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
-export const App: FunctionComponent = () => {
+const App: FunctionComponent = () => {
   /*
    */
   const [data, setData] = useState<UserInterface[]>([]);
