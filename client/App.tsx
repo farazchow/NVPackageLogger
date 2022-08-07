@@ -14,7 +14,6 @@ import { CheckInResident } from "./src/views/CheckInResident";
 import { CheckOutResident } from "./src/views/CheckOutResident";
 import { SingleResidentView } from "./src/views/SingleResident";
 import { DailyNotes } from "./src/views/Notes";
-import { ForwardPackages } from "./src/views/ForwardPackages";
 
 const App: FunctionComponent = () => {
   /*
@@ -44,7 +43,6 @@ const App: FunctionComponent = () => {
         <Route path="/residents" element={<div>Residents</div>} />
 
         <Route path="/package" element={<LogPackages />} />
-        <Route path="/forward/package" element={<ForwardPackages />} />
 
         <Route path="/lend/items" element={<LendDeskItems />} />
         <Route path="resident">

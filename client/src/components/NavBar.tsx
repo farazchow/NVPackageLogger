@@ -8,7 +8,6 @@ const navigations = [
   { path: "/package/in", info: "Check In Package" },
   { path: "/package/out", info: "Deliver Package" },
   { path: "/lend/items", info: "Lend Desk Items" },
-  { path: "/forward/package", info: "Forward Package" },
   { path: "/resident/in", info: "Check In Resident" },
   { path: "/resident/out", info: "Check Out Resident" },
   { path: "/notes", info: "Notes" },

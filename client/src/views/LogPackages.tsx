@@ -1,4 +1,5 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
+import Popup from 'reactjs-popup';
 import { PackageInterface } from "../../../server/models/package";
 import { IResident } from "../../../server/models/resident";
 import Row from "react-bootstrap/Row";
@@ -7,6 +8,8 @@ import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { PackageInputForm } from "../components/PackageInputForm";
 import { get, post } from "../../utilities";
+import "../css/forwardPackage.css";
+
 
 export const LogPackages = () => {
   const [data, setPackageData] = useState<PackageInterface[]>([]);
@@ -45,6 +48,7 @@ export const LogPackages = () => {
       workerOut: "temporaryWorkerOut",
       createdAt: pckage.createdAt,
       deliveredAt: date,
+      forwarded: false,
     };
     post("/api/package/archivePackage", body).then((res) => {
       console.log("Package archived!");
@@ -68,6 +72,34 @@ export const LogPackages = () => {
     });
   }
 
+  async function forwardPackage(evt: SyntheticEvent, key: number) {
+    const pckage = data[key];
+    const date = new Date();
+
+    const body = {
+      shipping_id: pckage.shipping_id,
+      shipper: pckage.shipper,
+      location: pckage.location,
+      notes: pckage.notes,
+      recipient: pckage.recipient,
+      workerIn: pckage.workerIn,
+      workerOut: "temporaryWorkerOut",
+      createdAt: pckage.createdAt,
+      deliveredAt: date,
+      forwarded: true,
+    };
+    post("/api/package/archivePackage", body).then((res) => {
+      console.log("Package archived!");
+    });
+    post("/api/package/deletePackage", body).then((res) => {
+      console.log(`Package deleted from working db`);
+      // document.location.reload();
+      document.getElementById(`checkbox-${key}`)?.click();
+
+      setPackageData(data.filter((pckg) => pckg.createdAt !== body.createdAt));
+    });
+  }
+
   function onCheckboxClick(evt: SyntheticEvent, index: number) {
     if (checkedIndexes.has(index)) checkedIndexes.delete(index);
     else checkedIndexes.add(index);
@@ -83,7 +115,9 @@ export const LogPackages = () => {
     "Worker",
     "Notes",
     "Deliver Package",
+    "Forward Package",
   ];
+
 
   return (
     <>
@@ -159,6 +193,32 @@ export const LogPackages = () => {
                             >
                               Deliver
                             </button>
+                          </td>
+                          <td> 
+                          <Popup modal trigger={<button> Forward </button>}>
+                            <div>
+                                <form>
+                                  <h3>Forward Package</h3>
+                                  <p>
+                                    <label>
+                                      Note: <input type="text" name="forward-note" />
+                                    </label>
+                                  </p>
+                                  <button
+                                    type="button"
+                                    className="btn btn-dark btn-sm d-flex justify-content-center"
+                                    onClick={(evt) => {
+                                      document
+                                        .getElementById(`checkbox-${key}`)
+                                        ?.click();
+                                      forwardPackage(evt, key);
+                                    }}
+                                  >
+                                    Forward
+                                  </button>
+                                </form>
+                           </div>
+                          </Popup>
                           </td>
                         </tr>
                       );
