@@ -18,8 +18,6 @@ const Home = () => {
           </h1>
         </div>
 
-        <p className="lead">Contributors: !</p>
-
         <div className="userButtons">
           <Link to="/login">
             <button className="button-17">Login Here</button>
