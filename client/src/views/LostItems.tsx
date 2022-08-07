@@ -77,7 +77,7 @@ export function LostItems() {
                                 archiveLostItem(evt, key);
                               }}
                             >
-                              Archive
+                              Found!
                             </button>
                           </td>
                         </tr>
