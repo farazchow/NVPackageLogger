@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 import { post } from "../../utilities";
 import "../css/residentCheckIn.css";
 
@@ -67,6 +68,18 @@ type State = {
 };
 
 class CheckInOutInputForm extends React.Component<{}, State> {
+  isFormValid = () => {
+    console.log("IsValid Check");
+    console.log(this.state);
+    for (const val of Object.values(this.state)) {
+      console.log("val = ", val);
+      if (val == "") {
+        return false;
+      }
+    }
+    return true;
+  };
+
   override state = {
     studentId: "",
     resident: "",
@@ -87,7 +100,7 @@ class CheckInOutInputForm extends React.Component<{}, State> {
             onSubmit={(e: React.SyntheticEvent) => {
               e.preventDefault();
               const target = e.target as typeof e.target & {
-                studentId: { value: string };
+                id: { value: string };
                 resident: { value: string };
                 room: { value: string };
                 type: { value: string };
@@ -96,7 +109,7 @@ class CheckInOutInputForm extends React.Component<{}, State> {
                 forwardingAddress: { value: string };
                 date: { value: string };
               };
-              this.state.studentId = target.studentId.value;
+              this.state.studentId = target.id.value;
               this.state.resident = target.resident.value;
               this.state.room = target.room.value;
               this.state.year = target.year.value;
@@ -105,21 +118,26 @@ class CheckInOutInputForm extends React.Component<{}, State> {
               this.state.date = target.date.value;
               this.state.checkedIn = true;
 
-              post("/api/resident/postResident", this.state).then((res) => {
-                console.log("Posted!");
-              });
+              if (this.isFormValid()) {
+                post("/api/resident/postResident", this.state).then((res) => {
+                  console.log("Posted!");
+                });
 
-              console.log(
-                "submitted %s %s %s",
-                this.state.studentId,
-                this.state.resident,
-                this.state.room,
-                this.state.year,
-                this.state.homeAddress,
-                this.state.forwardingAddress,
-                this.state.date,
-                this.state.checkedIn
-              );
+                console.log(
+                  "submitted %s %s %s",
+                  this.state.studentId,
+                  this.state.resident,
+                  this.state.room,
+                  this.state.year,
+                  this.state.homeAddress,
+                  this.state.forwardingAddress,
+                  this.state.date,
+                  this.state.checkedIn
+                );
+                document.location.reload();
+              } else {
+                window.alert("Not all Fields Filled");
+              }
             }}
           >
             <p className="title">Check-in/Check-out Form</p>

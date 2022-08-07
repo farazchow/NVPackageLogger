@@ -26,8 +26,11 @@ export async function get(
   endpoint: RequestInfo | URL,
   params: Record<any, any> = {}
 ): Promise<JSON> {
-  return fetch(endpoint + new URLSearchParams(params).toString())
-    .then(convertToJSON)
+  return fetch(endpoint + "?" + new URLSearchParams(params).toString())
+    .then((res) => {
+      console.log("res is", res);
+      return convertToJSON(res);
+    })
     .catch((error): never => {
       logErrors(error);
       throw `GET request to ${endpoint} failed with error:\n${error}`;
@@ -58,3 +61,14 @@ export async function getUser() {
 }
 
 // Other functions?
+export function deconstruct(obj: Object) {
+  const result = [];
+  type ObjectKey = keyof typeof obj;
+
+  for (const key of Object.keys(obj)) {
+    const MyVar = key as ObjectKey;
+    console.log(key, ":", obj[MyVar]);
+    result.push(<div>{`${key} : ${obj[MyVar]}\n`} </div>);
+  }
+  return result;
+}
