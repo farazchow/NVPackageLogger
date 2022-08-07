@@ -24,7 +24,7 @@ const config: Configuration = {
     rules: [
       {
         test: /\.(ts|js)x?$/i,
-        // exclude: /node_modules/,
+        exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
@@ -42,12 +42,6 @@ const config: Configuration = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
-     
-      {
-        test: /\.(gif|svg|jpg|png)$/,
-        loader: "file-loader",
-      }
-      
     ],
   },
   resolve: {
@@ -71,9 +65,8 @@ const config: Configuration = {
     historyApiFallback: true,
     port: process.env.WEBPORT,
     open: false,
-    // hot: true, automatically applies
     proxy: {
-      "/api": "http://localhost:3000",
+      "/api": `http://localhost:${process.env.PORT}`,
     },
   },
 };

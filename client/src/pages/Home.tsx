@@ -34,8 +34,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div>
-        {/* <svg
+      {/* <svg
           className="footer"
           version="1.0"
           xmlns="http://www.w3.org/2000/svg"
@@ -1422,7 +1421,6 @@ l28 1 -30 11 c-16 7 -100 47 -185 89 -85 42 -186 88 -225 103 -81 32 -602 292
             />
           </g>
         </svg> */}
-      </div>
       {/* <img
         className="nvOutline"
         src={require("../images/big_outline.png").default}

@@ -1,23 +1,13 @@
-import { useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import { post } from "../../utilities";
 import "../css/login.css";
 
-const Login = () => {
-  const [signup, setSignup] = useState(false);
+interface Props {
+  props?: any;
+}
 
-  useEffect(() => {}, [signup]);
-
-  const handleSubmit = async () => {
-    return await (signup
-      ? post("/signup", {
-          email: "test@gmail.com",
-          username: "username here!",
-        })
-      : post("/login", {
-          email: "test@gmail.com",
-          username: "username here!",
-        }));
-  };
+const Login = (props: Props): ReactElement => {
+  const [login, setLogin] = useState(true);
 
   return (
     <>
@@ -27,7 +17,7 @@ const Login = () => {
           <br />
 
           <form
-            action={`/api/auth/${signup ? "signup" : "login"}`}
+            action={`/api/auth/${login ? "login" : "signup"}`}
             method="post"
           >
             <div className="form-group">
@@ -37,7 +27,7 @@ const Login = () => {
                 id="fname"
                 placeholder="First Name"
                 name="firstName"
-                style={{ display: signup ? "block" : "none" }}
+                style={{ display: login ? "none" : "block" }}
               ></input>
               <input
                 type="text"
@@ -45,7 +35,7 @@ const Login = () => {
                 id="lname"
                 placeholder="Last Name"
                 name="lastName"
-                style={{ display: signup ? "block" : "none" }}
+                style={{ display: !login ? "block" : "none" }}
               ></input>
 
               <input
@@ -65,12 +55,7 @@ const Login = () => {
               ></input>
             </div>
             <br />
-            <button
-              type="submit"
-              id="submit-btn"
-              className="btn submit"
-              onSubmit={handleSubmit}
-            >
+            <button type="submit" id="submit-btn" className="btn submit">
               Submit
             </button>
           </form>
@@ -78,11 +63,11 @@ const Login = () => {
         <div className="flex container">
           <span
             onClick={() => {
-              setSignup(!signup);
+              setLogin(!login);
             }}
             className="signup"
           >
-            Signup
+            {login ? "Signup" : "Login"}
           </span>
           <span className="forgot-pswd">Forgot Password</span>
         </div>

@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { ACCESS } from "../routes/auth";
 
-export interface UserInterface {
+interface UserInterface {
   firstName: string;
   lastName: string;
   email: string;
@@ -25,4 +25,4 @@ const UserSchema = new Schema<UserInterface>({
 
 const User = model<UserInterface>("User", UserSchema, "users");
 
-export { User, UserSchema };
+export { User, UserSchema, type UserInterface };

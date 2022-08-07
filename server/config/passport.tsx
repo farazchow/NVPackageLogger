@@ -50,8 +50,9 @@ passport.use(
           user.password,
           function (err: Error, res: boolean) {
             if (err) return done(err);
-            if (res === false)
+            if (res === false) {
               return done(null, false, { message: "Incorrect password." });
+            }
 
             return done(null, user);
           }

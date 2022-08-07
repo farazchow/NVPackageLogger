@@ -1,22 +1,4 @@
-.mainLogo {
-  /* font-family: "Arial";
-  color: white;
-  text-align: center;
-  font-size: 20;
-  background-color: rgb(0, 0, 0); 
-  background-color: rgba(0, 0, 0, 0); Black w/opacity/see-through */
-  /* color: black;
-  font-weight: bold; */
-  /* border: 5px solid #f1f1f1;
-  border-radius: 20px; */
-  /* position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  width: 80%;
-  padding: 20px;
-  text-align: center; */
+.information1 {
   width: 600px;
   height: auto;
   padding: 20px 30px;
@@ -27,23 +9,14 @@
   position: relative;
   text-align: center;
   margin-top: 100px;
-  animation: mainLogo 1s ease-out;
+  animation: mainLogoLeft 1s ease-in;
   overflow: hidden;
   position: relative;
   z-index: 2;
 }
 
-@keyframes mainLogo {
-  0% {
-    transform: translateX(200%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-.footer {
-  /* width: 600px;
+.informationTitle {
+  width: 600px;
   height: auto;
   padding: 20px 30px;
   background-color: white;
@@ -52,59 +25,78 @@
   margin: auto;
   position: relative;
   text-align: center;
-  margin-top: 100px; */
+  margin-top: 100px;
+  animation: mainLogoLeft 1s ease-out;
+  overflow: hidden;
   position: relative;
+  z-index: 2;
+  font-family: Apple Chancery;
 }
 
-.mainText {
-  color: black;
-  font-family: Marker Felt;
+.information2 {
+  width: 600px;
+  height: auto;
+  padding: 20px 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 #000;
+  margin: auto;
+  position: relative;
+  text-align: center;
+  margin-top: 100px;
+  animation: mainLogoRight 1s ease-in;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
 }
 
-.boxIcon {
-  width: 60px;
-}
-.container {
-  display: flexbox;
+.information2 p {
+  font-family: "Courier New", Courier, monospace;
 }
 
-body {
-  /* background-image: linear-gradient(180deg, #eb6734, #d14e26, #a83816, #a83f16); */
-  background-image: linear-gradient(
-    130deg,
-    #fc4903,
-    #d1500a,
-    #e36019,
-    #d1320a,
-    #e36d19,
-    #e38119,
-    #b54504
-  );
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-}
-
-@keyframes gradient {
+@keyframes mainLogoLeft {
   0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
+    transform: translateX(-200%);
   }
   100% {
-    background-position: 0% 50%;
+    transform: translateX(0%);
   }
+}
+
+@keyframes mainLogoRight {
+  0% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.title {
+  color: black;
+  font-family: Apple Chancery;
+  font-size: 40px;
+}
+
+form {
+  width: 600px;
+  height: auto;
+  padding: 20px 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 #000;
+  margin: auto;
+  position: relative;
+  text-align: center;
+  margin-top: 100px;
+  animation: mainLogoRight 1s ease-in;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
 }
 
 .userButtons {
   display: inline;
-}
-.outline {
-  width: 1000px;
-  height: 1000px;
-  line-height: 175px;
-  text-align: center;
-  vertical-align: bottom;
 }
 
 .button-17 {
@@ -184,59 +176,62 @@ body {
     rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
 }
 
-svg {
-  position: absolute;
-  margin-left: -150px;
-  bottom: 0px;
-  left: 50%;
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-.outline {
-  stroke: white;
-  stroke-width: 20px;
-  stroke-dashoffset: -2000;
-  stroke-dasharray: 2000;
-  animation-name: outline;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate-reverse;
-}
-
-/* @keyframes outline {
-  0% {
-    stroke-dashoffset: -2000;
-    stroke: #559f93;
-  }
-  30% {
-    stroke: #3b9a63;
-  }
-  50% {
-    stroke: #889100;
-  }
-  70% {
-    stroke: #dfb536;
-  }
-  100% {
-    stroke-dashoffset: 0;
-    stroke: white;
-  }
-} */
-
-.footer {
-  /* position: fixed;
-  left: 0;
-  bottom: 0;
+input {
   width: 100%;
-  background-color: red;
-  color: white;
-  text-align: center; */
-  margin-top: 50px;
+  margin-bottom: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 13px;
+  color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.2),
+    0 1px 1px rgba(255, 255, 255, 0.2);
+  -webkit-transition: box-shadow 0.5s ease;
+  -moz-transition: box-shadow 0.5s ease;
+  -o-transition: box-shadow 0.5s ease;
+  -ms-transition: box-shadow 0.5s ease;
+  transition: box-shadow 0.5s ease;
+}
+input:focus {
+  box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.4),
+    0 1px 1px rgba(255, 255, 255, 0.2);
 }
 
-.nvOutline {
-  width: 100%;
-  height: auto;
+label {
+  display: inline;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.bgImage {
   position: fixed;
-  bottom: 0px;
-  z-index: 1;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+}
+
+.bgImage svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  min-width: 50%;
+  min-height: 50%;
+}
+
+.bottomPadding {
+  padding-bottom: 50px;
 }
