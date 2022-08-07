@@ -78,7 +78,7 @@
   font-size: 40px;
 }
 
-form {
+/* form {
   width: 600px;
   height: auto;
   padding: 20px 30px;
@@ -93,7 +93,7 @@ form {
   overflow: hidden;
   position: relative;
   z-index: 2;
-}
+} */
 
 .userButtons {
   display: inline;
@@ -184,7 +184,7 @@ form {
   box-sizing: border-box;
 }
 
-input {
+/* input {
   width: 100%;
   margin-bottom: 10px;
   background: rgba(0, 0, 0, 0.3);
@@ -211,7 +211,7 @@ input:focus {
 label {
   display: inline;
   font-family: "Courier New", Courier, monospace;
-}
+} */
 
 .bgImage {
   position: fixed;
