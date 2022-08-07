@@ -7,7 +7,7 @@ import "../css/universal.css";
 const Home = () => {
   return (
     <>
-      <div className="mainLogo">
+      <div className="mainTitle">
         <div className="container">
           <h1 className="mainText">
             New Vassar Front Desk
