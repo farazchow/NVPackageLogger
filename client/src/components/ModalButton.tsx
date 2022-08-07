@@ -1,21 +1,41 @@
-import React, { useState } from "react";
+import React, { Component, ReactElement, useState } from "react";
 import Modal from "react-modal";
 import "../css/addbutton.css";
 
-export const ModalButton = (form: React.ReactElement, title: string) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+interface ModalProps {
+  form: React.ReactElement;
+  title: string;
+}
 
-  return (
-    <div className="modalButton">
-      <button onClick={() => setModalIsOpen(true)}>{title}</button>
-      {/* <Modal isOpen={modalIsOpen} onRequestClose = {()=> setModalIsOpen(false)}> */}
-      <Modal isOpen={modalIsOpen} ariaHideApp={false}>
-        <h2>{title}</h2>
-        {form}
-        <div>
-          <button onClick={() => setModalIsOpen(false)}>Close</button>
-        </div>
-      </Modal>
-    </div>
-  );
-};
+interface ModalState {
+  modalIsOpen: boolean;
+}
+
+export class ModalButton extends Component<ModalProps, ModalState> {
+  constructor(props: ModalProps) {
+    super(props);
+    this.state = {
+      modalIsOpen: false,
+    };
+  }
+
+  override render() {
+    return (
+      <div className="modalButton">
+        <button onClick={() => this.setState({ modalIsOpen: true })}>
+          {this.props.title}
+        </button>
+
+        <Modal isOpen={this.state.modalIsOpen} ariaHideApp={false}>
+          <h2>{this.props.title}</h2>
+          {this.props.form}
+          <div>
+            <button onClick={() => this.setState({ modalIsOpen: false })}>
+              Close
+            </button>
+          </div>
+        </Modal>
+      </div>
+    );
+  }
+}

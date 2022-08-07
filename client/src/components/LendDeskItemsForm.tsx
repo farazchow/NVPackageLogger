@@ -51,8 +51,7 @@ export class LendDeskItemsForm extends Component<
           e.preventDefault();
 
           if (!this.isValidated()) {
-            alert("Please select a resident and an item!!");
-            return;
+            return alert("Please select a resident and an item!!");
           }
 
           post("/api/deskItem/lendItem", this.state)
@@ -72,7 +71,6 @@ export class LendDeskItemsForm extends Component<
           "select",
           {
             value: this.state.resident,
-            // todo: fix this -- current being stored as resident (room#) not studentId
             children: (
               <>
                 <option></option>
