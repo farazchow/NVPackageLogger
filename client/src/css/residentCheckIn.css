@@ -9,10 +9,28 @@
   position: relative;
   text-align: center;
   margin-top: 100px;
+  animation: mainLogoLeft 1s ease-in;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+.informationTitle {
+  width: 600px;
+  height: auto;
+  padding: 20px 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 #000;
+  margin: auto;
+  position: relative;
+  text-align: center;
+  margin-top: 100px;
   animation: mainLogoLeft 1s ease-out;
   overflow: hidden;
   position: relative;
   z-index: 2;
+  font-family: Apple Chancery;
 }
 
 .information2 {
@@ -26,10 +44,14 @@
   position: relative;
   text-align: center;
   margin-top: 100px;
-  animation: mainLogoRight 1s ease-out;
+  animation: mainLogoRight 1s ease-in;
   overflow: hidden;
   position: relative;
   z-index: 2;
+}
+
+.information2 p {
+  font-family: "Courier New", Courier, monospace;
 }
 
 @keyframes mainLogoLeft {
@@ -67,7 +89,7 @@ form {
   position: relative;
   text-align: center;
   margin-top: 100px;
-  animation: mainLogoRight 1s ease-out;
+  animation: mainLogoRight 1s ease-in;
   overflow: hidden;
   position: relative;
   z-index: 2;
@@ -184,4 +206,32 @@ input {
 input:focus {
   box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.4),
     0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+label {
+  display: inline;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.bgImage {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+}
+
+.bgImage svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  min-width: 50%;
+  min-height: 50%;
+}
+
+.bottomPadding {
+  padding-bottom: 50px;
 }
