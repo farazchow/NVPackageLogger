@@ -32,11 +32,6 @@ router.get("/getResidents", (req: Request, res: Response) => {
       res.send(resident);
     }
   );
-
-  // Resident.find().then((resident: typeof Resident[]) => {
-  //   console.log("resident found is", resident);
-  //   res.send(resident);
-  // });
 });
 
 router.get("/getResidentById", (req: Request, res: Response) => {
@@ -99,7 +94,14 @@ router.post("/editResident", (req: Request, res: Response) => {
         forwardingAddress: req.body.forwardingAddress,
       },
     }
-  );
+  )
+    .then((resi: any) => {
+      res.send(resi);
+    })
+    .catch((err: any) => {
+      console.log("error putting resident: ", err);
+      res.status(500).send({ message: "unkown error" });
+    });
 });
 
 module.exports = router;

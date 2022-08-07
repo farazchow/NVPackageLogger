@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import CheckInOutForm from "../components/CheckInOutForm";
+import { ModalFormOptions } from "../components/CheckInOutForm";
 import "../css/residentCheckIn.css";
 
 export const CheckInResident: FunctionComponent = () => {
@@ -54,7 +55,7 @@ export const CheckInResident: FunctionComponent = () => {
         </div>
       </section>
 
-      <CheckInOutForm checkingIn={true} resident={null} />
+      <CheckInOutForm updateStatus={ModalFormOptions.CHECKIN} resident={null} />
       <br></br>
     </>
   );
