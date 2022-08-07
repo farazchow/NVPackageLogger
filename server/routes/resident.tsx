@@ -19,6 +19,7 @@ router.get("/", (req: Request, res: Response) => {
 router.get("/getResident", (req: Request, res: Response) => {
   console.log("Sending resident data back to you!");
   Resident.find().then((resi: any) => {
+    console.log('residents to send are', resi)
     res.send(resi);
   });
 });

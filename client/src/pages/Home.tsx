@@ -10,7 +10,7 @@ const Home = () => {
             New Vassar Front Desk
             <img
               className="boxIcon"
-              src={require("../images/box.svg").default}
+              // src={require("../images/box.svg").default}
             />
           </h1>
         </div>

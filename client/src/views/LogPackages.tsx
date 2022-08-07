@@ -6,22 +6,26 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { PackageInputForm } from "../components/PackageInputForm";
-import { post } from "../../utilities";
+import { get, post } from "../../utilities";
 
-export function LogPackages() {
+export const LogPackages = () => {
   const [data, setPackageData] = useState<PackageInterface[]>([]);
   const [resData, setResidentData] = useState<IResident[]>([]);
-  var checkedIndexes = new Set<number>();
+  const checkedIndexes = new Set<number>();
 
   // data fetching
   useEffect(() => {
     async function getData() {
-      fetch("/api/package/getPackages")
-        .then((res) => res.json())
-        .then((data) => setPackageData(data));
-      fetch("/api/resident/getResident").then((res) =>
-        res.json().then((resData) => setResidentData(resData))
-      );
+      await Promise.all([
+        get("/api/package/getPackages").then((pckgs: any) =>
+          setPackageData(pckgs)
+        ),
+        get("/api/resident/getResident").then((residents: any) => {
+          console.log("residents are", residents);
+          setResidentData(residents);
+        }),
+      ]);
+
       console.log(resData);
     }
     getData();
@@ -47,18 +51,20 @@ export function LogPackages() {
     });
     post("/api/package/deletePackage", body).then((res) => {
       console.log(`Package deleted from working db`);
-      document.location.reload();
+      // document.location.reload();
+      document.getElementById(`checkbox-${key}`)?.click();
+
+      setPackageData(data.filter((pckg) => pckg.createdAt !== body.createdAt));
     });
   }
 
   async function deliverMany(evt: SyntheticEvent) {
     if (checkedIndexes.size === 0)
-      window.alert(
+      alert(
         `There are no checked boxes you idiot. You buffoon. Who raised you? Do you think I exist just for you to laugh at? Well I don't. I have a soul. A family. And you spit on my kindness by making me deliver zero packages for your own amusement. Rethink your life before you ask me to do anything for you again.`
       );
     checkedIndexes.forEach((index) => {
       deliverOne(evt, index);
-      checkedIndexes.delete(index);
     });
   }
 
@@ -66,6 +72,18 @@ export function LogPackages() {
     if (checkedIndexes.has(index)) checkedIndexes.delete(index);
     else checkedIndexes.add(index);
   }
+
+  const headers = [
+    "Select",
+    "Recipient",
+    "Shipper",
+    "Shipping ID",
+    "Location",
+    "Time",
+    "Worker",
+    "Notes",
+    "Deliver Package",
+  ];
 
   return (
     <>
@@ -91,33 +109,16 @@ export function LogPackages() {
               <table data-size="small" className="table mb-0">
                 <thead className="bg-light">
                   <tr>
-                    <th scope="col" className="border-0">
-                      Select
-                    </th>
-                    <th scope="col" className="border-0">
-                      Recipient
-                    </th>
-                    <th scope="col" className="border-0">
-                      Shipper
-                    </th>
-                    <th scope="col" className="border-0">
-                      Shipping ID
-                    </th>
-                    <th scope="col" className="border-0">
-                      Location
-                    </th>
-                    <th scope="col" className="border-0">
-                      Time
-                    </th>
-                    <th scope="col" className="border-0">
-                      Worker
-                    </th>
-                    <th scope="col" className="border-0">
-                      Notes
-                    </th>
-                    <th scope="col" className="border-end">
-                      Deliver Package
-                    </th>
+                    {headers.map((header, ind) => (
+                      <th
+                        scope="col"
+                        className={
+                          ind !== header.length ? "border-0" : "border-end"
+                        }
+                      >
+                        {header}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
@@ -131,9 +132,12 @@ export function LogPackages() {
                               type="checkbox"
                               id={`checkbox-${key}`}
                               onClick={(evt) => {
+                                document
+                                  .getElementById(`checkbox-${key}`)
+                                  ?.click();
                                 onCheckboxClick(evt, key);
                               }}
-                            />{" "}
+                            />
                           </td>
                           <td>{pckage.recipient}</td>
                           <td>{pckage.shipper}</td>
@@ -147,6 +151,9 @@ export function LogPackages() {
                               type="button"
                               className="btn btn-dark btn-sm d-flex justify-content-center"
                               onClick={(evt) => {
+                                document
+                                  .getElementById(`checkbox-${key}`)
+                                  ?.click();
                                 deliverOne(evt, key);
                               }}
                             >
@@ -169,6 +176,6 @@ export function LogPackages() {
       </Row>
     </>
   );
-}
+};
 
 export default LogPackages;
