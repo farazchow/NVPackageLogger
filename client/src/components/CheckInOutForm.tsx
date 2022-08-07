@@ -15,8 +15,14 @@ type State = {
   date: string;
 };
 
+export enum ModalFormOptions {
+  CHECKIN,
+  CHECKOUT,
+  EDIT,
+}
+
 type Props = {
-  checkingIn: boolean;
+  updateStatus: ModalFormOptions;
   resident: IResident | null;
 };
 
@@ -24,29 +30,33 @@ class CheckInOutForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.props.checkingIn
-      ? (this.state = {
-          studentId: "",
-          resident: "",
-          room: "",
-          year: "",
-          homeAddress: "",
-          forwardingAddress: "",
-          checkedIn: true,
-          date: "",
-        })
-      : this.props.resident
-      ? (this.state = {
-          studentId: this.props.resident.studentId,
-          resident: this.props.resident.resident,
-          room: this.props.resident.room,
-          year: this.props.resident.year,
-          homeAddress: this.props.resident.homeAddress,
-          forwardingAddress: this.props.resident.forwardingAddress,
-          checkedIn: this.props.resident.checkedIn,
-          date: "",
-        })
-      : console.log("must give resident if checking out!");
+    this.state = {
+      studentId: "",
+      resident: "",
+      room: "",
+      year: "",
+      homeAddress: "",
+      forwardingAddress: "",
+      checkedIn: true,
+      date: "",
+    };
+  }
+
+  override componentDidMount() {
+    if (this.props.updateStatus === ModalFormOptions.CHECKIN) {
+      return;
+    }
+
+    this.setState({
+      studentId: this.props.resident?.studentId!,
+      resident: this.props.resident?.resident!,
+      room: this.props.resident?.room!,
+      year: this.props.resident?.year!,
+      homeAddress: this.props.resident?.homeAddress!,
+      forwardingAddress: this.props.resident?.forwardingAddress!,
+      checkedIn: this.props.resident?.checkedIn!,
+      date: "",
+    });
   }
 
   isFormValid = () => {
@@ -69,7 +79,7 @@ class CheckInOutForm extends React.Component<Props, State> {
           <form
             onSubmit={(e: React.SyntheticEvent) => {
               e.preventDefault();
-              if (this.props.checkingIn) {
+              if (this.props.updateStatus === ModalFormOptions.CHECKIN) {
                 if (this.isFormValid()) {
                   post("/api/resident/postResident", this.state).then((res) => {
                     console.log("Posted!");
@@ -78,7 +88,19 @@ class CheckInOutForm extends React.Component<Props, State> {
                 } else {
                   window.alert("Not all Fields Filled");
                 }
-              } else {
+              } else if (this.props.updateStatus === ModalFormOptions.EDIT) {
+                if (this.isFormValid()) {
+                  post("/api/resident/editResident", this.state).then((res) => {
+                    console.log(this.state);
+                    console.log("Posted!");
+                  });
+                  // document.location.reload();
+                } else {
+                  window.alert("Not all Fields Filled");
+                }
+              } else if (
+                this.props.updateStatus === ModalFormOptions.CHECKOUT
+              ) {
                 post("/api/resident/checkoutResident", this.state).then(
                   (res) => {
                     console.log("checked out!");
@@ -87,7 +109,7 @@ class CheckInOutForm extends React.Component<Props, State> {
               }
             }}
           >
-            <p className="title">Check-in/Check-out Form</p>
+            <p className="title">Resident Information Form</p>
             <p>
               <label>
                 MIT ID:
@@ -95,11 +117,16 @@ class CheckInOutForm extends React.Component<Props, State> {
                   type="text"
                   name="id"
                   placeholder={
-                    !this.props.checkingIn && this.props.resident !== null
+                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
+                    this.props.resident !== null
                       ? this.props.resident.studentId
                       : "9-digit number"
                   }
-                  disabled={this.props.checkingIn ? false : true}
+                  disabled={
+                    this.props.updateStatus !== ModalFormOptions.CHECKIN
+                      ? true
+                      : false
+                  }
                   onChange={(event: any) =>
                     this.setState({
                       studentId: (event.target as HTMLTextAreaElement).value,
@@ -116,11 +143,16 @@ class CheckInOutForm extends React.Component<Props, State> {
                   type="text"
                   name="resident"
                   placeholder={
-                    !this.props.checkingIn && this.props.resident !== null
+                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
+                    this.props.resident !== null
                       ? this.props.resident.resident
                       : "First Name Last Name"
                   }
-                  disabled={this.props.checkingIn ? false : true}
+                  disabled={
+                    this.props.updateStatus === ModalFormOptions.CHECKOUT
+                      ? true
+                      : false
+                  }
                   onChange={(event: any) =>
                     this.setState({
                       resident: (event.target as HTMLTextAreaElement).value,
@@ -137,11 +169,16 @@ class CheckInOutForm extends React.Component<Props, State> {
                   type="text"
                   name="room"
                   placeholder={
-                    !this.props.checkingIn && this.props.resident !== null
+                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
+                    this.props.resident !== null
                       ? this.props.resident.room
                       : "W46-####"
                   }
-                  disabled={this.props.checkingIn ? false : true}
+                  disabled={
+                    this.props.updateStatus === ModalFormOptions.CHECKOUT
+                      ? true
+                      : false
+                  }
                   onChange={(event: any) =>
                     this.setState({
                       room: (event.target as HTMLTextAreaElement).value,
@@ -158,11 +195,16 @@ class CheckInOutForm extends React.Component<Props, State> {
                   type="text"
                   name="year"
                   placeholder={
-                    !this.props.checkingIn && this.props.resident !== null
+                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
+                    this.props.resident !== null
                       ? this.props.resident.year
                       : "YYYY"
                   }
-                  disabled={this.props.checkingIn ? false : true}
+                  disabled={
+                    this.props.updateStatus === ModalFormOptions.CHECKOUT
+                      ? true
+                      : false
+                  }
                   onChange={(event: any) =>
                     this.setState({
                       year: (event.target as HTMLTextAreaElement).value,
@@ -179,11 +221,16 @@ class CheckInOutForm extends React.Component<Props, State> {
                   type="text"
                   name="homeAddress"
                   placeholder={
-                    !this.props.checkingIn && this.props.resident !== null
+                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
+                    this.props.resident !== null
                       ? this.props.resident.homeAddress
                       : "Street, City, State, Zip Code"
                   }
-                  disabled={this.props.checkingIn ? false : true}
+                  disabled={
+                    this.props.updateStatus === ModalFormOptions.CHECKOUT
+                      ? true
+                      : false
+                  }
                   onChange={(event: any) =>
                     this.setState({
                       homeAddress: (event.target as HTMLTextAreaElement).value,
@@ -200,7 +247,8 @@ class CheckInOutForm extends React.Component<Props, State> {
                   type="text"
                   name="forwardingAddress"
                   placeholder={
-                    !this.props.checkingIn && this.props.resident !== null
+                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
+                    this.props.resident !== null
                       ? this.props.resident.forwardingAddress
                       : "Street, City, State, Zip Code"
                   }
@@ -208,22 +256,6 @@ class CheckInOutForm extends React.Component<Props, State> {
                     this.setState({
                       forwardingAddress: (event.target as HTMLTextAreaElement)
                         .value,
-                    })
-                  }
-                />
-              </label>
-            </p>
-
-            <p>
-              <label>
-                Date:{" "}
-                <input
-                  type="text"
-                  name="date"
-                  placeholder={"MM/DD/YYYY"}
-                  onChange={(event: any) =>
-                    this.setState({
-                      date: (event.target as HTMLTextAreaElement).value,
                     })
                   }
                 />

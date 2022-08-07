@@ -7,6 +7,7 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 import CheckInOutForm from "../components/CheckInOutForm";
 import { IResident } from "../../../server/models/resident";
 import { ModalButton } from "../components/Modal";
+import { ModalFormOptions } from "../components/CheckInOutForm";
 
 export const CheckOutResident: FunctionComponent = () => {
   return (
@@ -24,6 +25,15 @@ type State = {
 interface ResidentTableState {
   allResidents: IResident[];
   filteredResidents: IResident[];
+}
+
+enum SelectOptions {
+  STUDENT = "resident",
+  STUDENTID = "studentId",
+  ROOM = "room",
+  YEAR = "year",
+  DATEIN = "dateIn",
+  DATEOUT = "dateOut",
 }
 
 class ResidentTable extends React.Component<{}, ResidentTableState> {
@@ -47,11 +57,12 @@ class ResidentTable extends React.Component<{}, ResidentTableState> {
     );
   }
 
-  filterData(value: string) {
+  filterData(value: string, filterby: string) {
     console.log("in filter data", this.state.filteredResidents);
+
     return this.setState({
-      filteredResidents: this.state.allResidents.filter((data: IResident) =>
-        data.resident.startsWith(value)
+      filteredResidents: this.state.allResidents.filter((data: any) =>
+        data[filterby].toLowerCase().startsWith(value.toLowerCase())
       ),
     });
   }
@@ -60,10 +71,23 @@ class ResidentTable extends React.Component<{}, ResidentTableState> {
     return (
       <>
         <h3> Search Resident Name </h3>
+        <select id="selectOption">
+          {Object.values(SelectOptions).map((opt, key) => {
+            return (
+              <option value={opt as string} key={key}>
+                {opt as string}
+              </option>
+            );
+          })}
+        </select>
         <input
           type="text"
           onChange={(event: SyntheticEvent) =>
-            this.filterData((event.target as HTMLInputElement).value)
+            this.filterData(
+              (event.target as HTMLInputElement).value,
+              (document.getElementById("selectOption") as HTMLInputElement)
+                .value
+            )
           }
         />
 
@@ -106,7 +130,7 @@ class ResidentTable extends React.Component<{}, ResidentTableState> {
                               <ModalButton
                                 form={
                                   <CheckInOutForm
-                                    checkingIn={false}
+                                    updateStatus={ModalFormOptions.CHECKOUT}
                                     resident={rsdnt}
                                   />
                                 }
