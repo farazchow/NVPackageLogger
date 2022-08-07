@@ -1,15 +1,17 @@
-import React from "react";
+import {
+  createElement,
+  Component,
+  SyntheticEvent,
+  ElementType,
+  JSXElementConstructor,
+} from "react";
+import { IResident } from "../../../server/models/resident";
 
-import SelectInput from "./SelectInput";
 import { post } from "../../utilities";
 
-export function PackageInputForm() {
-  // TODO: dropdown for residents
-  // TODO: add worker when submitting (not to inputform)
-  return (
-    <form name="packageInputForm">
-      <label htmlFor="id">Tracking: </label>
-      <input type="text" id="id"></input>
+interface Notes {
+  value: string;
+}
 
 type packageState = {
   shipping_id: string;
@@ -174,13 +176,14 @@ export class PackageInputForm extends Component<Props, packageState> {
       ...props,
     };
 
-function handleValidation(document: Document) {
-  const allElements = ["id", "resident", "shipper", "location", "notes"];
-  for (var i = 0; i < allElements.length; i++) {
-    const el = allElements[i];
-    if (!document.body.contains(document.getElementById(el))) {
-      return false;
-    }
+    return createElement(T, propsWithListener);
   }
-  return true;
+
+  isValidated() {
+    return Object.values(this.state).every((state) => {
+      return state !== "";
+    });
+  }
 }
+
+export default PackageInputForm;

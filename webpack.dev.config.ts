@@ -42,12 +42,6 @@ const config: Configuration = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
-     
-      {
-        test: /\.(gif|svg|jpg|png)$/,
-        loader: "file-loader",
-      }
-      
     ],
   },
   resolve: {

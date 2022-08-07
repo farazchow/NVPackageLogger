@@ -27,10 +27,7 @@ export async function get(
   params: Record<any, any> = {}
 ): Promise<JSON> {
   return fetch(endpoint + "?" + new URLSearchParams(params).toString())
-    .then((res) => {
-      console.log("res is", res);
-      return convertToJSON(res);
-    })
+    .then(convertToJSON)
     .catch((error): never => {
       logErrors(error);
       throw `GET request to ${endpoint} failed with error:\n${error}`;

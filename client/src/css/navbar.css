@@ -1,4 +1,4 @@
-/* * {
+* {
   border-radius: 5px;
 }
 
@@ -24,9 +24,8 @@ main {
 .nav-item {
   background-color: #eeeeff;
   background-clip: content-box;
-} */
-
-.navBar {
+}
+*/ .navBar {
   position: relative;
   margin-top: 20px;
   box-shadow: 0 0 20px 0 #000;
