@@ -58,3 +58,14 @@ export async function getUser() {
 }
 
 // Other functions?
+export function deconstruct(obj: Object) {
+  const result = [];
+  type ObjectKey = keyof typeof obj;
+
+  for (const key of Object.keys(obj)) {
+    const MyVar = key as ObjectKey;
+    console.log(key, ":", obj[MyVar]);
+    result.push(<div>{`${key} : ${obj[MyVar]}\n`} </div>);
+  }
+  return result;
+}

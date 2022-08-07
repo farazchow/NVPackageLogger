@@ -1,7 +1,4 @@
 import { Application, NextFunction, Request, Response } from "express";
-import { Session } from "express-session";
-import { PassportStatic } from "passport";
-import { alignPropType } from "react-bootstrap/esm/types";
 
 // Packages
 const mongoose = require("mongoose");

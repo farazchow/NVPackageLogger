@@ -11,7 +11,8 @@ import Home from "./src/pages/Home";
 import LogPackages from "./src/views/LogPackages";
 import LendDeskItems from "./src/views/LendDeskItems";
 import { CheckInOut } from "./src/views/Resident";
-import Notes from "./src/views/Notes";
+import { CheckOutResident } from "./src/views/CheckOutResident";
+import { SingleResidentView } from "./src/views/SingleResident";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
@@ -47,7 +48,8 @@ export const App: FunctionComponent = () => {
         <Route path="/lend/items" element={<LendDeskItems />} />
         <Route path="resident">
           <Route path="in" element={<CheckInOut />} />
-          <Route path="out" element={<div>Check Out Resident</div>} />
+          <Route path="out" element={<CheckOutResident />} />
+          <Route path="view/:id" element={<SingleResidentView />} />
         </Route>
 
         <Route path="/desk/workers" element={<div>Desk Workers</div>} />
