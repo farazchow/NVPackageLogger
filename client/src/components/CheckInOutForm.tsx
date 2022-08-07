@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
 import { IResident } from "../../../server/models/resident";
 import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 import { post } from "../../utilities";
@@ -12,7 +17,7 @@ type FormState = {
   homeAddress: string;
   forwardingAddress: string;
   checkedIn: boolean;
-  date: string;
+  date: Date;
 };
 
 export enum ModalFormType {
@@ -32,15 +37,11 @@ const Form = (props: any, formType: number) => {
     homeAddress: "",
     forwardingAddress: "",
     checkedIn: true,
-    date: "",
+    date: new Date(0),
   });
 
   useEffect(() => {
-    console.log("here", formType);
-    if (props.formType === ModalFormType.CHECKIN) {
-      console.log("lkjaslfdkjasfdlkjlaskdjf");
-      return;
-    }
+    if (props.formType === ModalFormType.CHECKIN) return;
 
     setFormState({
       studentId: props?.studentId!,
@@ -50,25 +51,16 @@ const Form = (props: any, formType: number) => {
       homeAddress: props?.homeAddress!,
       forwardingAddress: props?.forwardingAddress!,
       checkedIn: props?.checkedIn!,
-      date: "",
+      date: formState.date,
     });
   }, []);
-
-  useEffect(() => {
-    console.log("formState changed", formState);
-    console.log("props", props, props.formType);
-  }, [formState]);
 
   function isFormValid() {
     console.log("IsValid Check");
     console.log(formState);
-    for (const val of Object.values(formState)) {
-      console.log("val = ", val);
-      if (val == "") {
-        return false;
-      }
-    }
-    return true;
+    return Object.values(formState).every((state) => {
+      return state !== "";
+    });
   }
 
   console.log("type is", formType, formType === ModalFormType.CHECKIN);
@@ -132,6 +124,13 @@ const Form = (props: any, formType: number) => {
     },
   ];
 
+  const updateFormState = (event: SyntheticEvent, key: any): void => {
+    setFormState((prevState) => ({
+      ...prevState,
+      [key]: (event.target as HTMLInputElement).value,
+    }));
+  };
+
   return (
     <>
       <br></br>
@@ -139,37 +138,43 @@ const Form = (props: any, formType: number) => {
         <form
           onSubmit={(e: React.SyntheticEvent) => {
             e.preventDefault();
-            if (formType === ModalFormType.CHECKIN) {
-              if (isFormValid()) {
+
+            if (!isFormValid()) return window.alert("Not all Fields Filled");
+
+            switch (props.formType) {
+              case ModalFormType.CHECKIN:
                 post("/api/resident/postResident", formState).then((res) => {
-                  console.log("Posted!");
+                  console.log("Checked in resident successful");
                 });
-                document.location.reload();
-              } else {
-                window.alert("Not all Fields Filled");
-              }
-            } else if (formType === ModalFormType.EDIT) {
-              if (isFormValid()) {
+                break;
+
+              case ModalFormType.EDIT:
                 post("/api/resident/editResident", formState).then((res) => {
-                  console.log(formState);
-                  console.log("Posted!");
+                  console.log("Edited resident successful");
                 });
-                // document.location.reload();
-              } else {
-                window.alert("Not all Fields Filled");
-              }
-            } else if (formType === ModalFormType.CHECKOUT) {
-              post("/api/resident/checkoutResident", formState).then((res) => {
-                console.log("checked out!");
-              });
+                break;
+              case ModalFormType.CHECKOUT:
+                post("/api/resident/checkoutResident", formState).then(
+                  (res) => {
+                    console.log("checkeodut resident successful");
+                  }
+                );
+                break;
+              default:
             }
           }}
         >
           <p className="title">Resident Information Form</p>
-          {FormFields.map((field: { title: string; props: object }) => (
+          {FormFields.map((field: { title: string; props: any }) => (
             <label>
               {field.title}
-              <input type="text" {...field.props} />
+              <input
+                type="text"
+                {...field.props}
+                onChange={(e: SyntheticEvent) =>
+                  updateFormState(e, field.props.attribute!)
+                }
+              />
             </label>
           ))}
 
