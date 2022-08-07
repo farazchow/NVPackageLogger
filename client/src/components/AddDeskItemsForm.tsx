@@ -1,10 +1,10 @@
-import React, { createElement, Component } from "react";
+import React, { createElement, Component, useState } from "react";
 import { DeskItemInterface } from "../../../server/models/deskItem";
 import { post } from "../../utilities";
 
-interface Notes {
+type Notes = {
   value: string;
-}
+};
 
 type DeskItemsState = {
   itemName: string;
@@ -17,75 +17,17 @@ type DeskItemsProps = {
   categories: string[];
 };
 
-export class AddDeskItemsForm extends Component<
-  DeskItemsProps,
-  DeskItemsState
-> {
-  constructor(props: DeskItemsProps) {
-    super(props);
+export const AddDeskItemsForm = (props: DeskItemsProps) => {
+  const [deskItemsState, setDeskItemsState] = useState({
+    itemName: "",
+    itemCategory: "",
+    lastBorrowed: new Date(),
+  });
 
-    this.state = {
-      itemName: "",
-      itemCategory: "",
-      lastBorrowed: new Date(),
-    };
-  }
-
-  override render() {
-    return (
-      <td>
-        <form
-          name="addDeskItemsForm"
-          onSubmit={async (e: React.SyntheticEvent) => {
-            e.preventDefault();
-
-            if (!this.isValidated() || !this.isUnique()) {
-              alert("Please enter item that is not in table!!");
-              return;
-            }
-
-            post("/api/deskItem/postNewItem", this.state).then((res) => {
-              this.setState({
-                itemName: "",
-                itemCategory: "",
-              });
-            });
-          }}
-        >
-          Item Category:
-          {this.makeElement(
-            "select",
-            {
-              value: this.state.itemCategory,
-              children: (
-                <>
-                  <option> </option>
-                  {this.props.categories.map((cat) => (
-                    <option value={cat as string} key={cat}>
-                      {cat as string}
-                    </option>
-                  ))}
-                </>
-              ),
-            },
-            "itemCategory"
-          )}
-          Item Name:
-          {this.makeElement(
-            "input",
-            { type: "text", value: this.state.itemName },
-            "itemName"
-          )}
-          <input type="submit" value="Submit" />
-        </form>
-      </td>
-    );
-  }
-
-  makeElement(T: string, props: any, key: keyof DeskItemsState) {
+  function makeElement(T: string, props: any, key: keyof DeskItemsState) {
     const propsWithListener = {
       onChange: (event: Event) => {
-        this.setState((prevState) => ({
+        setDeskItemsState((prevState) => ({
           ...prevState,
           [key]: (event.target as HTMLTextAreaElement).value,
         }));
@@ -96,15 +38,67 @@ export class AddDeskItemsForm extends Component<
     return createElement(T, propsWithListener);
   }
 
-  isValidated() {
-    return Object.values(this.state).every((state) => {
+  function isValidated() {
+    return Object.values(deskItemsState).every((state) => {
       return state !== "";
     });
   }
 
-  isUnique() {
-    return this.props.currentItems.every((item) => {
-      return item.itemName !== this.state.itemName;
+  function isUnique() {
+    return props.currentItems.every((item) => {
+      return item.itemName !== deskItemsState.itemName;
     });
   }
-}
+
+  return (
+    <>
+      <td>
+        <form
+          name="addDeskItemsForm"
+          onSubmit={async (e: React.SyntheticEvent) => {
+            e.preventDefault();
+
+            if (!isValidated() || !isUnique()) {
+              alert("Please enter item that is not in table!!");
+              return;
+            }
+
+            post("/api/deskItem/postNewItem", deskItemsState).then((res) => {
+              setDeskItemsState({
+                itemName: "",
+                itemCategory: "",
+                lastBorrowed: new Date(),
+              });
+            });
+          }}
+        >
+          Item Category:
+          {makeElement(
+            "select",
+            {
+              value: deskItemsState.itemCategory,
+              children: (
+                <>
+                  <option> </option>
+                  {props.categories.map((cat) => (
+                    <option value={cat as string} key={cat}>
+                      {cat as string}
+                    </option>
+                  ))}
+                </>
+              ),
+            },
+            "itemCategory"
+          )}
+          Item Name:
+          {makeElement(
+            "input",
+            { type: "text", value: deskItemsState.itemName },
+            "itemName"
+          )}
+          <input type="submit" value="Submit" />
+        </form>
+      </td>
+    </>
+  );
+};
