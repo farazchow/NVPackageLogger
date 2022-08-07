@@ -23,8 +23,12 @@ router.get("/getResidents", (req: Request, res: Response) => {
   const { checkedIn } = req.query;
   console.log("checked in is", checkedIn);
 
+  Resident.find({}).then((result: any) =>
+    console.log("all residents are", result)
+  );
   Resident.find({ checkedIn: checkedIn === "true" }).then(
     (resident: typeof Resident[]) => {
+      console.log("resident found is", resident);
       res.send(resident);
     }
   );
@@ -49,7 +53,7 @@ router.post("/postResident", (req: any, res: Response) => {
     year: req.body.year,
     homeAddress: req.body.homeAddress,
     forwardingAddress: req.body.forwardingAddress,
-    date: req.body.date,
+    dateIn: req.body.dateIn,
     checkedIn: req.body.checkedIn,
   });
 
@@ -62,11 +66,34 @@ router.post("/postResident", (req: any, res: Response) => {
     });
 });
 
-router.post("/putResident", (req: Request, res: Response) => {
-  console.log("Updating Resident");
+router.post("/checkoutResident", (req: Request, res: Response) => {
+  console.log("Checking Out Resident");
   Resident.updateOne(
     { studentId: req.body.studentId },
-    { $set: { checkedIn: false } }
+    { $set: { checkedIn: false, dateOut: req.body.date } }
+  )
+    .then((resi: any) => {
+      res.send(resi);
+    })
+    .catch((err: any) => {
+      console.log("error putting resident: ", err);
+      res.status(500).send({ message: "unkown error" });
+    });
+});
+
+router.post("/editResident", (req: Request, res: Response) => {
+  console.log("updating resident");
+  Resident.updateOne(
+    { studentId: req.body.studentId },
+    {
+      $set: {
+        resident: req.body.resident,
+        room: req.body.room,
+        year: req.body.year,
+        homeAddress: req.body.homeAddress,
+        forwardingAddress: req.body.forwardingAddress,
+      },
+    }
   )
     .then((resi: any) => {
       res.send(resi);
