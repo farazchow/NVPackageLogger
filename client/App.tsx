@@ -9,19 +9,12 @@ import NotFound from "./src/views/NotFound";
 import Unauthorized from "./src/views/Unauthorizated";
 import Home from "./src/views/Home";
 import LogPackages from "./src/views/LogPackages";
-<<<<<<< HEAD
-import LendDesk from "./src/views/LendDesk";
-import ForwardPackages from "./src/views/ForwardPackges";
-import { CheckInOut } from "./src/views/Resident";
-
-// require("react-bootstrap/lib/NavbarHeader");
-=======
 import LendDeskItems from "./src/views/LendDeskItems";
 import { CheckInResident } from "./src/views/CheckInResident";
 import { CheckOutResident } from "./src/views/CheckOutResident";
 import { SingleResidentView } from "./src/views/SingleResident";
 import { DailyNotes } from "./src/views/Notes";
->>>>>>> main
+import { ForwardPackages } from "./src/views/ForwardPackages";
 
 const App: FunctionComponent = () => {
   /*
