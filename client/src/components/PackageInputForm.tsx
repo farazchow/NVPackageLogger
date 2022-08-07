@@ -4,6 +4,7 @@ import {
   SyntheticEvent,
   ElementType,
   JSXElementConstructor,
+  useState,
 } from "react";
 import { IResident } from "../../../server/models/resident";
 
@@ -24,7 +25,7 @@ type packageState = {
   createdAt: Date;
 };
 
-type Props = {
+type PackageInputProps = {
   user: string;
   residents: IResident[];
 };
@@ -56,119 +57,22 @@ enum Closets {
   FLOOR = "Floor",
 }
 
-export class PackageInputForm extends Component<Props, packageState> {
-  constructor(props: Props) {
-    super(props);
-
-    console.log("props", this.props);
-    this.state = {
-      shipping_id: "",
-      recipient: "",
-      shipper: "",
-      location: "",
-      // notes: { value: "" },
-      notes: " ",
-      workerIn: this.props.user,
-      createdAt: new Date(),
-    };
-  }
-
-  override render() {
-    return (
-      <form
-        name="packageInputForm"
-        onSubmit={async (e: React.SyntheticEvent) => {
-          e.preventDefault();
-
-          if (!this.isValidated()) {
-            console.log("Please fill out all fields");
-            alert("GRRR!");
-          }
-
-          post("/api/package/postPackage", this.state).then((res) => {
-            // console.log("posted", res);
-            this.setState({
-              shipping_id: "",
-              recipient: "",
-              shipper: "",
-              location: "",
-              // notes: { value: "" },
-              notes: " ", // NOTE: space added so validate doesn't complain
-            });
-          });
-        }}
-      >
-        Tracking:
-        {this.makeElement(
-          "input",
-          { type: "text", value: this.state.shipping_id },
-          "shipping_id"
-        )}
-        Shipper:
-        {this.makeElement(
-          "select",
-          {
-            value: this.state.shipper,
-            children: Object.values(PackageShippers).map((option) => (
-              <option>{option}</option>
-            )),
-          },
-          "shipper"
-        )}
-        Resident:
-        {this.makeElement(
-          "select",
-          {
-            value: this.state.recipient,
-            children: (
-              <>
-                <option></option>
-                {this.props.residents.map((resident) => (
-                  <option value={resident.studentId as string}>
-                    {(resident.resident as string) + " (" + resident.room + ")"}
-                  </option>
-                ))}
-              </>
-            ),
-          },
-          "recipient"
-        )}
-        Location:
-        {this.makeElement(
-          "select",
-          {
-            value: this.state.location,
-            children: Object.values(Closets).map((option) => (
-              <option>{option}</option>
-            )),
-          },
-          "location"
-        )}
-        Notes:
-        {this.makeElement(
-          "input",
-          {
-            value: this.state.notes,
-            type: "text",
-            onChange: (event: Event) => {
-              this.setState((prevState) => ({
-                ...prevState,
-                // notes: { value: (event.target as HTMLTextAreaElement).value },
-                notes: (event.target as HTMLTextAreaElement).value,
-              }));
-            },
-          },
-          "notes"
-        )}
-        <input type="submit" value="Submit" />
-      </form>
-    );
-  }
-
-  makeElement(T: string, props: any, key: keyof packageState) {
+export const PackageInputForm = (props: PackageInputProps) => {
+  const [packageInputState, setPackageInputState] = useState({
+    shipping_id: "",
+    recipient: "",
+    shipper: "",
+    location: "",
+    // notes: { value: "" },
+    notes: " ",
+    workerIn: props.user,
+    createdAt: new Date(),
+  });
+  function makeElement(T: string, props: any, key: string) {
+    // console.log("T is", T);
     const propsWithListener = {
       onChange: (event: Event) => {
-        this.setState((prevState) => ({
+        setPackageInputState((prevState) => ({
           ...prevState,
           [key]: (event.target as HTMLTextAreaElement).value,
         }));
@@ -179,11 +83,177 @@ export class PackageInputForm extends Component<Props, packageState> {
     return createElement(T, propsWithListener);
   }
 
-  isValidated() {
-    return Object.values(this.state).every((state) => {
+  function isValidated() {
+    return Object.values(packageInputState).every((state) => {
       return state !== "";
     });
   }
-}
+
+  const PackageInputFormInput = [
+    {
+      title: "Tracking:",
+      type: "input",
+      attribute: "shipping_id",
+      children: { type: "text", value: packageInputState.shipping_id },
+    },
+    {
+      title: "Shipper:",
+      type: "select",
+      attribute: "shipper",
+      children: {
+        value: packageInputState.shipper,
+        children: Object.values(PackageShippers).map((option) => (
+          <option>{option}</option>
+        )),
+      },
+    },
+    {
+      title: "Resident:",
+      type: "select",
+      attribute: "recipient",
+      children: {
+        value: packageInputState.recipient,
+        children: (
+          <>
+            <option></option>
+            {props.residents.map((resident) => (
+              <option value={resident.studentId as string}>
+                {(resident.resident as string) + " (" + resident.room + ")"}
+              </option>
+            ))}
+          </>
+        ),
+      },
+    },
+
+    {
+      title: "Location:",
+      type: "select",
+      attribute: "location",
+      children: {
+        value: packageInputState.location,
+        children: Object.values(Closets).map((option) => (
+          <option>{option}</option>
+        )),
+      },
+    },
+    {
+      title: "Notes:",
+      type: "input",
+      attribute: "notes",
+      children: {
+        value: packageInputState.notes,
+        type: "text",
+        onChange: (event: Event) => {
+          setPackageInputState((prevState) => ({
+            ...prevState,
+            // notes: { value: (event.target as HTMLTextAreaElement).value },
+            notes: (event.target as HTMLTextAreaElement).value,
+          }));
+        },
+      },
+    },
+  ];
+
+  return (
+    <form
+      name="packageInputForm"
+      onSubmit={async (e: React.SyntheticEvent) => {
+        e.preventDefault();
+
+        if (!isValidated()) {
+          console.log("Please fill out all fields");
+          alert("GRRR!");
+        }
+
+        post("/api/package/postPackage", packageInputState).then((res) => {
+          // console.log("posted", res);
+          setPackageInputState({
+            shipping_id: "",
+            recipient: "",
+            shipper: "",
+            location: "",
+            // notes: { value: "" },
+            notes: " ", // NOTE: space added so validate doesn't complain
+            workerIn: props.user,
+            createdAt: new Date(),
+          });
+        });
+      }}
+    >
+      {PackageInputFormInput.map((input) => {
+        return (
+          <>
+            {input.title}
+            {makeElement(input.type, input.children, input.attribute)}
+          </>
+        );
+      })}
+      {/* Tracking:
+      {makeElement(
+        "input",
+        { type: "text", value: packageInputState.shipping_id },
+        "shipping_id"
+      )}
+      Shipper:
+      {makeElement(
+        "select",
+        {
+          value: packageInputState.shipper,
+          children: Object.values(PackageShippers).map((option) => (
+            <option>{option}</option>
+          )),
+        },
+        "shipper"
+      )}
+      Resident:
+      {makeElement(
+        "select",
+        {
+          value: packageInputState.recipient,
+          children: (
+            <>
+              <option></option>
+              {props.residents.map((resident) => (
+                <option value={resident.studentId as string}>
+                  {(resident.resident as string) + " (" + resident.room + ")"}
+                </option>
+              ))}
+            </>
+          ),
+        },
+        "recipient"
+      )}
+      Location:
+      {makeElement(
+        "select",
+        {
+          value: packageInputState.location,
+          children: Object.values(Closets).map((option) => (
+            <option>{option}</option>
+          )),
+        },
+        "location"
+      )}
+      Notes:
+      {makeElement(
+        "input",
+        {
+          value: packageInputState.notes,
+          type: "text",
+          onChange: (event: Event) => {
+            setPackageInputState((prevState) => ({
+              ...prevState,
+              // notes: { value: (event.target as HTMLTextAreaElement).value },
+              notes: (event.target as HTMLTextAreaElement).value,
+            }));
+          },
+        },
+        "notes"
+      )} */}
+      <input type="submit" value="Submit" />
+    </form>
+  );
+};
 
 export default PackageInputForm;

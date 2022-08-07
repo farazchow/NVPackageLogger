@@ -5,17 +5,15 @@ import Login from "./src/components/Login";
 import { UserInterface } from "../server/models/user";
 import { Routes, Route } from "react-router-dom";
 
-import NotFound from "./src/pages/NotFound";
-import Unauthorized from "./src/pages/Unauthorizated";
-import Home from "./src/pages/Home";
+import NotFound from "./src/views/NotFound";
+import Unauthorized from "./src/views/Unauthorizated";
+import Home from "./src/views/Home";
 import LogPackages from "./src/views/LogPackages";
 import LendDeskItems from "./src/views/LendDeskItems";
 import { CheckInResident } from "./src/views/CheckInResident";
 import { CheckOutResident } from "./src/views/CheckOutResident";
 import { SingleResidentView } from "./src/views/SingleResident";
 import { DailyNotes } from "./src/views/Notes";
-
-// require("react-bootstrap/lib/NavbarHeader");
 
 const App: FunctionComponent = () => {
   /*

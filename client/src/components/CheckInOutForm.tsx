@@ -4,7 +4,7 @@ import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 import { post } from "../../utilities";
 import "../css/residentCheckIn.css";
 
-type State = {
+type FormState = {
   studentId: string;
   resident: string;
   room: string;
@@ -15,267 +15,182 @@ type State = {
   date: string;
 };
 
-export enum ModalFormOptions {
+export enum ModalFormType {
   CHECKIN,
   CHECKOUT,
   EDIT,
 }
 
-type Props = {
-  updateStatus: ModalFormOptions;
-  resident: IResident | null;
-};
+type FormProps = IResident | null;
 
-class CheckInOutForm extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
+const Form = (props: any, formType: number) => {
+  const [formState, setFormState] = useState({
+    studentId: "",
+    resident: "",
+    room: "",
+    year: "",
+    homeAddress: "",
+    forwardingAddress: "",
+    checkedIn: true,
+    date: "",
+  });
 
-    this.state = {
-      studentId: "",
-      resident: "",
-      room: "",
-      year: "",
-      homeAddress: "",
-      forwardingAddress: "",
-      checkedIn: true,
-      date: "",
-    };
-  }
-
-  override componentDidMount() {
-    if (this.props.updateStatus === ModalFormOptions.CHECKIN) {
+  useEffect(() => {
+    console.log("here", formType);
+    if (props.formType === ModalFormType.CHECKIN) {
+      console.log("lkjaslfdkjasfdlkjlaskdjf");
       return;
     }
 
-    this.setState({
-      studentId: this.props.resident?.studentId!,
-      resident: this.props.resident?.resident!,
-      room: this.props.resident?.room!,
-      year: this.props.resident?.year!,
-      homeAddress: this.props.resident?.homeAddress!,
-      forwardingAddress: this.props.resident?.forwardingAddress!,
-      checkedIn: this.props.resident?.checkedIn!,
+    setFormState({
+      studentId: props?.studentId!,
+      resident: props?.resident!,
+      room: props?.room!,
+      year: props?.year!,
+      homeAddress: props?.homeAddress!,
+      forwardingAddress: props?.forwardingAddress!,
+      checkedIn: props?.checkedIn!,
       date: "",
     });
-  }
+  }, []);
 
-  isFormValid = () => {
+  useEffect(() => {
+    console.log("formState changed", formState);
+    console.log("props", props, props.formType);
+  }, [formState]);
+
+  function isFormValid() {
     console.log("IsValid Check");
-    console.log(this.state);
-    for (const val of Object.values(this.state)) {
+    console.log(formState);
+    for (const val of Object.values(formState)) {
       console.log("val = ", val);
       if (val == "") {
         return false;
       }
     }
     return true;
-  };
-
-  override render() {
-    return (
-      <>
-        <br></br>
-        <div>
-          <form
-            onSubmit={(e: React.SyntheticEvent) => {
-              e.preventDefault();
-              if (this.props.updateStatus === ModalFormOptions.CHECKIN) {
-                if (this.isFormValid()) {
-                  post("/api/resident/postResident", this.state).then((res) => {
-                    console.log("Posted!");
-                  });
-                  document.location.reload();
-                } else {
-                  window.alert("Not all Fields Filled");
-                }
-              } else if (this.props.updateStatus === ModalFormOptions.EDIT) {
-                if (this.isFormValid()) {
-                  post("/api/resident/editResident", this.state).then((res) => {
-                    console.log(this.state);
-                    console.log("Posted!");
-                  });
-                  // document.location.reload();
-                } else {
-                  window.alert("Not all Fields Filled");
-                }
-              } else if (
-                this.props.updateStatus === ModalFormOptions.CHECKOUT
-              ) {
-                post("/api/resident/checkoutResident", this.state).then(
-                  (res) => {
-                    console.log("checked out!");
-                  }
-                );
-              }
-            }}
-          >
-            <p className="title">Resident Information Form</p>
-            <p>
-              <label>
-                MIT ID:
-                <input
-                  type="text"
-                  name="id"
-                  placeholder={
-                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
-                    this.props.resident !== null
-                      ? this.props.resident.studentId
-                      : "9-digit number"
-                  }
-                  disabled={
-                    this.props.updateStatus !== ModalFormOptions.CHECKIN
-                      ? true
-                      : false
-                  }
-                  onChange={(event: any) =>
-                    this.setState({
-                      studentId: (event.target as HTMLTextAreaElement).value,
-                    })
-                  }
-                />
-              </label>
-            </p>
-
-            <p>
-              <label>
-                Resident Name:{" "}
-                <input
-                  type="text"
-                  name="resident"
-                  placeholder={
-                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
-                    this.props.resident !== null
-                      ? this.props.resident.resident
-                      : "First Name Last Name"
-                  }
-                  disabled={
-                    this.props.updateStatus === ModalFormOptions.CHECKOUT
-                      ? true
-                      : false
-                  }
-                  onChange={(event: any) =>
-                    this.setState({
-                      resident: (event.target as HTMLTextAreaElement).value,
-                    })
-                  }
-                />
-              </label>
-            </p>
-
-            <p>
-              <label>
-                Building-Room #:{" "}
-                <input
-                  type="text"
-                  name="room"
-                  placeholder={
-                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
-                    this.props.resident !== null
-                      ? this.props.resident.room
-                      : "W46-####"
-                  }
-                  disabled={
-                    this.props.updateStatus === ModalFormOptions.CHECKOUT
-                      ? true
-                      : false
-                  }
-                  onChange={(event: any) =>
-                    this.setState({
-                      room: (event.target as HTMLTextAreaElement).value,
-                    })
-                  }
-                />
-              </label>
-            </p>
-
-            <p>
-              <label>
-                Class Year:{" "}
-                <input
-                  type="text"
-                  name="year"
-                  placeholder={
-                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
-                    this.props.resident !== null
-                      ? this.props.resident.year
-                      : "YYYY"
-                  }
-                  disabled={
-                    this.props.updateStatus === ModalFormOptions.CHECKOUT
-                      ? true
-                      : false
-                  }
-                  onChange={(event: any) =>
-                    this.setState({
-                      year: (event.target as HTMLTextAreaElement).value,
-                    })
-                  }
-                />
-              </label>
-            </p>
-
-            <p>
-              <label>
-                Home Address:{" "}
-                <input
-                  type="text"
-                  name="homeAddress"
-                  placeholder={
-                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
-                    this.props.resident !== null
-                      ? this.props.resident.homeAddress
-                      : "Street, City, State, Zip Code"
-                  }
-                  disabled={
-                    this.props.updateStatus === ModalFormOptions.CHECKOUT
-                      ? true
-                      : false
-                  }
-                  onChange={(event: any) =>
-                    this.setState({
-                      homeAddress: (event.target as HTMLTextAreaElement).value,
-                    })
-                  }
-                />
-              </label>
-            </p>
-
-            <p>
-              <label>
-                Forwarding Address:{" "}
-                <input
-                  type="text"
-                  name="forwardingAddress"
-                  placeholder={
-                    this.props.updateStatus !== ModalFormOptions.CHECKIN &&
-                    this.props.resident !== null
-                      ? this.props.resident.forwardingAddress
-                      : "Street, City, State, Zip Code"
-                  }
-                  onChange={(event: any) =>
-                    this.setState({
-                      forwardingAddress: (event.target as HTMLTextAreaElement)
-                        .value,
-                    })
-                  }
-                />
-              </label>
-            </p>
-
-            <button
-              className="button-17"
-              // onClick={() => {
-              //   post("/Shibboleth.sso/Login/");
-              // }}
-            >
-              Submit
-            </button>
-          </form>
-          <div className="bottomPadding"></div>
-        </div>
-      </>
-    );
   }
-}
 
-export default CheckInOutForm;
+  console.log("type is", formType, formType === ModalFormType.CHECKIN);
+  console.log(ModalFormType.CHECKIN);
+
+  const FormFields = [
+    {
+      title: "MIT ID:",
+      props: {
+        name: "id",
+        attribute: "studentId",
+        placeholder: props?.studentId || "9-digit number",
+        disabled: props.formType !== ModalFormType.CHECKIN,
+      },
+    },
+    {
+      title: "Resident Name:",
+      props: {
+        name: "resident",
+        attribute: "resident",
+        placeholder: props?.resident || "First Name Last Name",
+        disabled: props.formType === ModalFormType.CHECKOUT,
+      },
+    },
+    {
+      title: "Building-Room #:",
+      props: {
+        name: "room",
+        attribute: "room",
+        placeholder: props?.room || "W46-####",
+        disabled: props.formType === ModalFormType.CHECKOUT,
+      },
+    },
+    {
+      title: " Class Year:",
+      props: {
+        name: "year",
+        attribute: "year",
+        placeholder: props?.year || "YYYY",
+        disabled: props.formType === ModalFormType.CHECKOUT,
+      },
+    },
+    {
+      title: "Home Address:",
+      props: {
+        name: "homeAddress",
+        attribute: "homeAddress",
+        placeholder: props?.homeAddress || "Street, City, State, Zip Code",
+        disabled: props.formType === ModalFormType.CHECKOUT,
+      },
+    },
+    {
+      title: "Forwarding Address:",
+      props: {
+        name: "forwardingAddress",
+        attribute: "forwardingAddress",
+        placeholder:
+          props?.forwardingAddress || "Street, City, State, Zip Code",
+        disabled: false,
+      },
+    },
+  ];
+
+  return (
+    <>
+      <br></br>
+      <div>
+        <form
+          onSubmit={(e: React.SyntheticEvent) => {
+            e.preventDefault();
+            if (formType === ModalFormType.CHECKIN) {
+              if (isFormValid()) {
+                post("/api/resident/postResident", formState).then((res) => {
+                  console.log("Posted!");
+                });
+                document.location.reload();
+              } else {
+                window.alert("Not all Fields Filled");
+              }
+            } else if (formType === ModalFormType.EDIT) {
+              if (isFormValid()) {
+                post("/api/resident/editResident", formState).then((res) => {
+                  console.log(formState);
+                  console.log("Posted!");
+                });
+                // document.location.reload();
+              } else {
+                window.alert("Not all Fields Filled");
+              }
+            } else if (formType === ModalFormType.CHECKOUT) {
+              post("/api/resident/checkoutResident", formState).then((res) => {
+                console.log("checked out!");
+              });
+            }
+          }}
+        >
+          <p className="title">Resident Information Form</p>
+          {FormFields.map((field: { title: string; props: object }) => (
+            <label>
+              {field.title}
+              <input type="text" {...field.props} />
+            </label>
+          ))}
+
+          <button className="button-17">Submit</button>
+        </form>
+        <div className="bottomPadding"></div>
+      </div>
+    </>
+  );
+};
+
+const CheckInForm = () => {
+  return <Form {...{ props: null }} {...{ formType: ModalFormType.CHECKIN }} />;
+};
+
+const CheckOutForm = (props: FormProps) => {
+  return <Form {...props} {...{ formType: ModalFormType.CHECKOUT }} />;
+};
+
+const EditForm = (props: FormProps) => {
+  return <Form {...props} {...{ formType: ModalFormType.EDIT }} />;
+};
+
+export { CheckInForm, CheckOutForm, EditForm };
