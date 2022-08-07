@@ -69,15 +69,17 @@ export function LostItems() {
                           <td>{lostItem.description}</td>
                           <td>{lostItem.deskworker}</td>
                           <td>{lostItem.createdAt}</td>
-                          <button
-                            type="button"
-                            className="btn btn-dark btn-sm d-flex justify-content-center"
-                            onClick={(evt) => {
-                              archiveLostItem(evt, key);
-                            }}
-                          >
-                            Archive
-                          </button>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-dark btn-sm d-flex justify-content-center"
+                              onClick={(evt) => {
+                                archiveLostItem(evt, key);
+                              }}
+                            >
+                              Archive
+                            </button>
+                          </td>
                         </tr>
                       );
                     })
@@ -106,19 +108,19 @@ const LostItemsForm = () => {
                     description: { value: string },
                     deskworker: { value: string },
                   };
-                  const note = {
+                  const lostItem = {
                     "description": target.description.value,
                     "deskworker": target.deskworker.value,
                     "createdAt": new Date()
                   }
-                  post("/api/lostItems/addLostItem", note).then((res) => {
-                    console.log("note added!");
+                  post("/api/lostItems/addLostItem", lostItem).then((res) => {
+                    console.log("lost item added!");
                     document.location.reload();
                   });
               }} className = "form-inline">
           <p>
               <label>
-              Description: <input type="text" id = "note-textbox" name="note"/>
+              Description: <input type="text" id = "note-textbox" name="description"/>
               </label>
           </p>
           <p>
