@@ -7,11 +7,12 @@ import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { PackageInputForm } from "../components/PackageInputForm";
 import { get, post } from "../../utilities";
+import "../css/logPackage.css";
 
 export const LogPackages = () => {
   const [data, setPackageData] = useState<PackageInterface[]>([]);
   const [resData, setResidentData] = useState<IResident[]>([]);
-  const checkedIndexes = new Set<number>();
+  const [checkedIndexes, setCheckedIndex] = useState<Set<number>>(new Set());
 
   // data fetching
   useEffect(() => {
@@ -20,7 +21,7 @@ export const LogPackages = () => {
         get("/api/package/getPackages").then((pckgs: any) =>
           setPackageData(pckgs)
         ),
-        get("/api/resident/getResident").then((residents: any) => {
+        get("/api/resident/getResidents").then((residents: any) => {
           console.log("residents are", residents);
           setResidentData(residents);
         }),
@@ -32,6 +33,9 @@ export const LogPackages = () => {
   }, []);
 
   async function deliverOne(evt: SyntheticEvent, key: number) {
+    document.getElementById(`checkbox-${key}`)?.click();
+    checkedIndexes.delete(key);
+
     const pckage = data[key];
     const date = new Date();
 
@@ -52,23 +56,23 @@ export const LogPackages = () => {
     post("/api/package/deletePackage", body).then((res) => {
       console.log(`Package deleted from working db`);
       // document.location.reload();
-      document.getElementById(`checkbox-${key}`)?.click();
-
       setPackageData(data.filter((pckg) => pckg.createdAt !== body.createdAt));
     });
   }
 
   async function deliverMany(evt: SyntheticEvent) {
-    if (checkedIndexes.size === 0)
+    if (checkedIndexes.size === 0) {
       alert(
         `There are no checked boxes you idiot. You buffoon. Who raised you? Do you think I exist just for you to laugh at? Well I don't. I have a soul. A family. And you spit on my kindness by making me deliver zero packages for your own amusement. Rethink your life before you ask me to do anything for you again.`
       );
+    }
+
     checkedIndexes.forEach((index) => {
       deliverOne(evt, index);
     });
   }
 
-  function onCheckboxClick(evt: SyntheticEvent, index: number) {
+  function onCheckboxClick(e: SyntheticEvent, index: number) {
     if (checkedIndexes.has(index)) checkedIndexes.delete(index);
     else checkedIndexes.add(index);
   }
@@ -131,10 +135,8 @@ export const LogPackages = () => {
                               className="form-check-input"
                               type="checkbox"
                               id={`checkbox-${key}`}
+                              key={`checkbox-${key}`}
                               onClick={(evt) => {
-                                document
-                                  .getElementById(`checkbox-${key}`)
-                                  ?.click();
                                 onCheckboxClick(evt, key);
                               }}
                             />
@@ -151,9 +153,6 @@ export const LogPackages = () => {
                               type="button"
                               className="btn btn-dark btn-sm d-flex justify-content-center"
                               onClick={(evt) => {
-                                document
-                                  .getElementById(`checkbox-${key}`)
-                                  ?.click();
                                 deliverOne(evt, key);
                               }}
                             >

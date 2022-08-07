@@ -89,7 +89,7 @@ form {
   position: relative;
   text-align: center;
   margin-top: 100px;
-  animation: mainLogoRight 1s ease-in;
+  /* animation: mainLogoRight 1s ease-in; */
   overflow: hidden;
   position: relative;
   z-index: 2;

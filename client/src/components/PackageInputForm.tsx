@@ -69,8 +69,8 @@ export const PackageInputForm = (props: PackageInputProps) => {
     createdAt: new Date(),
   });
   function makeElement(T: string, props: any, key: string) {
-    // console.log("T is", T);
     const propsWithListener = {
+      key: T + key,
       onChange: (event: Event) => {
         setPackageInputState((prevState) => ({
           ...prevState,
@@ -102,8 +102,8 @@ export const PackageInputForm = (props: PackageInputProps) => {
       attribute: "shipper",
       children: {
         value: packageInputState.shipper,
-        children: Object.values(PackageShippers).map((option) => (
-          <option>{option}</option>
+        children: Object.values(PackageShippers).map((opt, ind) => (
+          <option key={opt}>{opt}</option>
         )),
       },
     },
@@ -115,9 +115,12 @@ export const PackageInputForm = (props: PackageInputProps) => {
         value: packageInputState.recipient,
         children: (
           <>
-            <option></option>
+            <option key={"llllllllllllllll"}></option>
             {props.residents.map((resident) => (
-              <option value={resident.studentId as string}>
+              <option
+                value={resident.studentId as string}
+                key={resident.studentId}
+              >
                 {(resident.resident as string) + " (" + resident.room + ")"}
               </option>
             ))}
@@ -132,8 +135,8 @@ export const PackageInputForm = (props: PackageInputProps) => {
       attribute: "location",
       children: {
         value: packageInputState.location,
-        children: Object.values(Closets).map((option) => (
-          <option>{option}</option>
+        children: Object.values(Closets).map((opt) => (
+          <option key={opt}>{opt}</option>
         )),
       },
     },
@@ -159,11 +162,11 @@ export const PackageInputForm = (props: PackageInputProps) => {
     <form
       name="packageInputForm"
       onSubmit={async (e: React.SyntheticEvent) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         if (!isValidated()) {
           console.log("Please fill out all fields");
-          alert("GRRR!");
+          return alert("GRRR!");
         }
 
         post("/api/package/postPackage", packageInputState).then((res) => {
@@ -189,68 +192,7 @@ export const PackageInputForm = (props: PackageInputProps) => {
           </>
         );
       })}
-      {/* Tracking:
-      {makeElement(
-        "input",
-        { type: "text", value: packageInputState.shipping_id },
-        "shipping_id"
-      )}
-      Shipper:
-      {makeElement(
-        "select",
-        {
-          value: packageInputState.shipper,
-          children: Object.values(PackageShippers).map((option) => (
-            <option>{option}</option>
-          )),
-        },
-        "shipper"
-      )}
-      Resident:
-      {makeElement(
-        "select",
-        {
-          value: packageInputState.recipient,
-          children: (
-            <>
-              <option></option>
-              {props.residents.map((resident) => (
-                <option value={resident.studentId as string}>
-                  {(resident.resident as string) + " (" + resident.room + ")"}
-                </option>
-              ))}
-            </>
-          ),
-        },
-        "recipient"
-      )}
-      Location:
-      {makeElement(
-        "select",
-        {
-          value: packageInputState.location,
-          children: Object.values(Closets).map((option) => (
-            <option>{option}</option>
-          )),
-        },
-        "location"
-      )}
-      Notes:
-      {makeElement(
-        "input",
-        {
-          value: packageInputState.notes,
-          type: "text",
-          onChange: (event: Event) => {
-            setPackageInputState((prevState) => ({
-              ...prevState,
-              // notes: { value: (event.target as HTMLTextAreaElement).value },
-              notes: (event.target as HTMLTextAreaElement).value,
-            }));
-          },
-        },
-        "notes"
-      )} */}
+
       <input type="submit" value="Submit" />
     </form>
   );
