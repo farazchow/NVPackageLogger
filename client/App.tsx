@@ -9,7 +9,7 @@ import NotFound from "./src/pages/NotFound";
 import Unauthorized from "./src/pages/Unauthorizated";
 import Home from "./src/pages/Home";
 import LogPackages from "./src/views/LogPackages";
-import LendDesk from "./src/views/LendDesk";
+import LendDeskItems from "./src/views/LendDeskItems";
 import { CheckInResident } from "./src/views/CheckInResident";
 import { CheckOutResident } from "./src/views/CheckOutResident";
 import { SingleResidentView } from "./src/views/SingleResident";
