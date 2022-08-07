@@ -25,8 +25,34 @@ export class ModalButton extends Component<ModalProps, ModalState> {
         <button onClick={() => this.setState({ modalIsOpen: true })}>
           {this.props.title}
         </button>
-
-        <Modal isOpen={this.state.modalIsOpen} ariaHideApp={false}>
+        <Modal
+          style={{
+            overlay: {
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(255, 255, 255, 0.75)",
+            },
+            content: {
+              position: "absolute",
+              top: "200px",
+              left: "40px",
+              right: "40px",
+              bottom: "40px",
+              border: "1px solid #ccc",
+              background: "white",
+              overflow: "auto",
+              WebkitOverflowScrolling: "touch",
+              borderRadius: "4px",
+              outline: "none",
+              padding: "20px",
+            },
+          }}
+          isOpen={this.state.modalIsOpen}
+          ariaHideApp={false}
+        >
           <h2>{this.props.title}</h2>
           {this.props.form}
           <div>
