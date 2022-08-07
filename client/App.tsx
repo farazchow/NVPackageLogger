@@ -9,9 +9,11 @@ import NotFound from "./src/pages/NotFound";
 import Unauthorized from "./src/pages/Unauthorizated";
 import Home from "./src/pages/Home";
 import LogPackages from "./src/views/LogPackages";
-import LendDesk from "./src/views/LendDesk";
+import LendDeskItems from "./src/views/LendDeskItems";
 import { CheckInOut } from "./src/views/Resident";
-import Notes from "./src/views/Notes";
+import { CheckOutResident } from "./src/views/CheckOutResident";
+import { SingleResidentView } from "./src/views/SingleResident";
+import { DailyNotes } from "./src/views/Notes";
 
 // require("react-bootstrap/lib/NavbarHeader");
 
@@ -44,14 +46,17 @@ const App: FunctionComponent = () => {
 
         <Route path="/package" element={<LogPackages />} />
 
-        <Route path="/lend/items" element={<LendDesk />} />
+        <Route path="/lend/items" element={<LendDeskItems />} />
         <Route path="resident">
           <Route path="in" element={<CheckInOut />} />
-          <Route path="out" element={<div>Check Out Resident</div>} />
+          <Route path="out" element={<CheckOutResident />} />
+          <Route path="view/:id" element={<SingleResidentView />} />
         </Route>
 
         <Route path="/desk/workers" element={<div>Desk Workers</div>} />
         <Route path="/lost/items" element={<div>Lost Items</div>} />
+
+        <Route path="/notes" element={<DailyNotes />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<div>Logout</div>} />
