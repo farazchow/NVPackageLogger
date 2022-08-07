@@ -39,7 +39,8 @@ class ResidentView extends Component<objectID, State> {
       year: "",
       homeAddress: "",
       forwardingAddress: "",
-      date: "",
+      dateIn: "",
+      dateOut: "",
       checkedIn: true,
     };
   }

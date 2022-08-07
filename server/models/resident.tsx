@@ -7,8 +7,9 @@ interface IResident {
   year: string;
   homeAddress: string;
   forwardingAddress: string;
-  date: string;
-  checkedIn: Boolean;
+  dateIn: string;
+  dateOut: string;
+  checkedIn: boolean;
 }
 
 const residentSchema = new Schema<IResident>({
@@ -18,7 +19,8 @@ const residentSchema = new Schema<IResident>({
   year: String,
   homeAddress: String,
   forwardingAddress: String,
-  date: String,
+  dateIn: String,
+  dateOut: String,
   checkedIn: Boolean,
 });
 
