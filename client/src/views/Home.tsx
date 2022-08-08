@@ -12,10 +12,10 @@ const Home = () => {
         <div className="container">
           <h1 className="mainText">
             New Vassar Front Desk
-            {/* <img
+            <img
               className="boxIcon"
               src={require("../images/box.svg").default}
-            /> */}
+            />
           </h1>
         </div>
 
