@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { post } from "../../utilities";
 import "../css/home.css";
 import "../css/universal.css";
+import React from "react";
 const Home = () => {
   return (
     <>
