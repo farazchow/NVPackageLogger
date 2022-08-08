@@ -4,12 +4,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
-import { LendDeskItemsForm } from "../components/LendDeskItemsForm";
+// import { LendDeskItemsForm } from "../components/LendDeskItemsForm";
 import { AddDeskItemsForm } from "../components/AddDeskItemsForm";
+import { LendDeskItemsForm } from "../components/LendDeskItemsForm";
 import { IResident } from "../../../server/models/resident";
-import { ModalButton } from "../components/ModalButton";
+import { ModalButton } from "../components/Modal";
 import { get, post } from "../../utilities";
-import { createBootstrapComponent } from "react-bootstrap/esm/ThemeProvider";
+import "../css/lendDeskItems.css";
 
 enum Categories {
   CLEANING = "Cleaning",
@@ -22,39 +23,36 @@ enum Categories {
   OTHER = "Other",
 }
 
-type DeskItemDictionary = {
-  [x: string]: DeskItemInterface[];
-};
-
-interface LendDeskItemsState {
-  allItems: DeskItemInterface[];
-  borrowedItems: DeskItemInterface[];
-  availableItems: DeskItemDictionary;
-  residentData: IResident[];
+enum SHOW {
+  AVAILABLE = "Available Items",
+  BORROWED = "Borrowed Items",
+  ALL = "All Items",
 }
 
 export function LendDeskItems() {
-  // export class LendDeskItems extends Component<{}, LendDeskItemsState> {
   const [allItems, setAllItems] = useState<DeskItemInterface[]>([]);
   const [borrowedItems, setBorrowedItems] = useState<DeskItemInterface[]>([]);
-  const [availableItems, setAvailableItems] = useState<DeskItemDictionary>({});
+  const [availableItems, setAvailableItems] = useState([]);
   const [residentData, setResidentData] = useState<IResident[]>([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [showItems, setShowItems] = useState<DeskItemInterface[]>([]);
+
+  const [isVisible, setIsVisible] = useState(false);
+  const handleClick = () => {
+    setIsVisible(!isVisible);
+  };
 
   useEffect(() => {
     async function getData() {
-      Object.values(Categories).forEach((cat: Categories) => {
-        get("/api/deskItem/getCategoryAvailableItems", {
-          itemCategory: cat,
-        }).then((item: any) =>
-          setAvailableItems((availableItems: DeskItemDictionary) => {
-            availableItems[cat] = item;
-            return availableItems;
-          })
-        );
-      });
       await Promise.all([
         get("/api/deskItem/getAllItems").then((item: any) => {
           setAllItems(item);
+          setShowItems(item);
+        }),
+
+        get("/api/deskItem/getAvailableItems").then((item: any) => {
+          setFilteredItems(item);
+          setAvailableItems(item);
         }),
 
         get("/api/deskItem/getBorrowedItems").then((item: any) => {
@@ -68,6 +66,26 @@ export function LendDeskItems() {
     }
     getData();
   }, []);
+
+  const getItemsToShow = () => {
+    console.log(
+      "current option",
+      (document.getElementById("selectShow") as HTMLInputElement).value
+    );
+    if (
+      (document.getElementById("selectShow") as HTMLInputElement).value ===
+      SHOW.AVAILABLE
+    ) {
+      setShowItems(() => availableItems);
+    } else if (
+      (document.getElementById("selectShow") as HTMLInputElement).value ===
+      SHOW.BORROWED
+    ) {
+      setShowItems(borrowedItems);
+    } else {
+      setShowItems(allItems);
+    }
+  };
 
   async function returnItem(evt: SyntheticEvent, key: number) {
     const item = borrowedItems[key];
@@ -84,7 +102,6 @@ export function LendDeskItems() {
     post("/api/deskItem/returnItem", body).then((res) => {
       document.location.reload();
       console.log("desk Item returned");
-      // document.location.reload();
     });
   }
 
@@ -96,32 +113,39 @@ export function LendDeskItems() {
           <Card className="mb-4">
             <CardHeader className="border-bottom">
               <h6 className="m-0">Lend Items</h6>
+              <LendDeskItemsForm
+                residents={residentData}
+                categories={Object.values(Categories)}
+                availableItems={availableItems}
+                borrowedItems={borrowedItems}
+                allItems={allItems}
+              />
+              ;
               {
-                <LendDeskItemsForm
-                  availableItems={availableItems}
-                  residents={residentData}
-                  categories={Object.values(Categories)}
+                <ModalButton
+                  form={
+                    <AddDeskItemsForm
+                      currentItems={allItems}
+                      categories={Object.values(Categories)}
+                    />
+                  }
+                  title="Edit Items"
+                  text=""
                 />
               }
-
-              {/* <h3> Search Resident Name </h3>
-                <input
-                  type="text"
-                  onChange={(event: SyntheticEvent) =>
-                    this.filterData((event.target as HTMLInputElement).value)
-                  }
-                /> */}
-              {
-                // <ModalButton
-                //   form={
-                //     <AddDeskItemsForm
-                //       currentItems={allItems}
-                //       categories={Object.values(Categories)}
-                //     />
-                //   }
-                //   title="Edit Items"
-                // />
-              }
+              <select
+                id="selectShow"
+                defaultValue={SHOW.BORROWED}
+                onChange={getItemsToShow}
+              >
+                {Object.values(SHOW).map((opt, key) => {
+                  return (
+                    <option value={opt as string} key={key}>
+                      {opt as string}
+                    </option>
+                  );
+                })}
+              </select>
             </CardHeader>
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
@@ -139,8 +163,9 @@ export function LendDeskItems() {
                   </tr>
                 </thead>
                 <tbody>
-                  {borrowedItems ? (
-                    borrowedItems.map((item: any, key: number) => {
+                  {showItems ? (
+                    showItems.map((item: any, key: number) => {
+                      console.log(item);
                       return (
                         <tr key={item._id}>
                           <td>{item.itemName}</td>
@@ -165,18 +190,6 @@ export function LendDeskItems() {
                               Return Item
                             </button>
                           </td>
-                          {/* <td>
-                              <button
-                                className="btn btn-dark btn-sm d-flex justify-content-center"
-                                onClick={() =>
-                                  post("/api/deskItem/delete/desk-item", {
-                                    _id: item._id,
-                                  })
-                                }
-                              >
-                                Delete Item!
-                              </button>
-                            </td> */}
                         </tr>
                       );
                     })
