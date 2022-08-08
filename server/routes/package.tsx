@@ -72,6 +72,7 @@ router.post("/archivePackage", (req: any, res: Response) => {
     createdAt: req.body.createdAt,
     deliveredAt: req.body.deliveredAt,
     forwarded: req.body.forwarded,
+    forwardNote: req.body.forwardNote,
   });
   newArchivePackage
     .save()

@@ -72,10 +72,9 @@ export const LogPackages = () => {
     });
   }
 
-  async function forwardPackage(evt: SyntheticEvent, key: number) {
+  async function forwardPackage(evt: SyntheticEvent, key: number, forwardNote: string) {
     const pckage = data[key];
     const date = new Date();
-
     const body = {
       shipping_id: pckage.shipping_id,
       shipper: pckage.shipper,
@@ -87,6 +86,7 @@ export const LogPackages = () => {
       createdAt: pckage.createdAt,
       deliveredAt: date,
       forwarded: true,
+      forwardNote: forwardNote,
     };
     post("/api/package/archivePackage", body).then((res) => {
       console.log("Package archived!");
@@ -117,7 +117,6 @@ export const LogPackages = () => {
     "Deliver Package",
     "Forward Package",
   ];
-
 
   return (
     <>
@@ -201,17 +200,14 @@ export const LogPackages = () => {
                                   <h3>Forward Package</h3>
                                   <p>
                                     <label>
-                                      Note: <input type="text" name="forward-note" />
+                                      Note: <input type="text" id="forwardNote"/>
                                     </label>
                                   </p>
                                   <button
                                     type="button"
                                     className="btn btn-dark btn-sm d-flex justify-content-center"
                                     onClick={(evt) => {
-                                      document
-                                        .getElementById(`checkbox-${key}`)
-                                        ?.click();
-                                      forwardPackage(evt, key);
+                                      forwardPackage(evt, key, (document.getElementById("forwardNote") as HTMLInputElement).value);
                                     }}
                                   >
                                     Forward

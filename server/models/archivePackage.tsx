@@ -9,6 +9,7 @@ interface ArchivePackageInterface {
   createdAt: Date;
   deliveredAt: Date;
   forwarded: Boolean;
+  forwardNote: String;
 }
 
 const archivePackageSchema = new Schema<ArchivePackageInterface>({
@@ -21,6 +22,7 @@ const archivePackageSchema = new Schema<ArchivePackageInterface>({
   createdAt: { type: Date, immutable: true },
   deliveredAt: { type: Date, immutable: true },
   forwarded: Boolean,
+  forwardNote: String,
 });
 
 const ArchivePackage = model<ArchivePackageInterface>(
