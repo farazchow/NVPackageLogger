@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import { post } from "../../utilities";
+import "../css/home.css";
+import "../css/universal.css";
 
+import React from "react";
 const Home = () => {
   return (
     <>
-      <div className="container-fluid text-sm-center p-5 bg-light">
+      <div className="mainLogo">
         <div className="container">
           <h1 className="mainText">
             New Vassar Front Desk
@@ -25,6 +28,7 @@ const Home = () => {
           </button>
           <br />
           <button
+            className="button-17"
             onClick={() => {
               post("/api/auth/logout");
             }}
