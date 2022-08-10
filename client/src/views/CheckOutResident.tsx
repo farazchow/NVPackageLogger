@@ -11,7 +11,7 @@ import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { CheckOutForm } from "../components/CheckInOutForm";
 import { IResident } from "../../../server/models/resident";
-import { ModalButton } from "../components/Modal";
+import { CheckInModal, CheckOutModal } from "../components/Modal";
 import { ModalFormType } from "../components/CheckInOutForm";
 
 export const CheckOutResident: FunctionComponent = () => {
@@ -125,13 +125,9 @@ const ResidentTable = (props: {}) => {
                           </td>
                           <td>{rsdnt.room}</td>
                           <td>{rsdnt.year}</td>
-                          <ModalButton
-                            form={
-                              <CheckOutForm
-                                // updateStatus={ModalFormOptions.CHECKOUT}
-                                {...rsdnt}
-                              />
-                            }
+
+                          {/* <CheckOutModal
+                            resident={rsdnt}
                             title={"Resident Check-Out"}
                             text={
                               <div className="information2">
@@ -187,8 +183,8 @@ const ResidentTable = (props: {}) => {
                                   State, Zip Code
                                 </p>
                               </div>
-                            }
-                          />
+                            } 
+                          />*/}
                         </tr>
                       );
                     })

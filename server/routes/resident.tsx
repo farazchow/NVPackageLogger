@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { useParams } from "react-router-dom";
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");

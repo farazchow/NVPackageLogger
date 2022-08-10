@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { get, deconstruct } from "../../utilities";
 import { IResident } from "../../../server/models/resident";
 import { CheckOutForm, EditForm } from "../components/CheckInOutForm";
-import { ModalButton } from "../components/Modal";
+import { Modal, CheckOutModal } from "../components/Modal";
 import "../css/residentCheckIn.css";
 import { ModalFormType } from "../components/CheckInOutForm";
 
@@ -53,13 +53,12 @@ const ResidentView = (props: ResidentViewProps) => {
   return (
     <>
       <div>{deconstruct(residentViewState)}</div>
-      <ModalButton
-        form={<EditForm {...residentViewState} />}
+      {/* <Modal
+        children={<EditForm {...residentViewState} />}
         title={"Edit Resident Information"}
-        text={""}
-      />
-      <ModalButton
-        form={<CheckOutForm {...residentViewState} />}
+      /> */}
+      {/* <CheckOutModal
+        children={<CheckOutForm {...residentViewState} />}
         title={"Resident Check-Out"}
         text={
           <div className="information2">
@@ -104,8 +103,8 @@ const ResidentView = (props: ResidentViewProps) => {
               address must be of the form Street, City, State, Zip Code
             </p>
           </div>
-        }
-      />
+        } */}
+      {/* /> */}
     </>
   );
 };

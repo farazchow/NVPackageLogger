@@ -3,7 +3,7 @@ import "../../utilities.css";
 
 const navigations = [
   { path: "/", info: "Home" },
-  { path: "/profile", info: "Profile" },
+  // { path: "/profile", info: "Profile" },
   { path: "/package", info: "Package" },
   { path: "/package/in", info: "Check In Package" },
   { path: "/package/out", info: "Deliver Package" },

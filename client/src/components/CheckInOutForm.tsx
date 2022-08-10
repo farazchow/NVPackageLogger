@@ -4,10 +4,12 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { Title } from "react-bootstrap/lib/Modal";
 import { IResident } from "../../../server/models/resident";
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 import { post } from "../../utilities";
 import "../css/residentCheckIn.css";
+import { Modal } from "./Modal";
+import { SuccessToast, ErrorToast as FailureToast } from "./Toasts";
 
 type FormState = {
   studentId: string;
@@ -21,9 +23,9 @@ type FormState = {
 };
 
 export enum ModalFormType {
-  CHECKIN,
-  CHECKOUT,
-  EDIT,
+  CHECKIN = "post",
+  CHECKOUT = "checkout",
+  EDIT = "edit",
 }
 
 type FormProps = IResident | null;
@@ -39,6 +41,8 @@ const Form = (props: any, formType: number) => {
     checkedIn: true,
     date: new Date(0),
   });
+
+  const [submittedState, setSubmittedState] = useState(false);
 
   useEffect(() => {
     if (props.formType === ModalFormType.CHECKIN) return;
@@ -63,7 +67,7 @@ const Form = (props: any, formType: number) => {
     });
   }
 
-  console.log("type is", formType, formType === ModalFormType.CHECKIN);
+  console.log("type is", formType, props.formType === ModalFormType.CHECKIN);
   console.log(ModalFormType.CHECKIN);
 
   const FormFields = [
@@ -134,34 +138,41 @@ const Form = (props: any, formType: number) => {
   return (
     <>
       <br></br>
-      <div>
+      {submittedState && <SuccessToast />}
+
+      <div style={{ border: "dotted" }}>
         <form
           onSubmit={(e: React.SyntheticEvent) => {
             e.preventDefault();
 
             if (!isFormValid()) return window.alert("Not all Fields Filled");
 
-            switch (props.formType) {
-              case ModalFormType.CHECKIN:
-                post("/api/resident/postResident", formState).then((res) => {
-                  console.log("Checked in resident successful");
-                });
-                break;
-
-              case ModalFormType.EDIT:
-                post("/api/resident/editResident", formState).then((res) => {
-                  console.log("Edited resident successful");
-                });
-                break;
-              case ModalFormType.CHECKOUT:
-                post("/api/resident/checkoutResident", formState).then(
-                  (res) => {
-                    console.log("checkeodut resident successful");
-                  }
-                );
-                break;
-              default:
-            }
+            post(`/api/resident/${props.formType}Resident`)
+              .then(() => console.log("asfdsafsafklj"))
+              .then(() => {
+                setSubmittedState(true);
+                // <Modal
+                //   title={"Sucess!"}
+                //   body={
+                //     <div>
+                //       <h3>"Server has been properly updated"</h3>
+                //     </div>
+                //   }
+                // />;
+              })
+              .catch(
+                (err: Error) => console.log("Error in CheckInOutForm")
+                // <Modal
+                //   title={"We encountered an error"}
+                //   body={
+                //     <div>
+                //       <h3>
+                //         "Failed to update to server. Please try again later"
+                //       </h3>
+                //     </div>
+                //   }
+                // />
+              );
           }}
         >
           <p className="title">Resident Information Form</p>
