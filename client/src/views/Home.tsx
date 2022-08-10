@@ -12,10 +12,10 @@ const Home = () => {
         <div className="container">
           <h1 className="mainText">
             New Vassar Front Desk
-            {/* <img
+            <img
               className="boxIcon"
-              src={require("../images/box.svg").default}
-            /> */}
+              src={require("../images/box.png").default}
+            />
           </h1>
         </div>
 
@@ -33,6 +33,9 @@ const Home = () => {
             Click me to Logout!
           </button>
         </div>
+      </div>
+      <div className="bgImage">
+        <img src={require("../images/general2.png").default}></img>
       </div>
 
       {/* <svg
