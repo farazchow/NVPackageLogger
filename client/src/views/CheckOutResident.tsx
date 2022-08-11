@@ -40,7 +40,7 @@ enum SelectOptions {
   DATEOUT = "dateOut",
 }
 
-const ResidentTable = (props: {}) => {
+const ResidentTable = (props: any) => {
   const [allResidents, setAllResidents] = useState([]);
 
   const [filteredResidents, setFilteredResidents] = useState([]);

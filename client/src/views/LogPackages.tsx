@@ -111,6 +111,7 @@ export const LogPackages = () => {
                   <tr>
                     {headers.map((header, ind) => (
                       <th
+                        key={ind}
                         scope="col"
                         className={
                           ind !== header.length ? "border-0" : "border-end"

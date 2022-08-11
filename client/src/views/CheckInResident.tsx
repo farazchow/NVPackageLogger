@@ -23,14 +23,12 @@ export const CheckInResident: FunctionComponent = () => {
             USPS), and we cannot forward mail internationally (so if you will be
             living internationally, please provide a C/O residing in the US if
             possible).
-            <br />
-            - In general, if you want your mail to be forwarded to someone who
-            is not you or you would like to authorize your mail pick up to
-            someone who is not you, include "C/O Firstname Lastname".
-            <br />
-            - Directly call Ganatra at (𝟐𝟓𝟔) 𝟐𝟓𝟖-𝟗𝟔𝟑𝟎 or email out to the desk
-            supervisors' mailing list 𝐧𝐯-𝐝𝐞𝐬𝐤@𝐦𝐢𝐭.𝐞𝐝𝐮 if you have any questions
-            concerning this form.
+            <br />- In general, if you want your mail to be forwarded to someone
+            who is not you or you would like to authorize your mail pick up to
+            someone who is not you, include {`"`}C/O Firstname Lastname{`"`}.
+            <br />- Directly call Ganatra at (𝟐𝟓𝟔) 𝟐𝟓𝟖-𝟗𝟔𝟑𝟎 or email out to the
+            desk supervisors{`'`} mailing list 𝐧𝐯-𝐝𝐞𝐬𝐤@𝐦𝐢𝐭.𝐞𝐝𝐮 if you have any
+            questions concerning this form.
             <br />
             <br />
             [Note: In the event you are corresponding with affiliates of New
@@ -39,8 +37,8 @@ export const CheckInResident: FunctionComponent = () => {
             one-off mail/package pickup, if you wish to confirm/denote
             authorization for someone else to pickup (or be forwarded) your mail
             on your behalf we ask that you please provide their Full Name &amp;
-            cc' and/or provide reference details for them as needed with respect
-            to the medium of communication]
+            cc{`'`} and/or provide reference details for them as needed with
+            respect to the medium of communication]
             <br />
             <br />
             Thanks, Ganatra

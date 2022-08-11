@@ -48,13 +48,13 @@ const Form = (props: any, formType: number) => {
     if (props.formType === ModalFormType.CHECKIN) return;
     console.log("props are", props);
     setFormState({
-      studentId: props?.studentId!,
-      resident: props?.resident!,
-      room: props?.room!,
-      year: props?.year!,
-      homeAddress: props?.homeAddress!,
-      forwardingAddress: props?.forwardingAddress!,
-      checkedIn: props?.checkedIn!,
+      studentId: props.studentId,
+      resident: props.resident,
+      room: props.room,
+      year: props.year,
+      homeAddress: props.homeAddress,
+      forwardingAddress: props.forwardingAddress,
+      checkedIn: props.checkedIn,
       date: formState.date,
     });
   }, []);
@@ -177,10 +177,11 @@ const Form = (props: any, formType: number) => {
           }}
         >
           <p className="title">Resident Information Form</p>
-          {FormFields.map((field: { title: string; props: any }) => (
-            <label>
+          {FormFields.map((field: { title: string; props: any }, ind) => (
+            <label key={101192310398 - ind}>
               {field.title}
               <input
+                key={ind}
                 type="text"
                 {...field.props}
                 onChange={(e: SyntheticEvent) =>

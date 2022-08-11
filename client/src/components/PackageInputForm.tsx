@@ -102,8 +102,8 @@ export const PackageInputForm = (props: PackageInputProps) => {
       attribute: "shipper",
       children: {
         value: packageInputState.shipper,
-        children: Object.values(PackageShippers).map((option) => (
-          <option>{option}</option>
+        children: Object.values(PackageShippers).map((option, ind) => (
+          <option key={ind}>{option}</option>
         )),
       },
     },
@@ -115,9 +115,9 @@ export const PackageInputForm = (props: PackageInputProps) => {
         value: packageInputState.recipient,
         children: (
           <>
-            <option></option>
-            {props.residents.map((resident) => (
-              <option value={resident.studentId as string}>
+            <option key={14459}></option>
+            {props.residents.map((resident, ind) => (
+              <option key={ind} value={resident.studentId as string}>
                 {(resident.resident as string) + " (" + resident.room + ")"}
               </option>
             ))}
@@ -132,8 +132,8 @@ export const PackageInputForm = (props: PackageInputProps) => {
       attribute: "location",
       children: {
         value: packageInputState.location,
-        children: Object.values(Closets).map((option) => (
-          <option>{option}</option>
+        children: Object.values(Closets).map((option, ind) => (
+          <option key={ind}>{option}</option>
         )),
       },
     },

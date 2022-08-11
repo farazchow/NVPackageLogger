@@ -58,7 +58,7 @@ export async function getUser() {
 }
 
 // Other functions?
-export function deconstruct(obj: Object) {
+export function deconstruct(obj: any) {
   const result = [];
   type ObjectKey = keyof typeof obj;
 
