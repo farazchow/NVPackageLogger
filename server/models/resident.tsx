@@ -1,30 +1,39 @@
 import { Schema, model } from "mongoose";
+import PhoneInput from "react-phone-number-input";
 
-interface IResident {
-  studentId: string;
-  resident: string;
+type ResidentType = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  kerb: string;
+  residentID: string;
   room: string;
   year: string;
   homeAddress: string;
+  phoneNumber: string;
   forwardingAddress: string;
-  dateIn: string;
-  dateOut: string;
+  dateIn: Date;
+  dateOut: Date;
   checkedIn: boolean;
-}
+};
 
-const residentSchema = new Schema<IResident>({
-  studentId: String,
-  resident: String,
+const residentSchema = new Schema<ResidentType>({
+  firstName: String,
+  middleName: String,
+  lastName: String,
+  kerb: String,
+  residentID: String,
   room: String,
   year: String,
   homeAddress: String,
+  phoneNumber: String,
   forwardingAddress: String,
-  dateIn: String,
-  dateOut: String,
+  dateIn: { type: Date, default: Date.now },
+  dateOut: Date,
   checkedIn: Boolean,
 });
 
-const Resident = model<IResident>("Resident", residentSchema);
+const Resident = model<ResidentType>("Resident", residentSchema);
 
 export { Resident };
-export type { IResident };
+export type { ResidentType };

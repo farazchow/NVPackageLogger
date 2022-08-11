@@ -1,4 +1,5 @@
 import { Application, NextFunction, Request, Response } from "express";
+import path from "path";
 
 // Packages
 const mongoose = require("mongoose");
@@ -108,6 +109,7 @@ process.on("SIGBREAK", () => {
 // Static files for images
 app.use(express.static(__dirname + "/client/images"));
 app.use(express.static("build"));
+
 // app.get("*", (req, res) => {
 //   res.sendFile(path.resolve(__dirname, "build", "index.html"));
 // });

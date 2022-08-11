@@ -6,7 +6,7 @@ import {
   JSXElementConstructor,
   useState,
 } from "react";
-import { IResident } from "../../../server/models/resident";
+import { ResidentType } from "../../../server/models/resident";
 
 import { post } from "../../utilities";
 
@@ -27,7 +27,7 @@ type packageState = {
 
 type PackageInputProps = {
   user: string;
-  residents: IResident[];
+  residents: ResidentType[];
 };
 
 enum PackageShippers {
@@ -102,8 +102,8 @@ export const PackageInputForm = (props: PackageInputProps) => {
       attribute: "shipper",
       children: {
         value: packageInputState.shipper,
-        children: Object.values(PackageShippers).map((option, ind) => (
-          <option key={ind}>{option}</option>
+        children: Object.values(PackageShippers).map((option) => (
+          <option>{option}</option>
         )),
       },
     },
@@ -115,10 +115,13 @@ export const PackageInputForm = (props: PackageInputProps) => {
         value: packageInputState.recipient,
         children: (
           <>
-            <option key={14459}></option>
-            {props.residents.map((resident, ind) => (
-              <option key={ind} value={resident.studentId as string}>
-                {(resident.resident as string) + " (" + resident.room + ")"}
+            <option></option>
+            {props.residents.map((resident) => (
+              <option value={resident.residentID as string}>
+                {[resident.firstName, resident.lastName].join(" ") +
+                  " (" +
+                  resident.room +
+                  ")"}
               </option>
             ))}
           </>
@@ -132,8 +135,8 @@ export const PackageInputForm = (props: PackageInputProps) => {
       attribute: "location",
       children: {
         value: packageInputState.location,
-        children: Object.values(Closets).map((option, ind) => (
-          <option key={ind}>{option}</option>
+        children: Object.values(Closets).map((option) => (
+          <option>{option}</option>
         )),
       },
     },
@@ -159,7 +162,7 @@ export const PackageInputForm = (props: PackageInputProps) => {
     <form
       name="packageInputForm"
       onSubmit={async (e: React.SyntheticEvent) => {
-        // e.preventDefault();
+        e.preventDefault();
 
         if (!isValidated()) {
           console.log("Please fill out all fields");
@@ -179,7 +182,6 @@ export const PackageInputForm = (props: PackageInputProps) => {
             createdAt: new Date(),
           });
         });
-        // document.location.reload();
       }}
     >
       {PackageInputFormInput.map((input) => {

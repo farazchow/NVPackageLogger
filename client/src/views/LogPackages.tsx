@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { PackageInterface } from "../../../server/models/package";
-import { IResident } from "../../../server/models/resident";
+import { ResidentType } from "../../../server/models/resident";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -10,7 +10,7 @@ import { get, post } from "../../utilities";
 
 export const LogPackages = () => {
   const [data, setPackageData] = useState<PackageInterface[]>([]);
-  const [resData, setResidentData] = useState<IResident[]>([]);
+  const [resData, setResidentData] = useState<ResidentType[]>([]);
   const checkedIndexes = new Set<number>();
 
   // data fetching

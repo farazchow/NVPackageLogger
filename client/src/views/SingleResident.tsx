@@ -1,8 +1,12 @@
 import { Component, useEffect, useState, FunctionComponent } from "react";
 import { useParams } from "react-router-dom";
 import { get, deconstruct } from "../../utilities";
-import { IResident } from "../../../server/models/resident";
-import { CheckOutForm, EditForm } from "../components/CheckInOutForm";
+import { ResidentType } from "../../../server/models/resident";
+import {
+  CheckOutForm,
+  EditForm,
+  factoryResident,
+} from "../components/CheckInOutForm";
 import {
   Modal,
   CheckOutModal,
@@ -30,24 +34,14 @@ export const SingleResidentView: FunctionComponent = () => {
   }
 };
 
-type State = IResident;
+type State = ResidentType;
 
 type ResidentViewProps = {
   id: string;
 };
 
 const ResidentView = (props: ResidentViewProps) => {
-  const [residentViewState, setResidentViewState] = useState({
-    studentId: "",
-    resident: "",
-    room: "",
-    year: "",
-    homeAddress: "",
-    forwardingAddress: "",
-    dateIn: "",
-    dateOut: "",
-    checkedIn: true,
-  });
+  const [residentViewState, setResidentViewState] = useState(factoryResident());
 
   useEffect(() => {
     get("/api/resident/getResidentById", { id: props.id }).then((res: any) =>
