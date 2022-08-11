@@ -68,7 +68,7 @@ export const LogPackages = () => {
     });
   }
 
-  function onCheckboxClick(evt: SyntheticEvent, index: number) {
+  function toggleCheckbox(evt: SyntheticEvent, index: number) {
     if (checkedIndexes.has(index)) checkedIndexes.delete(index);
     else checkedIndexes.add(index);
   }
@@ -132,10 +132,7 @@ export const LogPackages = () => {
                               type="checkbox"
                               id={`checkbox-${key}`}
                               onClick={(evt) => {
-                                document
-                                  .getElementById(`checkbox-${key}`)
-                                  ?.click();
-                                onCheckboxClick(evt, key);
+                                toggleCheckbox(evt, key);
                               }}
                             />
                           </td>

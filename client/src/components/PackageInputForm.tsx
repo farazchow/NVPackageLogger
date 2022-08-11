@@ -159,7 +159,7 @@ export const PackageInputForm = (props: PackageInputProps) => {
     <form
       name="packageInputForm"
       onSubmit={async (e: React.SyntheticEvent) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         if (!isValidated()) {
           console.log("Please fill out all fields");
@@ -179,6 +179,7 @@ export const PackageInputForm = (props: PackageInputProps) => {
             createdAt: new Date(),
           });
         });
+        // document.location.reload();
       }}
     >
       {PackageInputFormInput.map((input) => {

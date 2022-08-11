@@ -8,7 +8,7 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 import { AddDeskItemsForm } from "../components/AddDeskItemsForm";
 import { LendDeskItemsForm } from "../components/LendDeskItemsForm";
 import { IResident } from "../../../server/models/resident";
-import { ModalButton } from "../components/Modal";
+import { ModalButton } from "../components/ModalButton";
 import { get, post } from "../../utilities";
 // import "../css/lendDeskItems.css";
 
@@ -115,7 +115,6 @@ export function LendDeskItems() {
                     />
                   }
                   title="Add/Edit Item"
-                  text=""
                 />
               }
             </CardHeader>
