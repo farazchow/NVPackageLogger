@@ -53,11 +53,11 @@ const ResidentView = (props: ResidentViewProps) => {
   return (
     <>
       <div>{deconstruct(residentViewState)}</div>
-      {/* <Modal
+      <Modal
         children={<EditForm {...residentViewState} />}
         title={"Edit Resident Information"}
-      /> */}
-      {/* <CheckOutModal
+      />
+      <CheckOutModal
         children={<CheckOutForm {...residentViewState} />}
         title={"Resident Check-Out"}
         text={
@@ -103,8 +103,8 @@ const ResidentView = (props: ResidentViewProps) => {
               address must be of the form Street, City, State, Zip Code
             </p>
           </div>
-        } */}
-      {/* /> */}
+        }
+      />
     </>
   );
 };

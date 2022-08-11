@@ -14,7 +14,7 @@ const Home = () => {
             New Vassar Front Desk
             <img
               className="boxIcon"
-              src={require("../images/box.png").default}
+              // src={require("../images/box.png").default}
             />
           </h1>
         </div>
@@ -35,7 +35,7 @@ const Home = () => {
         </div>
       </div>
       <div className="bgImage">
-        <img src={require("../images/general2.png").default}></img>
+        {/* <img src={require("../images/general2.png").default}></img> */}
       </div>
 
       {/* <svg

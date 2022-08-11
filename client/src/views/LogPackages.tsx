@@ -20,7 +20,7 @@ export const LogPackages = () => {
         get("/api/package/getPackages").then((pckgs: any) =>
           setPackageData(pckgs)
         ),
-        get("/api/resident/getResident").then((residents: any) => {
+        get("/api/resident/getResidents").then((residents: any) => {
           console.log("residents are", residents);
           setResidentData(residents);
         }),
@@ -59,8 +59,8 @@ export const LogPackages = () => {
   }
 
   async function deliverMany(evt: SyntheticEvent) {
-    if (checkedIndexes.size === 0)
-      alert(
+    if (!checkedIndexes.size)
+      return alert(
         `There are no checked boxes you idiot. You buffoon. Who raised you? Do you think I exist just for you to laugh at? Well I don't. I have a soul. A family. And you spit on my kindness by making me deliver zero packages for your own amusement. Rethink your life before you ask me to do anything for you again.`
       );
     checkedIndexes.forEach((index) => {

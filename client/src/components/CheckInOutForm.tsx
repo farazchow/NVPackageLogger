@@ -147,7 +147,7 @@ const Form = (props: any, formType: number) => {
 
             if (!isFormValid()) return window.alert("Not all Fields Filled");
 
-            post(`/api/resident/${props.formType}Resident`)
+            post(`/api/resident/${props.formType}Resident`, formState)
               .then(() => console.log("asfdsafsafklj"))
               .then(() => {
                 setSubmittedState(true);
