@@ -59,8 +59,7 @@ export const AddDeskItemsForm = (props: DeskItemsProps) => {
             e.preventDefault();
 
             if (!isValidated() || !isUnique()) {
-              alert("Please enter item that is not in table!!");
-              return;
+              return alert("Please enter item that is not in table!!");
             }
 
             post("/api/deskItem/postNewItem", deskItemsState).then((res) => {
