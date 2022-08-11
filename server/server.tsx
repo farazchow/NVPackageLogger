@@ -15,6 +15,7 @@ const pckge = require("./routes/package");
 const deskItem = require("./routes/deskItem");
 const notes = require("./routes/notes");
 const rsdnt = require("./routes/resident");
+const lostItem = require("./routes/lostItem");
 
 const PORT = process.env.PORT || 3000;
 const app: Application = express();
@@ -63,6 +64,7 @@ app.use("/api/package", pckge);
 app.use("/api/deskItem", deskItem);
 app.use("/api/notes", notes); // authentication
 app.use("/api/resident", rsdnt);
+app.use("/api/lostItems", lostItem);
 
 // Error Handling
 app.use(

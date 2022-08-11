@@ -14,6 +14,7 @@ import { CheckInResident } from "./src/views/CheckInResident";
 import { CheckOutResident } from "./src/views/CheckOutResident";
 import { SingleResidentView } from "./src/views/SingleResident";
 import { DailyNotes } from "./src/views/Notes";
+import { LostItems } from "./src/views/LostItems";
 
 const App: FunctionComponent = () => {
   /*
@@ -52,7 +53,7 @@ const App: FunctionComponent = () => {
         </Route>
 
         <Route path="/desk/workers" element={<div>Desk Workers</div>} />
-        <Route path="/lost/items" element={<div>Lost Items</div>} />
+        <Route path="/lost/items" element={<LostItems />} />
 
         <Route path="/notes" element={<DailyNotes />} />
 
