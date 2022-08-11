@@ -70,7 +70,7 @@ router.post("/postResident", (req: any, res: Response) => {
 router.post("/checkoutResident", (req: Request, res: Response) => {
   console.log("Checking Out Resident");
   Resident.updateOne(
-    { studentId: req.body.studentId },
+    { residentID: req.body.residentID },
     { $set: { checkedIn: false, dateOut: req.body.date } }
   )
     .then((resi: any) => {
@@ -85,14 +85,22 @@ router.post("/checkoutResident", (req: Request, res: Response) => {
 router.post("/editResident", (req: Request, res: Response) => {
   console.log("updating resident");
   Resident.updateOne(
-    { studentId: req.body.studentId },
+    { residentID: req.body.residentID },
     {
       $set: {
-        resident: req.body.resident,
+        firstName: req.body.firstName,
+        middleName: req.body.middleName,
+        lastName: req.body.lastName,
+        residentID: req.body.residentID,
+        kerb: req.body.kerb,
         room: req.body.room,
         year: req.body.year,
         homeAddress: req.body.homeAddress,
+        phoneNumber: req.body.phoneNumber,
         forwardingAddress: req.body.forwardingAddress,
+        checkedIn: req.body.checkedIn,
+        dateIn: req.body.dateIn,
+        dateOut: req.body.dateOut,
       },
     }
   )
