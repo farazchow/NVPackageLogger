@@ -1,8 +1,9 @@
 import React, { Component, ReactElement, useState } from "react";
 import ReactModal from "react-modal";
-import { CheckOutForm, CheckInForm } from "./CheckInOutForm";
+import { EditForm, CheckOutForm, CheckInForm } from "./CheckInOutForm";
 import { IResident } from "../../../server/models/resident";
 import { Toast } from "./Toasts";
+import { ModalButton } from "./ModalButton";
 
 type ModalProps = {
   title: string;
@@ -34,19 +35,31 @@ type checkInOutProps = {
 };
 
 const CheckOutModal = (props: any, resident: IResident) => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  console.log("props are", props, "resident is", resident);
+
   return (
-    <>
-      <Modal {...props} children={<CheckOutForm {...resident} />} />{" "}
-    </>
-  );
-};
-``;
-const CheckInModal = (props: any) => {
-  return (
-    <>
-      <Modal {...props} children={<CheckInForm />} />{" "}
-    </>
+    <ModalButton
+      form={<CheckOutForm {...props.resident} />}
+      title="Check Out Resident"
+    />
   );
 };
 
-export { CheckOutModal, CheckInModal };
+const CheckInModal = (props: any) => {
+  return <ModalButton form={<CheckInForm />} title="Check In Resident" />;
+};
+
+const EditModal = (props: { resident: IResident }) => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  return (
+    <ModalButton
+      form={<EditForm {...props.resident} />}
+      title="Edit Resident Info"
+    />
+  );
+};
+
+export { CheckOutModal, CheckInModal, EditModal };

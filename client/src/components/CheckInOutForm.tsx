@@ -46,7 +46,7 @@ const Form = (props: any, formType: number) => {
 
   useEffect(() => {
     if (props.formType === ModalFormType.CHECKIN) return;
-
+    console.log("props are", props);
     setFormState({
       studentId: props?.studentId!,
       resident: props?.resident!,
@@ -69,6 +69,7 @@ const Form = (props: any, formType: number) => {
 
   console.log("type is", formType, props.formType === ModalFormType.CHECKIN);
   console.log(ModalFormType.CHECKIN);
+  console.log(formState);
 
   const FormFields = [
     {
