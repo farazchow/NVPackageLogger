@@ -1,8 +1,15 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
+import { Title } from "react-bootstrap/lib/Modal";
 import { IResident } from "../../../server/models/resident";
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 import { post } from "../../utilities";
 import "../css/residentCheckIn.css";
+import { Modal } from "./Modal";
+import { SuccessToast, ErrorToast as FailureToast } from "./Toasts";
 
 type FormState = {
   studentId: string;
@@ -12,13 +19,13 @@ type FormState = {
   homeAddress: string;
   forwardingAddress: string;
   checkedIn: boolean;
-  date: string;
+  date: Date;
 };
 
 export enum ModalFormType {
-  CHECKIN,
-  CHECKOUT,
-  EDIT,
+  CHECKIN = "post",
+  CHECKOUT = "checkout",
+  EDIT = "edit",
 }
 
 type FormProps = IResident | null;
@@ -32,16 +39,14 @@ const Form = (props: any, formType: number) => {
     homeAddress: "",
     forwardingAddress: "",
     checkedIn: true,
-    date: "",
+    date: new Date(0),
   });
 
-  useEffect(() => {
-    console.log("here", formType);
-    if (props.formType === ModalFormType.CHECKIN) {
-      console.log("lkjaslfdkjasfdlkjlaskdjf");
-      return;
-    }
+  const [submittedState, setSubmittedState] = useState(false);
 
+  useEffect(() => {
+    if (props.formType === ModalFormType.CHECKIN) return;
+    console.log("props are", props);
     setFormState({
       studentId: props?.studentId!,
       resident: props?.resident!,
@@ -50,29 +55,21 @@ const Form = (props: any, formType: number) => {
       homeAddress: props?.homeAddress!,
       forwardingAddress: props?.forwardingAddress!,
       checkedIn: props?.checkedIn!,
-      date: "",
+      date: formState.date,
     });
   }, []);
-
-  useEffect(() => {
-    console.log("formState changed", formState);
-    console.log("props", props, props.formType);
-  }, [formState]);
 
   function isFormValid() {
     console.log("IsValid Check");
     console.log(formState);
-    for (const val of Object.values(formState)) {
-      console.log("val = ", val);
-      if (val == "") {
-        return false;
-      }
-    }
-    return true;
+    return Object.values(formState).every((state) => {
+      return state !== "";
+    });
   }
 
-  console.log("type is", formType, formType === ModalFormType.CHECKIN);
+  console.log("type is", formType, props.formType === ModalFormType.CHECKIN);
   console.log(ModalFormType.CHECKIN);
+  console.log(formState);
 
   const FormFields = [
     {
@@ -132,44 +129,64 @@ const Form = (props: any, formType: number) => {
     },
   ];
 
+  const updateFormState = (event: SyntheticEvent, key: any): void => {
+    setFormState((prevState) => ({
+      ...prevState,
+      [key]: (event.target as HTMLInputElement).value,
+    }));
+  };
+
   return (
     <>
       <br></br>
-      <div>
+      {submittedState && <SuccessToast />}
+
+      <div style={{ border: "dotted" }}>
         <form
           onSubmit={(e: React.SyntheticEvent) => {
             e.preventDefault();
-            if (formType === ModalFormType.CHECKIN) {
-              if (isFormValid()) {
-                post("/api/resident/postResident", formState).then((res) => {
-                  console.log("Posted!");
-                });
-                document.location.reload();
-              } else {
-                window.alert("Not all Fields Filled");
-              }
-            } else if (formType === ModalFormType.EDIT) {
-              if (isFormValid()) {
-                post("/api/resident/editResident", formState).then((res) => {
-                  console.log(formState);
-                  console.log("Posted!");
-                });
-                // document.location.reload();
-              } else {
-                window.alert("Not all Fields Filled");
-              }
-            } else if (formType === ModalFormType.CHECKOUT) {
-              post("/api/resident/checkoutResident", formState).then((res) => {
-                console.log("checked out!");
-              });
-            }
+
+            if (!isFormValid()) return window.alert("Not all Fields Filled");
+
+            post(`/api/resident/${props.formType}Resident`, formState)
+              .then(() => console.log("asfdsafsafklj"))
+              .then(() => {
+                setSubmittedState(true);
+                // <Modal
+                //   title={"Sucess!"}
+                //   body={
+                //     <div>
+                //       <h3>"Server has been properly updated"</h3>
+                //     </div>
+                //   }
+                // />;
+              })
+              .catch(
+                (err: Error) => console.log("Error in CheckInOutForm")
+                // <Modal
+                //   title={"We encountered an error"}
+                //   body={
+                //     <div>
+                //       <h3>
+                //         "Failed to update to server. Please try again later"
+                //       </h3>
+                //     </div>
+                //   }
+                // />
+              );
           }}
         >
           <p className="title">Resident Information Form</p>
-          {FormFields.map((field: { title: string; props: object }) => (
+          {FormFields.map((field: { title: string; props: any }) => (
             <label>
               {field.title}
-              <input type="text" {...field.props} />
+              <input
+                type="text"
+                {...field.props}
+                onChange={(e: SyntheticEvent) =>
+                  updateFormState(e, field.props.attribute!)
+                }
+              />
             </label>
           ))}
 

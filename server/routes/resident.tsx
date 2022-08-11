@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { useParams } from "react-router-dom";
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -20,13 +19,9 @@ router.get("/", (req: Request, res: Response) => {
 router.get("/getResidents", (req: Request, res: Response) => {
   console.log("Sending resident data back to you!");
 
-  const { checkedIn } = req.query;
-  console.log("checked in is", checkedIn);
+  const { checkedIn } = req.query || {};
 
-  Resident.find({}).then((result: any) =>
-    console.log("all residents are", result)
-  );
-  Resident.find({ checkedIn: checkedIn === "true" }).then(
+  Resident.find(checkedIn !== undefined ? { checkedIn } : {}).then(
     (resident: typeof Resident[]) => {
       console.log("resident found is", resident);
       res.send(resident);

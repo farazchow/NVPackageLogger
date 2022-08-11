@@ -2,16 +2,17 @@ import React, { FunctionComponent } from "react";
 import { CheckInForm } from "../components/CheckInOutForm";
 import { ModalFormType } from "../components/CheckInOutForm";
 import "../css/residentCheckIn.css";
+import "../css/universal.css";
 
 export const CheckInResident: FunctionComponent = () => {
   // change message to check in message
   return (
     <>
-      <h1 className="informationTitle">Resident Check-in</h1>
+      <h1 className="mainTitle">Resident Check-in</h1>
 
       <section>
-        <div className="information2">
-          <p>Welcome to New Vassar! </p>
+        <div className="secondaryInfoBox">
+          <p className="welcomeMsg">Welcome to New Vassar!</p>
           <br />
           Change this message to check-in message????
           <p>
