@@ -3,7 +3,7 @@ import React, { createElement, Component, useState } from "react";
 import { DeskItemInterface } from "../../../server/models/deskItem";
 import { post } from "../../utilities";
 import { ModalButton } from "./ModalButton";
-import { IResident } from "../../../server/models/resident";
+import { ResidentType } from "../../../server/models/resident";
 import { PathEnumOrString } from "mongoose/types/inferschematype";
 
 type DeskItemDictionary = {
@@ -24,7 +24,7 @@ type DeskItemsState = {
 
 type DeskItemsProps = {
   availableItems: DeskItemDictionary;
-  residents: IResident[];
+  residents: ResidentType[];
   categories: string[];
 };
 
@@ -96,11 +96,11 @@ export const LendDeskItemsForm = (props: DeskItemsProps) => {
             <>
               <option></option>
               {props.residents.map((resident) => (
-                <option
-                  value={resident.studentId as string}
-                  key={Math.random()}
-                >
-                  {(resident.resident as string) + " (" + resident.room + ")"}
+                <option value={resident.residentID} key={Math.random()}>
+                  {[resident.firstName, resident.lastName].join(" ") +
+                    " (" +
+                    resident.room +
+                    ")"}
                 </option>
               ))}
             </>

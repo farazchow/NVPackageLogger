@@ -41,15 +41,21 @@ router.get("/getResidentById", (req: Request, res: Response) => {
 
 router.post("/postResident", (req: any, res: Response) => {
   console.log("posting resident");
+
   const newResident = new Resident({
-    studentId: req.body.studentId,
-    resident: req.body.resident,
+    firstName: req.body.firstName,
+    middleName: req.body.middleName,
+    lastName: req.body.lastName,
+    residentID: req.body.residentID,
+    kerb: req.body.kerb,
     room: req.body.room,
     year: req.body.year,
     homeAddress: req.body.homeAddress,
+    phoneNumber: req.body.phoneNumber,
     forwardingAddress: req.body.forwardingAddress,
-    dateIn: req.body.dateIn,
     checkedIn: req.body.checkedIn,
+    dateIn: req.body.dateIn,
+    dateOut: req.body.dateOut,
   });
 
   newResident

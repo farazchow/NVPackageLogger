@@ -4,13 +4,13 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { get, post } from "../../utilities";
+import { get, post, deconstruct } from "../../utilities";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { CheckOutForm } from "../components/CheckInOutForm";
-import { IResident } from "../../../server/models/resident";
+import { ResidentType } from "../../../server/models/resident";
 import { CheckInModal, CheckOutModal } from "../components/Modal";
 import { ModalFormType } from "../components/CheckInOutForm";
 
@@ -28,13 +28,14 @@ type State = {
 };
 
 interface ResidentTableState {
-  allResidents: IResident[];
-  filteredResidents: IResident[];
+  allResidents: ResidentType[];
+  filteredResidents: ResidentType[];
 }
 
 enum SelectOptions {
-  STUDENT = "resident",
-  STUDENTID = "studentId",
+  NAME = "Full Name",
+  KERB = "kerb",
+  RESIDENTID = "residentID",
   ROOM = "room",
   YEAR = "year",
   DATEIN = "dateIn",
@@ -62,22 +63,29 @@ const ResidentTable = (props: {}) => {
   }, []);
 
   function filterData(value: string, filterby: string) {
-    console.log("in filter data", filteredResidents);
-
     return setFilteredResidents(
-      allResidents.filter((data: any) =>
-        data[filterby].toLowerCase().startsWith(value.toLowerCase())
+      allResidents.filter((resident: ResidentType & any) =>
+        filterby !== SelectOptions.NAME
+          ? resident[filterby]
+              .toLowerCase()
+              .startsWith(value.toLowerCase().trim())
+          : resident.firstName
+              .toLowerCase()
+              .startsWith(value.toLowerCase().trim()) ||
+            resident.lastName
+              .toLowerCase()
+              .startsWith(value.toLowerCase().trim())
       )
     );
   }
   return (
     <>
-      <h3> Search Resident Name </h3>
+      <h3> Search Resident by Property </h3>
       <select id="selectOption">
-        {Object.values(SelectOptions).map((opt, key) => {
+        {Object.values(SelectOptions).map((opt: string, key: number) => {
           return (
-            <option value={opt as string} key={key}>
-              {opt as string}
+            <option value={opt} key={key}>
+              {opt}
             </option>
           );
         })}
@@ -107,6 +115,12 @@ const ResidentTable = (props: {}) => {
                       Resident Name
                     </th>
                     <th scope="col" className="border-0">
+                      Kerb
+                    </th>
+                    <th scope="col" className="border-0">
+                      Phone Number
+                    </th>
+                    <th scope="col" className="border-0">
                       Room
                     </th>
                     <th scope="col" className="border-0">
@@ -116,18 +130,24 @@ const ResidentTable = (props: {}) => {
                 </thead>
                 <tbody>
                   {filteredResidents ? (
-                    filteredResidents.map((rsdnt: any, key: number) => {
-                      return (
-                        <tr key={key}>
-                          <td>{rsdnt.studentId}</td>
-                          <td>
-                            <a href={`view/${rsdnt._id}`}>{rsdnt.resident}</a>
-                          </td>
-                          <td>{rsdnt.room}</td>
-                          <td>{rsdnt.year}</td>
-                        </tr>
-                      );
-                    })
+                    filteredResidents.map(
+                      (rsdnt: ResidentType & { _id: string }, key: number) => {
+                        return (
+                          <tr key={key}>
+                            <td>{rsdnt.residentID}</td>
+                            <td>
+                              <a href={`view/${rsdnt._id}`}>
+                                {[rsdnt.firstName, rsdnt.lastName].join(" ")}
+                              </a>
+                            </td>
+                            <td>{rsdnt.kerb}</td>
+                            <td>{rsdnt.phoneNumber}</td>
+                            <td>{rsdnt.room}</td>
+                            <td>{rsdnt.year}</td>
+                          </tr>
+                        );
+                      }
+                    )
                   ) : (
                     <tr>
                       <td align={"center"}>No data available</td>

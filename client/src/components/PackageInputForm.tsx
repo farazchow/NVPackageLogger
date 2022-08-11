@@ -6,7 +6,7 @@ import {
   JSXElementConstructor,
   useState,
 } from "react";
-import { IResident } from "../../../server/models/resident";
+import { ResidentType } from "../../../server/models/resident";
 
 import { post } from "../../utilities";
 
@@ -27,7 +27,7 @@ type packageState = {
 
 type PackageInputProps = {
   user: string;
-  residents: IResident[];
+  residents: ResidentType[];
 };
 
 enum PackageShippers {
@@ -117,8 +117,11 @@ export const PackageInputForm = (props: PackageInputProps) => {
           <>
             <option></option>
             {props.residents.map((resident) => (
-              <option value={resident.studentId as string}>
-                {(resident.resident as string) + " (" + resident.room + ")"}
+              <option value={resident.residentID as string}>
+                {[resident.firstName, resident.lastName].join(" ") +
+                  " (" +
+                  resident.room +
+                  ")"}
               </option>
             ))}
           </>

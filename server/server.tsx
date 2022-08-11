@@ -1,4 +1,5 @@
 import { Application, NextFunction, Request, Response } from "express";
+import path from "path";
 
 // Packages
 const mongoose = require("mongoose");
@@ -15,6 +16,7 @@ const pckge = require("./routes/package");
 const deskItem = require("./routes/deskItem");
 const notes = require("./routes/notes");
 const rsdnt = require("./routes/resident");
+// const lostItem = require("./routes/lostItem");
 
 const PORT = process.env.PORT || 3000;
 const app: Application = express();
@@ -63,6 +65,7 @@ app.use("/api/package", pckge);
 app.use("/api/deskItem", deskItem);
 app.use("/api/notes", notes); // authentication
 app.use("/api/resident", rsdnt);
+// app.use("/api/lostItems", lostItem);
 
 // Error Handling
 app.use(
@@ -106,6 +109,7 @@ process.on("SIGBREAK", () => {
 // Static files for images
 app.use(express.static(__dirname + "/client/images"));
 app.use(express.static("build"));
+
 // app.get("*", (req, res) => {
 //   res.sendFile(path.resolve(__dirname, "build", "index.html"));
 // });

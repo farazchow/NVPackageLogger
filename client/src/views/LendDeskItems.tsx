@@ -6,7 +6,7 @@ import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { LendDeskItemsForm } from "../components/LendDeskItemsForm";
 import { AddDeskItemsForm } from "../components/AddDeskItemsForm";
-import { IResident } from "../../../server/models/resident";
+import { ResidentType } from "../../../server/models/resident";
 import { ModalButton } from "../components/ModalButton";
 import { get, post } from "../../utilities";
 import { createBootstrapComponent } from "react-bootstrap/esm/ThemeProvider";
@@ -30,7 +30,7 @@ interface LendDeskItemsState {
   allItems: DeskItemInterface[];
   borrowedItems: DeskItemInterface[];
   availableItems: DeskItemDictionary;
-  residentData: IResident[];
+  residentData: ResidentType[];
 }
 
 export function LendDeskItems() {
@@ -38,7 +38,7 @@ export function LendDeskItems() {
   const [allItems, setAllItems] = useState<DeskItemInterface[]>([]);
   const [borrowedItems, setBorrowedItems] = useState<DeskItemInterface[]>([]);
   const [availableItems, setAvailableItems] = useState<DeskItemDictionary>({});
-  const [residentData, setResidentData] = useState<IResident[]>([]);
+  const [residentData, setResidentData] = useState<ResidentType[]>([]);
 
   useEffect(() => {
     async function getData() {
