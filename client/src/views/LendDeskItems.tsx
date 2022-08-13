@@ -102,17 +102,17 @@ export function LendDeskItems() {
   const filterData = (value: string) => {
     setItemsOut(
       alldeskItems.filter(
-        (item: any) =>
+        (item: DeskItemInterface) =>
           item.currentStatus !== "Available" &&
           item.itemName
-            .toLowercase()
+            .toLowerCase()
             .trim()
             .startsWith(value.toLowerCase().trim())
       )
     );
     setItemsIn(
       alldeskItems.filter(
-        (item: any) =>
+        (item: DeskItemInterface) =>
           item.currentStatus === "Available" &&
           item.itemName
             .toLowerCase()
