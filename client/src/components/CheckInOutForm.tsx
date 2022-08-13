@@ -196,11 +196,12 @@ const Form = (props: FormProps) => {
           }}
         >
           <p className="title">Resident Information Form</p>
-          {FormFields.map((field: { title: string; props: any }) => (
-            <label>
+          {FormFields.map((field: { title: string; props: any }, index) => (
+            <label key={index}>
               {field.title}
               <input
                 type="text"
+                key={index}
                 {...field.props}
                 onChange={(e: SyntheticEvent) =>
                   updateFormState(e, field.props.attribute!)

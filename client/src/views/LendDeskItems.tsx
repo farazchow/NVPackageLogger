@@ -99,9 +99,48 @@ export function LendDeskItems() {
     });
   };
 
+  const filterData = (value: string) => {
+    setItemsOut(
+      alldeskItems.filter(
+        (item: any) =>
+          item.currentStatus !== "Available" &&
+          item.itemName
+            .toLowercase()
+            .trim()
+            .startsWith(value.toLowerCase().trim())
+      )
+    );
+    setItemsIn(
+      alldeskItems.filter(
+        (item: any) =>
+          item.currentStatus === "Available" &&
+          item.itemName
+            .toLowerCase()
+            .trim()
+            .startsWith(value.toLowerCase().trim())
+      )
+    );
+    console.log("set both");
+  };
+
+  useEffect(() => {
+    console.log("items in changed", itemsIn);
+  }, [itemsIn]);
+  useEffect(() => {
+    console.log("items out changed", itemsOut);
+  }, [itemsOut]);
   return (
     <>
       <h2>Lend Desk Item</h2>
+      <input
+        type="text"
+        onChange={(event: SyntheticEvent) =>
+          filterData(
+            (event.target as HTMLInputElement).value
+            // (document.getElementById("selectOption") as HTMLInputElement).value
+          )
+        }
+      />
       <Row>
         <Col>
           <Card className="mb-4">
