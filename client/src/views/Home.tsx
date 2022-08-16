@@ -10,32 +10,18 @@ const Home = () => {
     <>
       <div className="mainTitle">
         <div className="container">
-          <h1 className="mainText">
-            New Vassar Front Desk
-            {/* <img
-              className="boxIcon"
-              src={require("../images/box.png").default}
-            /> */}
-          </h1>
+          <h1 className="mainText">New Vassar Front Desk</h1>
         </div>
 
         <div className="userButtons">
-          <Link to="/l">
-            <button className="button-17">Login Here</button>
+          <Link to="/logout">
+            <button className="button-17">Login</button>
           </Link>
           <br />
-          <button
-            className="button-17"
-            onClick={() => {
-              post("/api/auth/logout");
-            }}
-          >
-            Click me to Logout!
-          </button>
+          <Link to="/Logout">
+            <button className="button-17">Logout</button>
+          </Link>
         </div>
-      </div>
-      <div className="bgImage">
-        {/* <img src={require("../images/general2.png").default}></img> */}
       </div>
     </>
   );
