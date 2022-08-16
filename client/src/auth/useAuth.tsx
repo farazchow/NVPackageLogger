@@ -55,8 +55,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
-    post("/api/auth/logout");
-    window.location.href = "https://nvdesk.mit.edu/Shibboleth.sso/Logout";
+    post("/api/auth/logout").then(
+      () =>
+        (window.location.href = "https://nvdesk.mit.edu/Shibboleth.sso/Logout")
+    );
   };
 
   const auth = useMemo(

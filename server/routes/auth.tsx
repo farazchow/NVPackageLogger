@@ -15,7 +15,7 @@ export enum ACCESS {
 }
 
 router.use((req: Request, res: Response, next: NextFunction) => {
-  console.log("user currently signed in is", req.user);
+  console.log("user currently signed in is", (req.session as any).user);
   next();
   console.log("finished calling next!");
 });
@@ -29,9 +29,9 @@ export function requireLogin(
     "requiring login",
     (req.session as any).user,
     "user logged in: ",
-    (req.session as any).user !== null
+    (req.session as any).user || false
   );
-  return (req.session as any).user !== null ? next() : res.redirect("/");
+  return (req.session as any).user ? next() : res.redirect("/");
 }
 
 export function requireLogout(
@@ -41,7 +41,7 @@ export function requireLogout(
 ): void {
   console.log(
     "requiring logout",
-    req.user,
+    (req.session as any).user,
     "user logged out: ",
     !req.isAuthenticated()
   );
@@ -54,7 +54,8 @@ export function requireAdmin(
   next: NextFunction
 ): void {
   const admins = [ACCESS.DESKCAPTAIN, ACCESS.DESKMANAGER, ACCESS.DESKMANAGER];
-  return req.user && admins.includes((req as any).user.accessLevel)
+  return (req.session as any).user &&
+    admins.includes((req as any).user.accessLevel)
     ? next()
     : res.redirect("/unauthorized");
 }
@@ -116,6 +117,7 @@ function login(req: Request, res: Response, next: NextFunction): void {
 function logout(req: Request, res: Response, next: NextFunction): void {
   // remove cookies + session data; https: stackoverflow.com/questions/6928648/what-is-the-point-of-unsetting-the-cookie-during-a-logout-from-a-php-session
   console.log("attempting to logout user", (req.session as any).user);
+  (req.session as any).user = null;
   // We login using cookies so calling doing this is effectively the same
   req.session.destroy((err: Error): {} => {
     res.clearCookie("connect.sid", { path: "/" });
@@ -176,7 +178,7 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     console.log(
       "Oops! You cannot authorize this page. Will redirect you in 5 seconds.",
-      req.user
+      (req.session as any).user
     );
 
     setTimeout(() => {
