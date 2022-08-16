@@ -55,6 +55,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
+    setUser(null);
     post("/api/auth/logout").then(
       () =>
         (window.location.href = "https://nvdesk.mit.edu/Shibboleth.sso/Logout")
