@@ -44,9 +44,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     console.log("getting user again!:", user);
-    get<user>("/api/auth/whoami").then((user: user | JSON) => {
+    get("/api/auth/whoami").then((user: any) => {
       console.log("user found is", user);
-      setUser(user ? user : null);
+      setUser(user.kerb ? user : null);
     });
   }, []);
 

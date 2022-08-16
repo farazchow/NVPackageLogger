@@ -169,7 +169,7 @@ router.get("/whoami", (req: Request, res: Response, next: NextFunction) => {
   console.log("whoamis", (req.session as any).user);
   return (req.session as any).user
     ? res.send((req.session as any).user)
-    : res.send({});
+    : res.send(null);
 });
 
 router.get(
