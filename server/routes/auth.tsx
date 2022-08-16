@@ -167,7 +167,9 @@ router.get("/login", (req: Request, res: Response, next: NextFunction) => {
 
 router.get("/whoami", (req: Request, res: Response, next: NextFunction) => {
   console.log("whoamis", (req.session as any).user);
-  return (req.session as any).user ? res.send(req.user) : res.send({});
+  return (req.session as any).user
+    ? res.send((req.session as any).user)
+    : res.send({});
 });
 
 router.get(
