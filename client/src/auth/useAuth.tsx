@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   authContext.displayName = "AUTHORIZATION!";
 
   useEffect(() => {
-    console.log("getting user again!:, user);
+    console.log("getting user again!:", user);
     get<user>("/api/auth/whoami").then((user: user | JSON) => {
       console.log("user found is", user);
       setUser(user ? user : null);
