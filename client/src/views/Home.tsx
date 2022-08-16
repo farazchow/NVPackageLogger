@@ -14,13 +14,19 @@ const Home = () => {
         </div>
 
         <div className="userButtons">
-          <Link to="/logout">
-            <button className="button-17">Login</button>
-          </Link>
+          <button
+            className="button-17"
+            onClick={() => (window.location.href = "/Session")}
+          >
+            Login
+          </button>
           <br />
-          <Link to="/Logout">
-            <button className="button-17">Logout</button>
-          </Link>
+          <button
+            className="button-17"
+            onClick={() => (window.location.href = "/Shibboleth.sso/Logout")}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </>
