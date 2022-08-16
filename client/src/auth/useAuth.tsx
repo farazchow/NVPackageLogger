@@ -2,18 +2,18 @@ import React, { useState, ReactNode, useEffect } from "react";
 import { createContext, useContext, useMemo } from "react";
 import { useNavigate, Navigate, Outlet } from "react-router-dom";
 import { user } from "../../../server/models/user";
-import { get } from "../../utilities";
+import { get, post } from "../../utilities";
 
 type authContext = {
   user: string | null;
-  login: (() => void) | null;
-  logout: (() => void) | null;
+  login: () => void;
+  logout: () => void;
 };
 
 const authContext = createContext<authContext>({
   user: "",
-  login: null,
-  logout: null,
+  login: () => ({}),
+  logout: () => ({}),
 });
 
 type ProtectedRouteProps = {
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
-    setUser(null);
+    post("/api/auth/logout");
     window.location.href = "https://nvdesk.mit.edu/Shibboleth.sso/Logout";
   };
 

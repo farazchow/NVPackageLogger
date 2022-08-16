@@ -27,11 +27,11 @@ export function requireLogin(
 ): void {
   console.log(
     "requiring login",
-    req.user,
+    (req.session as any).user,
     "user logged in: ",
-    req.isAuthenticated()
+    (req.session as any).user !== null
   );
-  return req.isAuthenticated() ? next() : res.redirect("/login");
+  return (req.session as any).user !== null ? next() : res.redirect("/");
 }
 
 export function requireLogout(
@@ -115,11 +115,10 @@ function login(req: Request, res: Response, next: NextFunction): void {
 
 function logout(req: Request, res: Response, next: NextFunction): void {
   // remove cookies + session data; https: stackoverflow.com/questions/6928648/what-is-the-point-of-unsetting-the-cookie-during-a-logout-from-a-php-session
-  console.log("attempting to logout user", req.user);
+  console.log("attempting to logout user", (req.session as any).user);
   // We login using cookies so calling doing this is effectively the same
   req.session.destroy((err: Error): {} => {
     res.clearCookie("connect.sid", { path: "/" });
-    req.logOut((err: Error) => {});
 
     if (err) {
       return res.send({ error: "Logout error" }); // TODO: try logging out again (need to cap this so doesn't lead to infinite loop)
@@ -129,10 +128,10 @@ function logout(req: Request, res: Response, next: NextFunction): void {
   });
 }
 
-router.post("/signup", requireLogout, signUp);
+// router.post("/signup", requireLogout, signUp);
 
-// Login
-router.post("/login", requireLogout, login);
+// // Login
+// router.post("/login", requireLogout, login);
 
 // Logout
 router.post("/logout", requireLogin, logout);

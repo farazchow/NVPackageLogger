@@ -5,7 +5,10 @@ import { post } from "../../utilities";
 import "../css/home.css";
 import "../css/universal.css";
 import React from "react";
+import { useAuth } from "../auth/useAuth";
 const Home = () => {
+  const { login, logout } = useAuth();
+
   return (
     <>
       <div className="mainTitle">
@@ -14,17 +17,11 @@ const Home = () => {
         </div>
 
         <div className="userButtons">
-          <button
-            className="button-17"
-            onClick={() => (window.location.href = "/Session")}
-          >
+          <button className="button-17" onClick={login}>
             Login
           </button>
           <br />
-          <button
-            className="button-17"
-            onClick={() => (window.location.href = "/Shibboleth.sso/Logout")}
-          >
+          <button className="button-17" onClick={logout}>
             Logout
           </button>
         </div>
