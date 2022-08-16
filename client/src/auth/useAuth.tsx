@@ -1,6 +1,7 @@
 import React, { useState, ReactNode, useEffect } from "react";
 import { createContext, useContext, useMemo } from "react";
 import { useNavigate, Navigate, Outlet } from "react-router-dom";
+import { user } from "../../../server/models/user";
 import { get } from "../../utilities";
 
 type authContext = {
@@ -42,7 +43,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   authContext.displayName = "AUTHORIZATION!";
 
   useEffect(() => {
-    get("/api/auth/whoami").then((user: any) => setUser(user));
+    console.log("getting user again!");
+    get<user>("/api/auth/whoami").then((user: user | JSON) => {
+      console.log("user found is", user);
+      setUser(user ? user : null);
+    });
   }, []);
 
   const login = () => {

@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import NavBar from "./src/components/NavBar";
 import Login from "./src/components/Login";
 
-import { UserInterface } from "../server/models/user";
+import { user } from "../server/models/user";
 import { Routes, Route } from "react-router-dom";
 
 import NotFound from "./src/views/NotFound";
@@ -20,7 +20,7 @@ import { AuthProvider, ProtectedRoute } from "./src/auth/useAuth";
 const App: FunctionComponent = () => {
   /*
    */
-  const [data, setData] = useState<UserInterface[]>([]);
+  const [data, setData] = useState<user[]>([]);
 
   // dummy load data for data fetching
   useEffect(() => {

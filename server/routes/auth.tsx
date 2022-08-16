@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import passport from "passport";
+import { user } from "../models/user";
 const express = require("express");
 const bcrypt = require("bcrypt");
 
@@ -137,22 +138,36 @@ router.post("/login", requireLogout, login);
 router.post("/logout", requireLogin, logout);
 
 router.get("/login", (req: Request, res: Response, next: NextFunction) => {
-  const { kerb } = req.query;
-
   // TODO: ensure request is from shib-session.php and nowhere else
-  if (kerb) {
-    console.log("kerb is", kerb);
-    const session: any = req.session;
-    session.user = kerb;
+  const { kerb } = req.query;
+  console.log("kerb is", kerb);
 
-    return res.send(kerb);
-  }
+  if (!kerb) return res.redirect("https://nvdesk.mit.edu/Session");
 
-  return res.redirect("https://nvdesk.mit.edu/Session");
+  const email = kerb + "@mit.edu";
+
+  User.findOne({ kerb }, (err: Error, user: user) => {
+    if (!user) {
+      // make a new worker
+      const newUser = new User({
+        kerb,
+        email,
+        accessLevel: ACCESS.DESKWORKER,
+      });
+
+      newUser.save().catch((err: Error) => {
+        console.log("Error received while trying to signup"); // TODO: is this what we want? consider trying to log in again
+      });
+    }
+
+    (req.session as any).user = user;
+    return res.redirect(302, "/");
+  });
 });
 
 router.get("/whoami", (req: Request, res: Response, next: NextFunction) => {
-  return req.user ? res.send(req.user) : res.send(null);
+  console.log("whoamis", (req.session as any).user);
+  return (req.session as any).user ? res.send(req.user) : res.send({});
 });
 
 router.get(
