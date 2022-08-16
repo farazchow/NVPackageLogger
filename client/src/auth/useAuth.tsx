@@ -38,11 +38,11 @@ type AuthProviderProps = {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<null | string>(null);
+  const [user, setUser] = useState<any>(null);
   authContext.displayName = "AUTHORIZATION!";
 
   useEffect(() => {
-    get("/api/whoami").then((user: any) => setUser(user));
+    get("/api/auth/whoami").then((user: any) => setUser(user));
   }, []);
 
   const login = () => {

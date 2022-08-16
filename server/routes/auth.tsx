@@ -136,8 +136,23 @@ router.post("/login", requireLogout, login);
 // Logout
 router.post("/logout", requireLogin, logout);
 
+router.get("/login", (req: Request, res: Response, next: NextFunction) => {
+  const { kerb } = req.query;
+
+  // TODO: ensure request is from shib-session.php and nowhere else
+  if (kerb) {
+    console.log("kerb is", kerb);
+    const session: any = req.session;
+    session.user = kerb;
+
+    return res.send(kerb);
+  }
+
+  return res.redirect("https://nvdesk.mit.edu/Session");
+});
+
 router.get("/whoami", (req: Request, res: Response, next: NextFunction) => {
-  return !req.user ? res.send({}) : res.send(req.user);
+  return req.user ? res.send(req.user) : res.send(null);
 });
 
 router.get(
