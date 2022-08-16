@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     console.log("getting user again!:", user);
     get("/api/auth/whoami").then((user: any) => {
       console.log("user found is", user);
-      setUser(user.kerb ? user : null);
+      setUser(user ? user : null);
     });
   }, []);
 
