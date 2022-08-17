@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       console.log("user found is", user);
       setUser(user ? user : null);
     });
-  });
+  }, []);
 
   const login = () => {
     window.location.href = "https://nvdesk.mit.edu/Session";
