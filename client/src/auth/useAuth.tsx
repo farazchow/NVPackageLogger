@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       console.log("user found is", user);
       setUser(user ? user : null);
     });
-  }, []);
+  });
 
   const login = () => {
     window.location.href = "https://nvdesk.mit.edu/Session";
@@ -56,22 +56,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     setUser(null);
-    // console.log("user is", user);
-    // post("/api/auth/logout").then(
-    //   () =>
-    //     (window.location.href = "https://nvdesk.mit.edu/Shibboleth.sso/Logout")
-    // );
+    console.log("user is", user);
+    post("/api/auth/logout").then(
+      () =>
+        (window.location.href = "https://nvdesk.mit.edu/Shibboleth.sso/Logout")
+    );
   };
-
-  useEffect(() => {
-    if (!user) {
-      post("/api/auth/logout").then(
-        () =>
-          (window.location.href =
-            "https://nvdesk.mit.edu/Shibboleth.sso/Logout")
-      );
-    }
-  }, [user]);
 
   const auth = useMemo(
     () => ({

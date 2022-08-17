@@ -31,6 +31,7 @@ export function requireLogin(
     "user logged in: ",
     (req.session as any).user || false
   );
+
   return (req.session as any).user ? next() : res.redirect("/");
 }
 
@@ -43,9 +44,15 @@ export function requireLogout(
     "requiring logout",
     (req.session as any).user,
     "user logged out: ",
-    !req.isAuthenticated()
+    (req.session as any).user !== null &&
+      (req.session as any).user !== undefined
   );
-  return !req.isAuthenticated() ? next() : res.redirect("/");
+
+  const loggedIn =
+    (req.session as any).user !== null &&
+    (req.session as any).user !== undefined;
+
+  return loggedIn ? next() : res.redirect("/");
 }
 
 export function requireAdmin(
@@ -58,43 +65,6 @@ export function requireAdmin(
     admins.includes((req as any).user.accessLevel)
     ? next()
     : res.redirect("/unauthorized");
-}
-
-async function signUp(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> {
-  const { firstName, lastName, email, password } = req.body;
-  const exists = await User.exists({ email: email });
-  console.log("signup from post", req.body);
-  if (exists) {
-    // we just redirect if a user exists -> TODO: throw error instead
-    return res.redirect("/login");
-  }
-
-  bcrypt.genSalt(10, function (err: Error, salt: number) {
-    if (err) return next(err);
-    bcrypt.hash(password, salt, async function (err: Error, hash: any) {
-      if (err) return next(err);
-
-      const newAdmin = new User({
-        firstName,
-        lastName,
-        email,
-        createdAt: Date.now(),
-        happinessLevel: Math.random() * 10,
-        password: hash,
-      });
-
-      newAdmin
-        .save()
-        .then(() => login(req, res, next))
-        .catch((err: Error) => {
-          console.log("Error received while trying to signup"); // TODO: is this what we want? consider trying to log in again
-        });
-    });
-  });
 }
 
 function login(req: Request, res: Response, next: NextFunction): void {
