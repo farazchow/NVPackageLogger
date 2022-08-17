@@ -99,7 +99,7 @@ export const LendDeskItemsForm = (props: DeskItemsProps) => {
                 <option value={resident.residentID} key={Math.random()}>
                   {[resident.firstName, resident.lastName].join(" ") +
                     " (" +
-                    resident.room +
+                    resident.semesters[resident.semesters.length - 1].room +
                     ")"}
                 </option>
               ))}

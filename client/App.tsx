@@ -10,8 +10,8 @@ import Unauthorized from "./src/views/Unauthorizated";
 import Home from "./src/views/Home";
 import LogPackages from "./src/views/LogPackages";
 import LendDeskItems from "./src/views/LendDeskItems";
-import { CheckInResident } from "./src/views/CheckInResident";
 import { CheckOutResident } from "./src/views/CheckOutResident";
+import { CheckInResident } from "./src/views/CheckInResident";
 import { SingleResidentView } from "./src/views/SingleResident";
 import { DailyNotes } from "./src/views/Notes";
 import { LostItems } from "./src/views/LostItems";
@@ -47,8 +47,8 @@ const App: FunctionComponent = () => {
 
         <Route path="/lend/items" element={<LendDeskItems />} />
         <Route path="resident">
-          <Route path="in" element={<CheckInResident />} />
           <Route path="out" element={<CheckOutResident />} />
+          <Route path="in" element={<CheckInResident />} />
           <Route path="view/:id" element={<SingleResidentView />} />
         </Route>
 

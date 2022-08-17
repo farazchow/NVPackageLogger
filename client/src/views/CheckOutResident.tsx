@@ -9,7 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
-import { CheckOutForm } from "../components/CheckInOutForm";
+import { AddForm } from "../components/CheckInOutForm";
 import { ResidentType } from "../../../server/models/resident";
 import { CheckInModal, CheckOutModal } from "../components/Modal";
 import { ModalFormType } from "../components/CheckInOutForm";
@@ -24,6 +24,7 @@ export const CheckOutResident: FunctionComponent = () => {
 
 type State = {
   studentId: string;
+  viewModal: boolean;
 };
 
 interface ResidentTableState {
@@ -79,6 +80,11 @@ const ResidentTable = (props: any) => {
   }
   return (
     <>
+      <div>
+        Make this a button onclick to view modal
+        <AddForm />
+      </div>
+
       <h3> Search Resident by Property </h3>
       <select id="selectOption">
         {Object.values(SelectOptions).map((opt: string, key: number) => {
@@ -141,7 +147,9 @@ const ResidentTable = (props: any) => {
                             </td>
                             <td>{rsdnt.kerb}</td>
                             <td>{rsdnt.phoneNumber}</td>
-                            <td>{rsdnt.room}</td>
+                            <td>
+                              {rsdnt.semesters[rsdnt.semesters.length - 1].room}
+                            </td>
                             <td>{rsdnt.year}</td>
                           </tr>
                         );

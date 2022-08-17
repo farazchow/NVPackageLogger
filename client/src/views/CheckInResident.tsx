@@ -1,62 +1,152 @@
-import React, { FunctionComponent } from "react";
-import { CheckInForm } from "../components/CheckInOutForm";
+import React, {
+  FunctionComponent,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
+import { get, post, deconstruct } from "../../utilities";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import CardHeader from "react-bootstrap/esm/CardHeader";
+import { ResidentType } from "../../../server/models/resident";
+import { CheckInModal, AddModal } from "../components/Modal";
 import { ModalFormType } from "../components/CheckInOutForm";
-import "../css/residentCheckIn.css";
-import "../css/universal.css";
 
 export const CheckInResident: FunctionComponent = () => {
-  // change message to check in message
   return (
     <>
-      <h1 className="mainTitle">Resident Check-in</h1>
+      <ResidentTable />
+    </>
+  );
+};
 
-      <section>
-        <div className="secondaryInfoBox">
-          <p className="welcomeMsg">Welcome to New Vassar!</p>
-          <br />
-          Change this message to check-in message????
-          <p>
-            A few things to be aware of...
-            <br />
-            <br />
-            - New Vassar Desk cannot directly forward packages (other than
-            USPS), and we cannot forward mail internationally (so if you will be
-            living internationally, please provide a C/O residing in the US if
-            possible).
-            <br />- In general, if you want your mail to be forwarded to someone
-            who is not you or you would like to authorize your mail pick up to
-            someone who is not you, include {`"`}C/O Firstname Lastname{`"`}.
-            <br />- Directly call Ganatra at (𝟐𝟓𝟔) 𝟐𝟓𝟖-𝟗𝟔𝟑𝟎 or email out to the
-            desk supervisors{`'`} mailing list 𝐧𝐯-𝐝𝐞𝐬𝐤@𝐦𝐢𝐭.𝐞𝐝𝐮 if you have any
-            questions concerning this form.
-            <br />
-            <br />
-            [Note: In the event you are corresponding with affiliates of New
-            Vassar Desk via phone [𝟔𝟏𝟕-𝟐𝟓𝟑-𝟗𝟓𝟎𝟓] or via email
-            (𝐧𝐯-𝐝𝐞𝐬𝐤𝐰𝐨𝐫𝐤𝐞𝐫𝐬@𝐦𝐢𝐭.𝐞𝐝𝐮 or 𝐧𝐯-𝐬𝐮𝐦𝐦𝐞𝐫𝐝𝐞𝐬𝐤@𝐦𝐢𝐭.𝐞𝐝𝐮) to arrange a
-            one-off mail/package pickup, if you wish to confirm/denote
-            authorization for someone else to pickup (or be forwarded) your mail
-            on your behalf we ask that you please provide their Full Name &amp;
-            cc{`'`} and/or provide reference details for them as needed with
-            respect to the medium of communication]
-            <br />
-            <br />
-            Thanks, Ganatra
-          </p>
-          <p>
-            Please fill out the following form as part of the checkin process
-          </p>
-          <p>
-            Please pay attention to forwarding address as we will use this for
-            forwarding mail and packages when you are not here. The forwarding
-            address must be of the form Street, City, State, Zip Code
-          </p>
-        </div>
-      </section>
+type State = {
+  studentId: string;
+};
 
-      <CheckInForm />
+interface ResidentTableState {
+  allResidents: ResidentType[];
+  filteredResidents: ResidentType[];
+}
 
-      <br></br>
+enum SelectOptions {
+  NAME = "Full Name",
+  KERB = "kerb",
+  RESIDENTID = "residentID",
+}
+
+const ResidentTable = (props: any) => {
+  const [allResidents, setAllResidents] = useState([]);
+  const [filteredResidents, setFilteredResidents] = useState([]);
+
+  useEffect(() => {
+    Promise.all([
+      get("/api/resident/getNotCheckedInResidents", { checkedIn: true }).then(
+        (residents: any) => {
+          setAllResidents(residents);
+        }
+      ),
+      get("/api/resident/getNotCheckedInResidents", { checkedIn: true }).then(
+        (residents: any) => {
+          setFilteredResidents(residents);
+        }
+      ),
+    ]);
+  }, []);
+
+  function filterData(value: string, filterby: string) {
+    return setFilteredResidents(
+      allResidents.filter((resident: ResidentType & any) =>
+        filterby !== SelectOptions.NAME
+          ? resident[filterby]
+              .toLowerCase()
+              .startsWith(value.toLowerCase().trim())
+          : resident.firstName
+              .toLowerCase()
+              .startsWith(value.toLowerCase().trim()) ||
+            resident.lastName
+              .toLowerCase()
+              .startsWith(value.toLowerCase().trim())
+      )
+    );
+  }
+  return (
+    <>
+      <td>
+        <AddModal />
+      </td>
+      <h3> Search Resident by Property </h3>
+      <select id="selectOption">
+        {Object.values(SelectOptions).map((opt: string, key: number) => {
+          return (
+            <option value={opt} key={key}>
+              {opt}
+            </option>
+          );
+        })}
+      </select>
+      <input
+        type="text"
+        onChange={(event: SyntheticEvent) =>
+          filterData(
+            (event.target as HTMLInputElement).value,
+            (document.getElementById("selectOption") as HTMLInputElement).value
+          )
+        }
+      />
+
+      <Row>
+        <Col>
+          <Card className="mb-4">
+            <Card.Title>Residents</Card.Title>
+            <Card.Body className="p-0 pb-3">
+              <table data-size="small" className="table mb-0">
+                <thead className="bg-light">
+                  <tr>
+                    <th scope="col" className="border-0">
+                      Student ID
+                    </th>
+                    <th scope="col" className="border-0">
+                      Kerb
+                    </th>
+                    <th scope="col" className="border-0">
+                      Resident Name
+                    </th>
+                    <th>Check-In Resident</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredResidents ? (
+                    filteredResidents.map(
+                      (rsdnt: ResidentType & { _id: string }, key: number) => {
+                        return (
+                          <tr key={key}>
+                            <td>{rsdnt.residentID}</td>
+                            <td>{rsdnt.kerb}</td>
+                            <td>
+                              <a href={`view/${rsdnt._id}`}>
+                                {[rsdnt.firstName, rsdnt.lastName].join(" ")}
+                              </a>
+                            </td>
+                            <td>
+                              <CheckInModal resident={rsdnt} />
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )
+                  ) : (
+                    <tr>
+                      <td align={"center"}>No data available</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </>
   );
 };

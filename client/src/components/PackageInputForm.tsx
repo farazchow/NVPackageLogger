@@ -120,7 +120,7 @@ export const PackageInputForm = (props: PackageInputProps) => {
               <option value={resident.residentID} key={index}>
                 {[resident.firstName, resident.lastName].join(" ") +
                   " (" +
-                  resident.room +
+                  resident.semesters[resident.semesters.length - 1].room +
                   ")"}
               </option>
             ))}

@@ -1,6 +1,6 @@
 import React, { Component, ReactElement, useState } from "react";
 import ReactModal from "react-modal";
-import { EditForm, CheckOutForm, CheckInForm } from "./CheckInOutForm";
+import { EditForm, CheckOutForm, CheckInForm, AddForm } from "./CheckInOutForm";
 import { ResidentType } from "../../../server/models/resident";
 import { Toast } from "./Toasts";
 import { ModalButton } from "./ModalButton";
@@ -48,7 +48,20 @@ const CheckOutModal = (props: any, resident: ResidentType) => {
 };
 
 const CheckInModal = (props: any) => {
-  return <ModalButton form={<CheckInForm />} title="Check In Resident" />;
+  const [modalIsOpen, setModalIsOpen] = useState(open);
+
+  return (
+    <ModalButton
+      form={<CheckInForm {...props.resident} />}
+      title="Check In Resident"
+    />
+  );
+};
+
+const AddModal = (props: any, open: boolean) => {
+  const [modalIsOpen, setModalIsOpen] = useState(open);
+
+  return <ModalButton form={<AddForm />} title="Add Resident" />;
 };
 
 const EditModal = (props: { resident: ResidentType }) => {
@@ -62,4 +75,4 @@ const EditModal = (props: { resident: ResidentType }) => {
   );
 };
 
-export { CheckOutModal, CheckInModal, EditModal };
+export { CheckOutModal, CheckInModal, EditModal, AddModal };

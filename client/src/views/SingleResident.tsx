@@ -53,7 +53,6 @@ const ResidentView = (props: ResidentViewProps) => {
     <>
       <div>{deconstruct(residentViewState)}</div>
       <EditModal resident={{ ...residentViewState }} />
-
       <CheckOutModal resident={{ ...residentViewState }} />
     </>
   );

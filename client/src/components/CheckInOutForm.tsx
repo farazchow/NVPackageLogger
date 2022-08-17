@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import { Title } from "react-bootstrap/lib/Modal";
 import { ResidentType } from "../../../server/models/resident";
+import { Semester, SemesterType } from "../../../server/models/semester";
 import { post } from "../../utilities";
 import "../css/residentCheckIn.css";
 import { Modal } from "./Modal";
@@ -17,13 +18,15 @@ type FormProps = {
 };
 
 export enum ModalFormType {
-  CHECKIN = "post",
+  CHECKIN = "checkin",
   CHECKOUT = "checkout",
+  ADD = "post",
   EDIT = "edit",
 }
 
 const Form = (props: FormProps) => {
   const { resident, formType } = props;
+  const emptySemester: SemesterType[] = [];
   const [formState, setFormState] = useState({
     firstName: "",
     middleName: "",
@@ -38,41 +41,67 @@ const Form = (props: FormProps) => {
     checkedIn: true,
     dateIn: new Date(0),
     dateOut: new Date(0),
+    notes: "",
+    semesters: emptySemester,
   });
 
   const [submittedState, setSubmittedState] = useState(false);
 
   useEffect(() => {
-    if (formType === ModalFormType.CHECKIN) return;
+    if (formType === ModalFormType.ADD) return;
     console.log("props are", props);
-    setFormState({
+    setFormState((prevState) => ({
+      ...prevState,
       firstName: resident.firstName,
       middleName: resident.middleName,
       lastName: resident.lastName,
       residentID: resident.residentID,
       kerb: resident.kerb,
-      room: resident.room,
       year: resident.year,
       homeAddress: resident.homeAddress,
       phoneNumber: resident.phoneNumber,
       forwardingAddress: resident.forwardingAddress,
       checkedIn: resident.checkedIn,
-      dateIn: resident.dateIn,
-      dateOut: resident.dateOut,
-    });
+    }));
+    if (
+      typeof resident.semesters != "undefined" &&
+      resident.semesters !== null &&
+      resident.semesters.length > 0
+    ) {
+      setFormState((prevState) => ({
+        ...prevState,
+        room: resident.semesters[resident.semesters.length - 1].room,
+        dateIn: resident.semesters[resident.semesters.length - 1].dateIn,
+        dateOut: resident.semesters[resident.semesters.length - 1].dateOut,
+        notes: resident.semesters[resident.semesters.length - 1].notes,
+        semesters: resident.semesters,
+      }));
+    }
   }, []);
 
-  function isFormValid() {
+  function isFormValid(formType: string) {
     console.log("IsValid Check");
     console.log(formState);
-    return Object.values(formState).every((state) => {
-      return state !== "";
-    });
+    if (formType === ModalFormType.ADD) {
+      return formState.kerb !== "" && formState.residentID !== "";
+    } else {
+      return Object.values(formState).every((state) => {
+        return state !== "";
+      });
+    }
   }
 
-  console.log("type is", formType, formType === ModalFormType.CHECKIN);
-  console.log(ModalFormType.CHECKIN);
   console.log(formState);
+
+  const room = "W46-####";
+  if (
+    typeof resident.semesters != "undefined" &&
+    resident.semesters !== null &&
+    resident.semesters.length > 0
+  ) {
+    console.log(resident.semesters);
+    const room = resident.semesters[resident.semesters.length - 1].room;
+  }
 
   const FormFields = [
     {
@@ -108,7 +137,7 @@ const Form = (props: FormProps) => {
         name: "kerb",
         attribute: "kerb",
         placeholder: resident.kerb || "Kerberos (Not Email)",
-        disabled: formType !== ModalFormType.CHECKIN,
+        disabled: formType !== ModalFormType.ADD,
       },
     },
     {
@@ -117,7 +146,7 @@ const Form = (props: FormProps) => {
         name: "id",
         attribute: "residentID",
         placeholder: resident.residentID || "9-digit number",
-        disabled: formType !== ModalFormType.CHECKIN,
+        disabled: formType !== ModalFormType.ADD,
       },
     },
     {
@@ -125,7 +154,7 @@ const Form = (props: FormProps) => {
       props: {
         name: "room",
         attribute: "room",
-        placeholder: resident.room || "W46-####",
+        placeholder: room || "W46-####",
         disabled: formType === ModalFormType.CHECKOUT,
       },
     },
@@ -185,14 +214,29 @@ const Form = (props: FormProps) => {
           onSubmit={(e: React.SyntheticEvent) => {
             e.preventDefault();
 
-            if (!isFormValid()) return window.alert("Not all Fields Filled");
+            if (!isFormValid(formType))
+              return window.alert("Not all Fields Filled");
 
+            if (
+              formType === ModalFormType.CHECKIN ||
+              formType === ModalFormType.EDIT
+            ) {
+              const newSem = new Semester({
+                room: formState.room,
+                dateIn: formState.dateIn,
+                dateOut: formState.dateOut,
+                notes: formState.notes,
+              });
+              setFormState((prevState) => ({
+                ...prevState,
+                semesters: [...formState.semesters, newSem],
+              }));
+            }
             post(`/api/resident/${formType}Resident`, formState)
-              .then(() => console.log("asfdsafsafklj"))
               .then(() => {
                 setSubmittedState(true);
               })
-              .catch((err: Error) => console.log("Error in CheckInOutForm"));
+              .catch((err: Error) => console.log("Error in form"));
           }}
         >
           <p className="title">Resident Information Form</p>
@@ -225,23 +269,24 @@ export const factoryResident = () => {
     lastName: "",
     residentID: "",
     kerb: "",
-    room: "",
     year: "",
     homeAddress: "",
     phoneNumber: "",
     forwardingAddress: "",
     checkedIn: true,
-    dateIn: new Date(0),
-    dateOut: new Date(0),
+    semesters: [
+      new Semester({
+        room: "",
+        dateIn: new Date(0),
+        dateOut: new Date(0),
+        notes: "",
+      }),
+    ],
   };
 };
 
-const CheckInForm = () => {
-  return (
-    <Form
-      {...{ resident: factoryResident(), formType: ModalFormType.CHECKIN }}
-    />
-  );
+const CheckInForm = (resident: ResidentType) => {
+  return <Form {...{ resident: resident, formType: ModalFormType.CHECKIN }} />;
 };
 
 const CheckOutForm = (resident: ResidentType) => {
@@ -252,4 +297,10 @@ const EditForm = (resident: ResidentType) => {
   return <Form {...{ resident: resident, formType: ModalFormType.EDIT }} />;
 };
 
-export { CheckInForm, CheckOutForm, EditForm };
+const AddForm = () => {
+  return (
+    <Form {...{ resident: factoryResident(), formType: ModalFormType.ADD }} />
+  );
+};
+
+export { CheckInForm, CheckOutForm, EditForm, AddForm };
