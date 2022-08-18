@@ -15,9 +15,9 @@ import { ModalFormType } from "../components/CheckInOutForm";
 
 export const CheckInResident: FunctionComponent = () => {
   return (
-    <>
-      <ResidentTable />
-    </>
+    // <>
+    <ResidentTable />
+    // </>
   );
 };
 

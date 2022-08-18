@@ -48,7 +48,7 @@ const CheckOutModal = (props: any, resident: ResidentType) => {
 };
 
 const CheckInModal = (props: any) => {
-  const [modalIsOpen, setModalIsOpen] = useState(open);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (
     <ModalButton
@@ -59,7 +59,7 @@ const CheckInModal = (props: any) => {
 };
 
 const AddModal = (props: any, open: boolean) => {
-  const [modalIsOpen, setModalIsOpen] = useState(open);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return <ModalButton form={<AddForm />} title="Add Resident" />;
 };

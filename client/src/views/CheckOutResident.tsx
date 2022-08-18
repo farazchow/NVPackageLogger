@@ -16,9 +16,9 @@ import { ModalFormType } from "../components/CheckInOutForm";
 
 export const CheckOutResident: FunctionComponent = () => {
   return (
-    <>
-      <ResidentTable />
-    </>
+    // <>
+    <ResidentTable />
+    // </>
   );
 };
 
@@ -148,7 +148,10 @@ const ResidentTable = (props: any) => {
                             <td>{rsdnt.kerb}</td>
                             <td>{rsdnt.phoneNumber}</td>
                             <td>
-                              {rsdnt.semesters[rsdnt.semesters.length - 1].room}
+                              {rsdnt.semesters.length
+                                ? rsdnt.semesters[rsdnt.semesters.length - 1]
+                                    .room
+                                : "Not Assigned"}
                             </td>
                             <td>{rsdnt.year}</td>
                           </tr>
