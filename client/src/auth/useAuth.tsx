@@ -55,12 +55,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
-    setUser(null);
     console.log("user is", user);
-    post("/api/auth/logout").then(
-      () =>
-        (window.location.href = "https://nvdesk.mit.edu/Shibboleth.sso/Logout")
-    );
+    post("/api/auth/logout")
+      .then(
+        () => fetch("https://nvdesk.mit.edu/Shibboleth.sso/Logout")
+        // (window.location.href = "https://nvdesk.mit.edu/Shibboleth.sso/Logout")
+      )
+      .then(() => setUser(null))
+      .then(() => console.log("finished logging out!", user));
   };
 
   const auth = useMemo(
