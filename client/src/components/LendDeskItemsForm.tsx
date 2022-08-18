@@ -3,7 +3,7 @@ import React, { createElement, Component, useState } from "react";
 import { DeskItemInterface } from "../../../server/models/deskItem";
 import { post } from "../../utilities";
 import { ModalButton } from "./ModalButton";
-import { ResidentType } from "../../../server/models/resident";
+import { resident } from "../../../server/models/resident";
 import { PathEnumOrString } from "mongoose/types/inferschematype";
 
 type DeskItemDictionary = {
@@ -24,7 +24,7 @@ type DeskItemsState = {
 
 type DeskItemsProps = {
   availableItems: DeskItemDictionary;
-  residents: ResidentType[];
+  residents: resident[];
   categories: string[];
 };
 

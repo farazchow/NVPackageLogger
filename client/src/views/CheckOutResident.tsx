@@ -10,7 +10,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { AddForm } from "../components/CheckInOutForm";
-import { ResidentType } from "../../../server/models/resident";
+import { resident } from "../../../server/models/resident";
 import { CheckInModal, CheckOutModal } from "../components/Modal";
 import { ModalFormType } from "../components/CheckInOutForm";
 
@@ -28,8 +28,8 @@ type State = {
 };
 
 interface ResidentTableState {
-  allResidents: ResidentType[];
-  filteredResidents: ResidentType[];
+  allResidents: resident[];
+  filteredResidents: resident[];
 }
 
 enum SelectOptions {
@@ -51,6 +51,7 @@ const ResidentTable = (props: any) => {
     Promise.all([
       get("/api/resident/getResidents", { checkedIn: true }).then(
         (residents: any) => {
+          console.log("gotten all res", residents);
           setAllResidents(residents);
         }
       ),
@@ -64,7 +65,7 @@ const ResidentTable = (props: any) => {
 
   function filterData(value: string, filterby: string) {
     return setFilteredResidents(
-      allResidents.filter((resident: ResidentType & any) =>
+      allResidents.filter((resident: resident & any) =>
         filterby !== SelectOptions.NAME
           ? resident[filterby]
               .toLowerCase()
@@ -135,29 +136,26 @@ const ResidentTable = (props: any) => {
                 </thead>
                 <tbody>
                   {filteredResidents ? (
-                    filteredResidents.map(
-                      (rsdnt: ResidentType & { _id: string }, key: number) => {
-                        return (
-                          <tr key={key}>
-                            <td>{rsdnt.residentID}</td>
-                            <td>
-                              <a href={`view/${rsdnt._id}`}>
-                                {[rsdnt.firstName, rsdnt.lastName].join(" ")}
-                              </a>
-                            </td>
-                            <td>{rsdnt.kerb}</td>
-                            <td>{rsdnt.phoneNumber}</td>
-                            <td>
-                              {rsdnt.semesters.length
-                                ? rsdnt.semesters[rsdnt.semesters.length - 1]
-                                    .room
-                                : "Not Assigned"}
-                            </td>
-                            <td>{rsdnt.year}</td>
-                          </tr>
-                        );
-                      }
-                    )
+                    filteredResidents.map((rsdnt: resident, key: number) => {
+                      return (
+                        <tr key={key}>
+                          <td>{rsdnt.residentID}</td>
+                          <td>
+                            <a href={`view/${rsdnt._id}`}>
+                              {[rsdnt.firstName, rsdnt.lastName].join(" ")}
+                            </a>
+                          </td>
+                          <td>{rsdnt.kerb}</td>
+                          <td>{rsdnt.phoneNumber}</td>
+                          <td>
+                            {rsdnt.semesters.length
+                              ? rsdnt.semesters[rsdnt.semesters.length - 1].room
+                              : "Not Assigned"}
+                          </td>
+                          <td>{rsdnt.year}</td>
+                        </tr>
+                      );
+                    })
                   ) : (
                     <tr>
                       <td align={"center"}>No data available</td>

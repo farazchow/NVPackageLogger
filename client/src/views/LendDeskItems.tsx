@@ -7,7 +7,7 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 // import { LendDeskItemsForm } from "../components/LendDeskItemsForm";
 import { AddDeskItemsForm } from "../components/AddDeskItemsForm";
 import { LendDeskItemsForm } from "../components/LendDeskItemsForm";
-import { ResidentType } from "../../../server/models/resident";
+import { resident } from "../../../server/models/resident";
 import { ModalButton } from "../components/ModalButton";
 import { get, post } from "../../utilities";
 // import "../css/lendDeskItems.css";

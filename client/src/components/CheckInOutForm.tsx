@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import React, {
   FunctionComponent,
   SyntheticEvent,
@@ -5,16 +6,16 @@ import React, {
   useState,
 } from "react";
 import { Title } from "react-bootstrap/lib/Modal";
-import { ResidentType } from "../../../server/models/resident";
-import { Semester, SemesterType } from "../../../server/models/semester";
+import { resident, shadowResident } from "../../../server/models/resident";
+import { Semester, semester } from "../../../server/models/semester";
 import { post } from "../../utilities";
 import "../css/residentCheckIn.css";
 import { Modal } from "./Modal";
 import { SuccessToast, ErrorToast as FailureToast } from "./Toasts";
 
 type FormProps = {
-  resident: ResidentType;
-  formType: ModalFormType;
+  resident: any;
+  formType: any;
 };
 
 export enum ModalFormType {
@@ -24,9 +25,8 @@ export enum ModalFormType {
   EDIT = "edit",
 }
 
-const Form = (props: FormProps) => {
-  const { resident, formType } = props;
-  const emptySemester: SemesterType[] = [];
+const Form = ({ resident, formType }: FormProps) => {
+  const emptySemester: semester[] = [];
   const [formState, setFormState] = useState({
     firstName: "",
     middleName: "",
@@ -49,7 +49,7 @@ const Form = (props: FormProps) => {
 
   useEffect(() => {
     if (formType === ModalFormType.ADD) return;
-    console.log("props are", props);
+
     setFormState((prevState) => ({
       ...prevState,
       firstName: resident.firstName,
@@ -264,6 +264,7 @@ const Form = (props: FormProps) => {
 
 export const factoryResident = () => {
   return {
+    _id: new mongoose.Types.ObjectId(),
     firstName: "",
     middleName: "",
     lastName: "",
@@ -285,15 +286,15 @@ export const factoryResident = () => {
   };
 };
 
-const CheckInForm = (resident: ResidentType) => {
+const CheckInForm = (resident: resident) => {
   return <Form {...{ resident: resident, formType: ModalFormType.CHECKIN }} />;
 };
 
-const CheckOutForm = (resident: ResidentType) => {
+const CheckOutForm = (resident: resident) => {
   return <Form {...{ resident: resident, formType: ModalFormType.CHECKOUT }} />;
 };
 
-const EditForm = (resident: ResidentType) => {
+const EditForm = (resident: resident) => {
   return <Form {...{ resident: resident, formType: ModalFormType.EDIT }} />;
 };
 

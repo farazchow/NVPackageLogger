@@ -1,15 +1,16 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
-interface RoomInterface {
+type room = {
+  _id: Types.ObjectId;
   residents: [];
   number: string;
   keycode: string;
   size: string;
   status: string;
   keyAmount: number;
-}
+};
 
-const roomSchema = new Schema<RoomInterface>({
+const roomSchema = new Schema<room>({
   residents: Array,
   number: String,
   keycode: String,
@@ -18,7 +19,7 @@ const roomSchema = new Schema<RoomInterface>({
   keyAmount: Number,
 });
 
-const Room = model<RoomInterface>("Room", roomSchema);
+const Room = model<room>("Room", roomSchema, "rooms");
 
 export { Room };
-export type { RoomInterface };
+export type { room };

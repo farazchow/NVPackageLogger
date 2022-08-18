@@ -9,7 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
-import { ResidentType } from "../../../server/models/resident";
+import { resident } from "../../../server/models/resident";
 import { CheckInModal, AddModal } from "../components/Modal";
 import { ModalFormType } from "../components/CheckInOutForm";
 
@@ -26,8 +26,8 @@ type State = {
 };
 
 interface ResidentTableState {
-  allResidents: ResidentType[];
-  filteredResidents: ResidentType[];
+  allResidents: resident[];
+  filteredResidents: resident[];
 }
 
 enum SelectOptions {
@@ -57,7 +57,7 @@ const ResidentTable = (props: any) => {
 
   function filterData(value: string, filterby: string) {
     return setFilteredResidents(
-      allResidents.filter((resident: ResidentType & any) =>
+      allResidents.filter((resident: resident & any) =>
         filterby !== SelectOptions.NAME
           ? resident[filterby]
               .toLowerCase()
@@ -119,7 +119,7 @@ const ResidentTable = (props: any) => {
                 <tbody>
                   {filteredResidents ? (
                     filteredResidents.map(
-                      (rsdnt: ResidentType & { _id: string }, key: number) => {
+                      (rsdnt: resident & { _id: string }, key: number) => {
                         return (
                           <tr key={key}>
                             <td>{rsdnt.residentID}</td>

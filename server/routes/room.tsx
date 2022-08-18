@@ -36,7 +36,7 @@ router.post("/createRoom", (req: any, res: Response) => {
 
   newRoom
     .save()
-    .then((resi: any) => res.send(resi))
+    .then((room: any) => res.send(room))
     .catch((err: any) => {
       console.log("error creating room", err);
       res.status(500).send({ message: "unknown error" });

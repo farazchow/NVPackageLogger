@@ -1,7 +1,7 @@
 import React, { Component, ReactElement, useState } from "react";
 import ReactModal from "react-modal";
 import { EditForm, CheckOutForm, CheckInForm, AddForm } from "./CheckInOutForm";
-import { ResidentType } from "../../../server/models/resident";
+import { resident } from "../../../server/models/resident";
 import { Toast } from "./Toasts";
 import { ModalButton } from "./ModalButton";
 
@@ -34,7 +34,7 @@ type checkInOutProps = {
   form: ReactElement;
 };
 
-const CheckOutModal = (props: any, resident: ResidentType) => {
+const CheckOutModal = (props: any, resident: resident) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   console.log("props are", props, "resident is", resident);
@@ -64,7 +64,7 @@ const AddModal = (props: any, open: boolean) => {
   return <ModalButton form={<AddForm />} title="Add Resident" />;
 };
 
-const EditModal = (props: { resident: ResidentType }) => {
+const EditModal = (props: { resident: resident }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (

@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const { Resident } = require("../models/resident");
-import { Semester, SemesterType } from "../models/semester";
+import { Semester, semester } from "../models/semester";
 
 router.use((req: Request, res: Response, next: NextFunction) => {
   console.log("hello - middleware here");
@@ -22,12 +22,10 @@ router.get("/getResidents", (req: Request, res: Response) => {
 
   const { checkedIn } = req.query || {};
 
-  Resident.find(checkedIn !== undefined ? { checkedIn } : {}).then(
-    (resident: typeof Resident[]) => {
-      console.log("resident found is", resident);
-      res.send(resident);
-    }
-  );
+  Resident.find({}).then((resident: typeof Resident[]) => {
+    console.log("resident found is", resident);
+    res.send(resident);
+  });
 });
 
 router.get("/getNotCheckedInResidents", (req: Request, res: Response) => {
@@ -52,7 +50,7 @@ router.get("/getResidentById", (req: Request, res: Response) => {
 
 router.post("/postResident", (req: any, res: Response) => {
   console.log("posting resident");
-  const emptySemester: SemesterType[] = [];
+  const emptySemester: semester[] = [];
 
   const newResident = new Resident({
     firstName: req.body.firstName,

@@ -1,8 +1,8 @@
-import { Schema, model } from "mongoose";
-import { SemesterType } from "./semester";
+import { Schema, model, Types } from "mongoose";
+import { semester } from "./semester";
 import PhoneInput from "react-phone-number-input";
 
-type ResidentType = {
+type shadowResident = {
   firstName: string;
   middleName: string;
   lastName: string;
@@ -16,10 +16,14 @@ type ResidentType = {
   // dateIn: Date;
   // dateOut: Date;
   checkedIn: boolean;
-  semesters: SemesterType[];
+  semesters: semester[];
 };
 
-const residentSchema = new Schema<ResidentType>({
+type resident = shadowResident & {
+  _id: Types.ObjectId;
+};
+
+const residentSchema = new Schema<resident>({
   firstName: String,
   middleName: String,
   lastName: String,
@@ -36,7 +40,7 @@ const residentSchema = new Schema<ResidentType>({
   semesters: [Schema.Types.Mixed],
 });
 
-const Resident = model<ResidentType>("Resident", residentSchema);
+const Resident = model<resident>("Resident", residentSchema, "residents");
 
 export { Resident };
-export type { ResidentType };
+export type { resident, shadowResident };
