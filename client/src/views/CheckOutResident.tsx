@@ -81,11 +81,6 @@ const ResidentTable = (props: any) => {
   }
   return (
     <>
-      <div>
-        Make this a button onclick to view modal
-        <AddForm />
-      </div>
-
       <h3> Search Resident by Property </h3>
       <select id="selectOption">
         {Object.values(SelectOptions).map((opt: string, key: number) => {
@@ -109,7 +104,7 @@ const ResidentTable = (props: any) => {
       <Row>
         <Col>
           <Card className="mb-4">
-            <Card.Title>Residents</Card.Title>
+            <Card.Title>Current Checked-In Residents</Card.Title>
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
                 <thead className="bg-light">
