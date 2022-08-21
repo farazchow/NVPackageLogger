@@ -27,8 +27,12 @@ const Catalog: FunctionComponent = () => {
       <div style={{ margin: "12px" }}>
         <Card.Header style={{ background: "green" }}>Active</Card.Header>
 
-        {currentCatalog.map((catalog: catalog) => (
-          <Link to={catalog.link} style={{ textDecoration: "none" }}>
+        {currentCatalog.map((catalog, index) => (
+          <Link
+            to={catalog.link}
+            style={{ textDecoration: "none" }}
+            key={catalog.text + catalog.link}
+          >
             <Card>
               <Card.Body>
                 <Card.Text>{catalog.text}</Card.Text>
@@ -40,8 +44,12 @@ const Catalog: FunctionComponent = () => {
       <br />
       <div style={{ margin: "12px" }}>
         <Card.Header style={{ background: "grey" }}>Archived</Card.Header>
-        {archivedCatalog.map((catalog: catalog) => (
-          <Link to={catalog.link} style={{ textDecoration: "none" }}>
+        {archivedCatalog.map((catalog, index) => (
+          <Link
+            to={catalog.link}
+            style={{ textDecoration: "none" }}
+            key={catalog.link + catalog.text}
+          >
             <Card>
               <Card.Body>
                 <Card.Text>{catalog.text}</Card.Text>

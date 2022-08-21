@@ -106,9 +106,13 @@ export const AddPackageForm = ({ residents }: PackageInputProps) => {
         value: pckge.recipientKerb,
         children: (
           <>
-            <option></option>
+            <option key={"specialkey"}></option>
             {residents.map((resident: resident) => {
-              return <option>{resident.kerb.toString()}</option>;
+              return (
+                <option key={resident._id.toString()}>
+                  {resident.kerb.toString()}
+                </option>
+              );
             })}
           </>
         ),
