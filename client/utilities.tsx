@@ -22,7 +22,7 @@ async function convertToJSON(res: Response): Promise<JSON> {
     });
 }
 
-export async function get<T>(
+export async function get<T><T>(
   endpoint: RequestInfo | URL,
   params: Record<any, any> = {}
 ): Promise<T> {
@@ -34,7 +34,7 @@ export async function get<T>(
     }) as unknown as T;
 }
 
-export async function post<T>(
+export async function post<T><T>(
   endpoint: RequestInfo | URL,
   params: Record<any, any> = {}
 ): Promise<T> {

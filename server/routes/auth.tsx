@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import passport from "passport";
+import { user } from "../models/user";
 const express = require("express");
 const bcrypt = require("bcrypt");
 
@@ -14,7 +15,7 @@ export enum ACCESS {
 }
 
 router.use((req: Request, res: Response, next: NextFunction) => {
-  console.log("user currently signed in is", req.user);
+  console.log("user currently signed in is", (req.session as any).user);
   next();
   console.log("finished calling next!");
 });
@@ -26,11 +27,12 @@ export function requireLogin(
 ): void {
   console.log(
     "requiring login",
-    req.user,
+    (req.session as any).user,
     "user logged in: ",
-    req.isAuthenticated()
+    (req.session as any).user || false
   );
-  return req.isAuthenticated() ? next() : res.redirect("/login");
+
+  return (req.session as any).user ? next() : res.redirect("/");
 }
 
 export function requireLogout(
@@ -40,11 +42,17 @@ export function requireLogout(
 ): void {
   console.log(
     "requiring logout",
-    req.user,
+    (req.session as any).user,
     "user logged out: ",
-    !req.isAuthenticated()
+    (req.session as any).user !== null &&
+      (req.session as any).user !== undefined
   );
-  return !req.isAuthenticated() ? next() : res.redirect("/");
+
+  const loggedIn =
+    (req.session as any).user !== null &&
+    (req.session as any).user !== undefined;
+
+  return loggedIn ? next() : res.redirect("/");
 }
 
 export function requireAdmin(
@@ -53,46 +61,10 @@ export function requireAdmin(
   next: NextFunction
 ): void {
   const admins = [ACCESS.DESKCAPTAIN, ACCESS.DESKMANAGER, ACCESS.DESKMANAGER];
-  return req.user && admins.includes((req as any).user.accessLevel)
+  return (req.session as any).user &&
+    admins.includes((req as any).user.accessLevel)
     ? next()
     : res.redirect("/unauthorized");
-}
-
-async function signUp(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> {
-  const { firstName, lastName, email, password } = req.body;
-  const exists = await User.exists({ email: email });
-  console.log("signup from post", req.body);
-  if (exists) {
-    // we just redirect if a user exists -> TODO: throw error instead
-    return res.redirect("/login");
-  }
-
-  bcrypt.genSalt(10, function (err: Error, salt: number) {
-    if (err) return next(err);
-    bcrypt.hash(password, salt, async function (err: Error, hash: any) {
-      if (err) return next(err);
-
-      const newAdmin = new User({
-        firstName,
-        lastName,
-        email,
-        createdAt: Date.now(),
-        happinessLevel: Math.random() * 10,
-        password: hash,
-      });
-
-      newAdmin
-        .save()
-        .then(() => login(req, res, next))
-        .catch((err: Error) => {
-          console.log("Error received while trying to signup"); // TODO: is this what we want? consider trying to log in again
-        });
-    });
-  });
 }
 
 function login(req: Request, res: Response, next: NextFunction): void {
@@ -114,11 +86,11 @@ function login(req: Request, res: Response, next: NextFunction): void {
 
 function logout(req: Request, res: Response, next: NextFunction): void {
   // remove cookies + session data; https: stackoverflow.com/questions/6928648/what-is-the-point-of-unsetting-the-cookie-during-a-logout-from-a-php-session
-  console.log("attempting to logout user", req.user);
+  console.log("attempting to logout user", (req.session as any).user);
+  (req.session as any).user = null;
   // We login using cookies so calling doing this is effectively the same
   req.session.destroy((err: Error): {} => {
     res.clearCookie("connect.sid", { path: "/" });
-    req.logOut((err: Error) => {});
 
     if (err) {
       return res.send({ error: "Logout error" }); // TODO: try logging out again (need to cap this so doesn't lead to infinite loop)
@@ -128,16 +100,47 @@ function logout(req: Request, res: Response, next: NextFunction): void {
   });
 }
 
-router.post("/signup", requireLogout, signUp);
+// router.post("/signup", requireLogout, signUp);
 
-// Login
-router.post("/login", requireLogout, login);
+// // Login
+// router.post("/login", requireLogout, login);
 
 // Logout
 router.post("/logout", requireLogin, logout);
 
+router.get("/login", (req: Request, res: Response, next: NextFunction) => {
+  // TODO: ensure request is from shib-session.php and nowhere else
+  const { kerb } = req.query;
+  console.log("kerb is", kerb);
+
+  if (!kerb) return res.redirect("https://nvdesk.mit.edu/Session");
+
+  const email = kerb + "@mit.edu";
+
+  User.findOne({ kerb }, (err: Error, user: user) => {
+    if (!user) {
+      // make a new worker
+      const newUser = new User({
+        kerb,
+        email,
+        accessLevel: ACCESS.DESKWORKER,
+      });
+
+      newUser.save().catch((err: Error) => {
+        console.log("Error received while trying to signup"); // TODO: is this what we want? consider trying to log in again
+      });
+    }
+
+    (req.session as any).user = user;
+    return res.redirect(302, "/");
+  });
+});
+
 router.get("/whoami", (req: Request, res: Response, next: NextFunction) => {
-  return !req.user ? res.send({}) : res.send(req.user);
+  console.log("whoamis", (req.session as any).user);
+  return (req.session as any).user
+    ? res.send((req.session as any).user)
+    : res.send(null);
 });
 
 router.get(
@@ -145,7 +148,7 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     console.log(
       "Oops! You cannot authorize this page. Will redirect you in 5 seconds.",
-      req.user
+      (req.session as any).user
     );
 
     setTimeout(() => {

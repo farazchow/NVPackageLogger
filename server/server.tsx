@@ -74,7 +74,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      // secure: process.env.NODE_ENV === "production",
+      secure: false,
       maxAge: ONEHOUR, // one hour - TODO: is this what we want?
     },
   })

@@ -5,37 +5,26 @@ import { post } from "../../utilities";
 import "../css/home.css";
 import "../css/universal.css";
 import React from "react";
+import { useAuth } from "../auth/useAuth";
 const Home = () => {
+  const { login, logout } = useAuth();
+
   return (
     <>
       <div className="mainTitle">
         <div className="container">
-          <h1 className="mainText">
-            New Vassar Front Desk
-            {/* <img
-              className="boxIcon"
-              src={require("../images/box.png").default}
-            /> */}
-          </h1>
+          <h1 className="mainText">New Vassar Front Desk</h1>
         </div>
 
         <div className="userButtons">
-          <Link to="/l">
-            <button className="button-17">Login Here</button>
-          </Link>
+          <button className="button-17" onClick={login}>
+            Login
+          </button>
           <br />
-          <button
-            className="button-17"
-            onClick={() => {
-              post("/api/auth/logout");
-            }}
-          >
-            Click me to Logout!
+          <button className="button-17" onClick={logout}>
+            Logout
           </button>
         </div>
-      </div>
-      <div className="bgImage">
-        {/* <img src={require("../images/general2.png").default}></img> */}
       </div>
     </>
   );
