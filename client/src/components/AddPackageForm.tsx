@@ -15,9 +15,9 @@ import {
 import { resident } from "../../../server/models/resident";
 
 import { post } from "../../utilities";
+import { useAuth } from "../auth/useAuth";
 
 type PackageInputProps = {
-  user: string;
   residents: resident[];
 };
 
@@ -25,8 +25,12 @@ export class ENUMS {
   static Closets = Closets;
   static PackageCarrier = PackageCarrier;
 }
-export const AddPackageForm = ({ user, residents }: PackageInputProps) => {
-  const [pckge, setPckge] = useState<pckge>({ ...emptyPackage, loggedBy: " " });
+export const AddPackageForm = ({ residents }: PackageInputProps) => {
+  const { user } = useAuth();
+  const [pckge, setPckge] = useState<pckge>({
+    ...emptyPackage,
+    loggedBy: user ? user.kerb : " ",
+  });
 
   setTimeout(() => {
     setPckge((prevPckg) => ({ ...prevPckg, receivedAt: new Date() }));

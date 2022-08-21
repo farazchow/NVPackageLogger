@@ -5,13 +5,13 @@ import { user } from "../../../server/models/user";
 import { get, post } from "../../utilities";
 
 type authContext = {
-  user: string | null;
+  user: user | null;
   login: () => void;
   logout: () => void;
 };
 
 const authContext = createContext<authContext>({
-  user: "",
+  user: null,
   login: () => ({}),
   logout: () => ({}),
 });
@@ -39,12 +39,12 @@ type AuthProviderProps = {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<user | null>(null);
   authContext.displayName = "AUTHORIZATION!";
 
   useEffect(() => {
     console.log("getting user again!:", user);
-    get("/api/auth/whoami").then((user: any) => {
+    get<user, null>("/api/auth/whoami").then((user) => {
       console.log("user found is", user);
       setUser(user ? user : null);
     });

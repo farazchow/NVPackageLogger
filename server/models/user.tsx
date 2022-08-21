@@ -16,6 +16,19 @@ type user = {
   notes: notes[];
 };
 
+const emptUser: user = {
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  kerb: "",
+  email: "",
+  createdAt: new Date(0),
+  accessLevel: ACCESS.RESIDENT,
+  notes: [""],
+};
+
+export const emptyUser = { ...emptUser };
+
 const UserSchema = new Schema<user>({
   firstName: { type: String, required: true },
   middleName: { type: String },

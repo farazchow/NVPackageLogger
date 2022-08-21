@@ -22,10 +22,10 @@ async function convertToJSON(res: Response): Promise<JSON> {
     });
 }
 
-export async function get<T><T>(
+export async function get<T, U = T>(
   endpoint: RequestInfo | URL,
   params: Record<any, any> = {}
-): Promise<T> {
+): Promise<T | U> {
   return fetch(endpoint + "?" + new URLSearchParams(params).toString())
     .then(convertToJSON)
     .catch((e: Error): never => {
@@ -34,10 +34,10 @@ export async function get<T><T>(
     }) as unknown as T;
 }
 
-export async function post<T><T>(
+export async function post<T, U>(
   endpoint: RequestInfo | URL,
   params: Record<any, any> = {}
-): Promise<T> {
+): Promise<T | U> {
   console.log("posting");
   return fetch(endpoint, {
     method: "post",

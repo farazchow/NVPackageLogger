@@ -80,10 +80,7 @@ export const Packages = () => {
           <Card className="mb-4">
             <Card.Header className="border-bottom">
               <h6 className="m-0">Packages</h6>
-              <AddPackageForm
-                user="temporary desk worker"
-                residents={resData}
-              />
+              <AddPackageForm residents={resData} />
             </Card.Header>
             <PackagesTable apiEndpoint={"/api/package/getPackages"} />
           </Card>

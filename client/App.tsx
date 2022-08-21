@@ -44,14 +44,15 @@ const App: FunctionComponent = () => {
         <NavBar />
         <Routes>
           <Route index element={<Home />} />
-          <Route path="/catalog" element={<Catalog />} />
           <Route element={<ProtectedRoute />}>
+            <Route path="/catalog" element={<Catalog />} />
             <Route path="/profile" element={<div>Profile</div>} />
             <Route path="/residents" element={<div>Residents</div>} />
 
             <Route path="/packages" element={<Packages />} />
 
             <Route path="/lend/items" element={<LendDeskItems />} />
+
             <Route path="resident">
               <Route path="out" element={<CheckOutResident />} />
               <Route path="in" element={<CheckInResident />} />
@@ -67,7 +68,7 @@ const App: FunctionComponent = () => {
             <Route path="/logout" element={<div>Logout</div>} />
           </Route>
 
-          <Route path="catalog">
+          <Route path="/catalog" element={<ProtectedRoute />}>
             <Route
               path="pckges"
               element={<PackageTable apiEndpoint="/api/package/getPackages" />}
