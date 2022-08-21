@@ -76,7 +76,7 @@ const ResidentTable = (props: any) => {
       <td>
         <AddModal />
       </td>
-      <h3> Search Resident by Property </h3>
+      <h3> Search Non-Checked-In Residents by Property </h3>
       <select id="selectOption">
         {Object.values(SelectOptions).map((opt: string, key: number) => {
           return (
@@ -99,7 +99,7 @@ const ResidentTable = (props: any) => {
       <Row>
         <Col>
           <Card className="mb-4">
-            <Card.Title>Residents</Card.Title>
+            <Card.Title>Residents Not Yet Checked-In</Card.Title>
             <Card.Body className="p-0 pb-3">
               <table data-size="small" className="table mb-0">
                 <thead className="bg-light">

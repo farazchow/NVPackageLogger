@@ -38,10 +38,10 @@ const Form = ({ resident, formType }: FormProps) => {
     homeAddress: "",
     phoneNumber: "",
     forwardingAddress: "",
-    checkedIn: true,
+    checkedIn: false,
     dateIn: new Date(0),
     dateOut: new Date(0),
-    notes: "",
+    notes: "none",
     semesters: emptySemester,
   });
 
@@ -62,6 +62,7 @@ const Form = ({ resident, formType }: FormProps) => {
       phoneNumber: resident.phoneNumber,
       forwardingAddress: resident.forwardingAddress,
       checkedIn: resident.checkedIn,
+      semesters: resident.semesters,
     }));
     if (
       typeof resident.semesters != "undefined" &&
@@ -74,7 +75,6 @@ const Form = ({ resident, formType }: FormProps) => {
         dateIn: resident.semesters[resident.semesters.length - 1].dateIn,
         dateOut: resident.semesters[resident.semesters.length - 1].dateOut,
         notes: resident.semesters[resident.semesters.length - 1].notes,
-        semesters: resident.semesters,
       }));
     }
   }, []);
@@ -195,6 +195,15 @@ const Form = ({ resident, formType }: FormProps) => {
         disabled: false,
       },
     },
+    {
+      title: "Notes:",
+      props: {
+        name: "notes",
+        attribute: "notes",
+        placeholder: resident.notes || "notes",
+        disabled: false,
+      },
+    },
   ];
 
   const updateFormState = (event: SyntheticEvent, key: any): void => {
@@ -217,13 +226,35 @@ const Form = ({ resident, formType }: FormProps) => {
             if (!isFormValid(formType))
               return window.alert("Not all Fields Filled");
 
-            if (
-              formType === ModalFormType.CHECKIN ||
-              formType === ModalFormType.EDIT
-            ) {
+            if (formType === ModalFormType.EDIT) {
               const newSem = new Semester({
                 room: formState.room,
                 dateIn: formState.dateIn,
+                dateOut: formState.dateOut,
+                notes: formState.notes,
+              });
+              if (formState.semesters.length > 1) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  semesters: [...formState.semesters.slice(0, -1), newSem],
+                }));
+              } else {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  semesters: [newSem],
+                }));
+              }
+            }
+            if (formType === ModalFormType.CHECKIN) {
+              if (formState.checkedIn === true) {
+                return window.alert(
+                  "Resident is currently checked in, please checkout first to proceed"
+                );
+              }
+
+              const newSem = new Semester({
+                room: formState.room,
+                dateIn: new Date(),
                 dateOut: formState.dateOut,
                 notes: formState.notes,
               });
@@ -232,6 +263,26 @@ const Form = ({ resident, formType }: FormProps) => {
                 semesters: [...formState.semesters, newSem],
               }));
             }
+            if (formType === ModalFormType.CHECKOUT) {
+              const newSem = new Semester({
+                room: formState.room,
+                dateIn: formState.dateIn,
+                dateOut: new Date(),
+                notes: formState.notes,
+              });
+              if (formState.semesters.length > 1) {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  semesters: [...formState.semesters.slice(0, -1), newSem],
+                }));
+              } else {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  semesters: [newSem],
+                }));
+              }
+            }
+
             post(`/api/resident/${formType}Resident`, formState)
               .then(() => {
                 setSubmittedState(true);
@@ -274,7 +325,7 @@ export const factoryResident = () => {
     homeAddress: "",
     phoneNumber: "",
     forwardingAddress: "",
-    checkedIn: true,
+    checkedIn: false,
     semesters: [
       new Semester({
         room: "",
