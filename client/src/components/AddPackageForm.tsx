@@ -6,73 +6,37 @@ import {
   JSXElementConstructor,
   useState,
 } from "react";
+import {
+  Closets,
+  PackageCarrier,
+  emptyPackage,
+  pckge,
+} from "../../../server/models/package";
 import { resident } from "../../../server/models/resident";
 
 import { post } from "../../utilities";
-
-interface Notes {
-  value: string;
-}
-
-type packageState = {
-  shipping_id: string;
-  recipient: string;
-  shipper: string;
-  location: string;
-  // notes: Notes;
-  notes: string;
-  workerIn: string;
-  createdAt: Date;
-};
 
 type PackageInputProps = {
   user: string;
   residents: resident[];
 };
 
-enum PackageShippers {
-  EMPTY = "",
-  AMAZON = "Amazon",
-  DHL = "DHL",
-  FEDEX = "FedEx",
-  LASERSHIP = "LaserShip",
-  UPS = "UPS",
-  USPS = "USPS",
-  OTHER = "Other",
+export class ENUMS {
+  static Closets = Closets;
+  static PackageCarrier = PackageCarrier;
 }
+export const AddPackageForm = ({ user, residents }: PackageInputProps) => {
+  const [pckge, setPckge] = useState<pckge>({ ...emptyPackage, loggedBy: " " });
 
-enum Closets {
-  EMPTY = "",
-  A_C = "A-C",
-  D_G = "D-G",
-  H_J = "H-J",
-  K_L = "K-L",
-  M_O = "M-O",
-  P_R = "P-R",
-  S_V = "S-V",
-  CLOSET_1 = "Closet 1",
-  CLOSET_2 = "Closet 2",
-  CLOSET_3 = "Closet 3",
-  CLOSET_4 = "Closet 4",
-  FLOOR = "Floor",
-}
+  setTimeout(() => {
+    setPckge((prevPckg) => ({ ...prevPckg, receivedAt: new Date() }));
+  }, 100);
 
-export const PackageInputForm = (props: PackageInputProps) => {
-  const [packageInputState, setPackageInputState] = useState({
-    shipping_id: "",
-    recipient: "",
-    shipper: "",
-    location: "",
-    // notes: { value: "" },
-    notes: " ",
-    workerIn: props.user,
-    createdAt: new Date(),
-  });
-  function makeElement(T: string, props: any, key: string) {
+  function makeElement(T: string, props: pckge, key: string) {
     // console.log("T is", T);
     const propsWithListener = {
       onChange: (event: Event) => {
-        setPackageInputState((prevState) => ({
+        setPckge((prevState: pckge) => ({
           ...prevState,
           [key]: (event.target as HTMLTextAreaElement).value,
         }));
@@ -84,39 +48,38 @@ export const PackageInputForm = (props: PackageInputProps) => {
   }
 
   function isValidated() {
-    return Object.values(packageInputState).every((state) => {
+    return Object.values(pckge).every((state) => {
       return state !== "";
     });
   }
-
-  const PackageInputFormInput = [
+  const formInputs = [
     {
-      title: "Tracking:",
+      title: "Tracking#:",
       type: "input",
-      attribute: "shipping_id",
-      children: { type: "text", value: packageInputState.shipping_id },
+      attribute: "trackingNo",
+      children: { type: "text", value: pckge.trackingNo },
     },
     {
-      title: "Shipper:",
+      title: "Carrier:",
       type: "select",
-      attribute: "shipper",
+      attribute: "carrier",
       children: {
-        value: packageInputState.shipper,
-        children: Object.values(PackageShippers).map((option) => (
+        value: pckge.carrier,
+        children: Object.values(PackageCarrier).map((option) => (
           <option key={option}>{option}</option>
         )),
       },
     },
     {
-      title: "Resident:",
+      title: "Recipient:",
       type: "select",
       attribute: "recipient",
       children: {
-        value: packageInputState.recipient,
+        value: pckge.recipient,
         children: (
           <>
             <option></option>
-            {props.residents.map((resident, index) => (
+            {residents.map((resident, index) => (
               <option value={resident.residentID} key={index}>
                 {[resident.firstName, resident.lastName].join(" ") +
                   "(" +
@@ -132,11 +95,28 @@ export const PackageInputForm = (props: PackageInputProps) => {
     },
 
     {
+      title: "Recipient Kerb:",
+      type: "select",
+      attribute: "recipientKerb",
+      children: {
+        value: pckge.recipientKerb,
+        children: (
+          <>
+            <option></option>
+            {residents.map((resident: resident) => {
+              return <option>{resident.kerb.toString()}</option>;
+            })}
+          </>
+        ),
+      },
+    },
+
+    {
       title: "Location:",
       type: "select",
       attribute: "location",
       children: {
-        value: packageInputState.location,
+        value: pckge.location,
         children: Object.values(Closets).map((option, index) => (
           <option key={index}>{option}</option>
         )),
@@ -147,10 +127,10 @@ export const PackageInputForm = (props: PackageInputProps) => {
       type: "input",
       attribute: "notes",
       children: {
-        value: packageInputState.notes,
+        value: pckge.notes,
         type: "text",
         onChange: (event: Event) => {
-          setPackageInputState((prevState) => ({
+          setPckge((prevState: any) => ({
             ...prevState,
             // notes: { value: (event.target as HTMLTextAreaElement).value },
             notes: (event.target as HTMLTextAreaElement).value,
@@ -158,11 +138,40 @@ export const PackageInputForm = (props: PackageInputProps) => {
         },
       },
     },
+    {
+      title: "Logged By:",
+      type: "input",
+      attribute: "loggedBy",
+      children: {
+        value: pckge.loggedBy,
+        type: "text",
+        disabled: true,
+      },
+    },
+
+    {
+      title: "Received Timestamp:",
+      type: "input",
+      attribute: "receivedAt",
+      children: {
+        value: pckge.receivedAt,
+        disabled: true,
+      },
+    },
+    {
+      title: "Delivered At",
+      type: "input",
+      attribute: "receivedAt",
+      children: {
+        value: pckge.deliveredAt || "Not Yet Delivered!",
+        disabled: true,
+      },
+    },
   ];
 
   return (
     <form
-      name="packageInputForm"
+      name="AddPackage"
       onSubmit={async (e: React.SyntheticEvent) => {
         e.preventDefault();
 
@@ -171,22 +180,13 @@ export const PackageInputForm = (props: PackageInputProps) => {
           return alert("GRRR!");
         }
 
-        post("/api/package/postPackage", packageInputState).then((res) => {
+        post("/api/package/postPackage", pckge).then((res) => {
           // console.log("posted", res);
-          setPackageInputState({
-            shipping_id: "",
-            recipient: "",
-            shipper: "",
-            location: "",
-            // notes: { value: "" },
-            notes: " ", // NOTE: space added so validate doesn't complain
-            workerIn: props.user,
-            createdAt: new Date(),
-          });
+          setPckge(emptyPackage);
         });
       }}
     >
-      {PackageInputFormInput.map((input) => {
+      {formInputs.map((input: any) => {
         return (
           <>
             {input.title}
@@ -196,8 +196,9 @@ export const PackageInputForm = (props: PackageInputProps) => {
       })}
 
       <input type="submit" value="Submit" />
+      <input type="submit" value="Deliver" />
     </form>
   );
 };
 
-export default PackageInputForm;
+export default AddPackageForm;

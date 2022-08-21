@@ -1,29 +1,11 @@
-import { Schema, model } from "mongoose";
-interface ArchivePackageInterface {
-  shipping_id: String;
-  recipient: String;
-  shipper: String;
-  notes: String;
-  workerIn: String;
-  workerOut: String;
-  createdAt: Date;
-  deliveredAt: Date;
-}
+import { model } from "mongoose";
+import { packageSchema, pckge } from "./package";
 
-const archivePackageSchema = new Schema<ArchivePackageInterface>({
-  shipping_id: String,
-  recipient: String,
-  shipper: String,
-  notes: String,
-  workerIn: String,
-  workerOut: String,
-  createdAt: { type: Date, immutable: true },
-  deliveredAt: { type: Date, immutable: true },
-});
+type ArchivePackageInterface = pckge;
 
-const ArchivePackage = model<ArchivePackageInterface>(
+const ArchivePackage = model<pckge>(
   "archivePackage",
-  archivePackageSchema,
+  packageSchema,
   "archivePackages"
 );
 

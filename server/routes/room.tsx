@@ -5,15 +5,8 @@ const mongoose = require("mongoose");
 const { Room } = require("../models/room");
 
 router.use((req: Request, res: Response, next: NextFunction) => {
-  console.log("hello - middleware here");
-  console.log("Time: ", Date.now());
+  console.log("room here");
   next();
-});
-
-// This defines the home page the this route; route would not work without it
-router.get("/", (req: Request, res: Response) => {
-  console.log("reached home page");
-  res.send("Congrats, you've reached the home page of the auth route");
 });
 
 router.get("/getRooms", (req: Request, res: Response) => {

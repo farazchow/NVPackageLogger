@@ -1,28 +1,37 @@
 import { Schema, model } from "mongoose";
 import { ACCESS } from "../routes/auth";
+import { NotesInterface } from "./notes";
 
-interface UserInterface {
+export type kerb = string;
+export type notes = string;
+
+type user = {
   firstName: string;
+  middleName: string;
   lastName: string;
+  kerb: kerb;
   email: string;
-  password: string;
   createdAt: Date;
-  accessLevel: string;
-}
+  accessLevel: ACCESS;
+  notes: notes[];
+};
 
-const UserSchema = new Schema<UserInterface>({
-  firstName: String,
-  lastName: String,
-  email: String,
-  password: String,
+const UserSchema = new Schema<user>({
+  firstName: { type: String, required: true },
+  middleName: { type: String },
+  lastName: { type: String, required: true },
+  kerb: { type: String, minLength: 9, maxLength: 9 },
+  email: { type: String, required: true },
   createdAt: { type: Date, immutable: true, default: Date.now() },
   accessLevel: {
     type: String,
     enum: ACCESS,
-    default: "DESKCAPTAIN",
+    // default: ACCESS["RESIDENT"],
+    required: true,
   },
 });
 
-const User = model<UserInterface>("User", UserSchema, "users");
+const User = model<user>("User", UserSchema, "users");
 
-export { User, UserSchema, type UserInterface };
+export { User };
+export type { user, UserSchema };

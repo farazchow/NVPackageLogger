@@ -15,11 +15,7 @@ import { CheckInModal, CheckOutModal } from "../components/Modal";
 import { ModalFormType } from "../components/CheckInOutForm";
 
 export const CheckOutResident: FunctionComponent = () => {
-  return (
-    // <>
-    <ResidentTable />
-    // </>
-  );
+  return <ResidentTable />;
 };
 
 type State = {
@@ -51,7 +47,6 @@ const ResidentTable = (props: any) => {
     Promise.all([
       get("/api/resident/getResidents", { checkedIn: true }).then(
         (residents: any) => {
-          console.log("gotten all res", residents);
           setAllResidents(residents);
         }
       ),

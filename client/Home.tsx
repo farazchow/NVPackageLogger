@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 // import SelectInput from "./SelectInput";
-// import { PackageInputForm } from "./PackageInputForm";
+// import { AddPackage } from "./AddPackage";
 import { PackageInterface } from "../server/models/package";
 import "..css/universal.css";
 export function Home() {
@@ -18,7 +18,7 @@ export function Home() {
           <CardHeader className="border-bottom">
             <h6 className="m-0">MongoDB Data</h6>
           </CardHeader>
-          {/* {PackageInputForm()} */}
+          {/* {AddPackage()} */}
           <Card.Body className="p-0 pb-3">
             <table data-size="small" className="table mb-0">
               <thead className="bg-light">

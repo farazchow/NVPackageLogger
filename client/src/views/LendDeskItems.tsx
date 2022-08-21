@@ -35,7 +35,7 @@ export function LendDeskItems() {
   const [itemsIn, setItemsIn] = useState<DeskItemInterface[]>([]);
 
   useEffect(() => {
-    get("/api/deskItem/getAllItems").then((allItems: any) => {
+    get<DeskItemInterface[]>("/api/deskItem/getAllItems").then((allItems) => {
       console.log("items are", allItems);
       setAllDeskItems(allItems);
 
@@ -44,7 +44,9 @@ export function LendDeskItems() {
           .filter(
             (item: DeskItemInterface) => item.currentStatus !== "Available"
           )
-          .sort((item: DeskItemInterface) => item.itemCategory)
+          .sort((a: DeskItemInterface, b: DeskItemInterface) =>
+            ("" + a.itemCategory).localeCompare("" + b.itemCategory)
+          )
       );
 
       setItemsIn(
@@ -52,7 +54,9 @@ export function LendDeskItems() {
           .filter(
             (item: DeskItemInterface) => item.currentStatus === "Available"
           )
-          .sort((item: DeskItemInterface) => item.itemCategory)
+          .sort((a: DeskItemInterface, b: DeskItemInterface) =>
+            ("" + a.itemCategory).localeCompare("" + b.itemCategory)
+          )
       );
     });
   }, []);
@@ -176,52 +180,48 @@ export function LendDeskItems() {
                   {alldeskItems ? (
                     <>
                       {itemsIn.map((item: any) => (
-                        <>
-                          <tr key={item._id}>
-                            <td>{item.itemName}</td>
-                            <td>{item.itemCategory}</td>
-                            <td>{item.currentStatus}</td>
-                            <td>
-                              <button
-                                type="button"
-                                id="returnItemButton"
-                                className="btn btn-dark btn-sm d-flex justify-content-center"
-                                onClick={(evt) => {
-                                  lendItem(evt, item); // todo: disable button after item is returned
-                                }}
-                              >
-                                Lend Item
-                              </button>
-                            </td>
-                          </tr>
-                        </>
+                        <tr key={item._id}>
+                          <td>{item.itemName}</td>
+                          <td>{item.itemCategory}</td>
+                          <td>{item.currentStatus}</td>
+                          <td>
+                            <button
+                              type="button"
+                              id="returnItemButton"
+                              className="btn btn-dark btn-sm d-flex justify-content-center"
+                              onClick={(evt) => {
+                                lendItem(evt, item); // todo: disable button after item is returned
+                              }}
+                            >
+                              Lend Item
+                            </button>
+                          </td>
+                        </tr>
                       ))}
 
                       {itemsOut.map((item: any) => (
-                        <>
-                          <tr key={item._id}>
-                            <td>{item.itemName}</td>
-                            <td>{item.itemCategory}</td>
-                            <td>
-                              {"Lent to " +
-                                item.currentStatus +
-                                " on " +
-                                item.lastBorrowed}
-                            </td>
-                            <td>
-                              <button
-                                type="button"
-                                id="returnItemButton"
-                                className="btn btn-dark btn-sm d-flex justify-content-center"
-                                onClick={(evt) => {
-                                  returnItem(evt, item); // todo: disable button after item is returned
-                                }}
-                              >
-                                Return Item
-                              </button>
-                            </td>
-                          </tr>
-                        </>
+                        <tr key={item._id}>
+                          <td>{item.itemName}</td>
+                          <td>{item.itemCategory}</td>
+                          <td>
+                            {"Lent to " +
+                              item.currentStatus +
+                              " on " +
+                              item.lastBorrowed}
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              id="returnItemButton"
+                              className="btn btn-dark btn-sm d-flex justify-content-center"
+                              onClick={(evt) => {
+                                returnItem(evt, item); // todo: disable button after item is returned
+                              }}
+                            >
+                              Return Item
+                            </button>
+                          </td>
+                        </tr>
                       ))}
                     </>
                   ) : (

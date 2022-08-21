@@ -8,14 +8,11 @@ const LocalStrategy = require("passport-local").Strategy;
 
 // import { User } from "express";
 import { Callback } from "mongoose";
-import { User, UserInterface } from "../models/user";
+import { User, user } from "../models/user";
 
 type MongooseUser = typeof User;
 
-export interface PassportUser
-  extends Express.User,
-    UserInterface,
-    MongooseUser {
+export interface PassportUser extends Express.User, user, MongooseUser {
   id: string;
   email: string;
   password: string;

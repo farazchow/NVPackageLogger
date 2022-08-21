@@ -1,16 +1,16 @@
 import { Schema, model, Document } from "mongoose";
 
 export interface DeskItemInterface extends Document {
-  itemName: String;
-  itemCategory: String;
-  currentStatus: String; // residentId or Available
+  itemName: string;
+  itemCategory: string;
+  currentStatus: string; // residentId or Available
   lastBorrowed: Date;
   log: [
     {
-      residentId: String;
+      residentId: string;
       borrowedAt: Date;
       returnedAt: Date;
-      notes: String;
+      notes: string;
     }
   ];
 }

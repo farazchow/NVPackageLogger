@@ -1,109 +1,76 @@
 import { NextFunction, Request, Response } from "express";
+// import { FilterQuery, Model, ProjectionType, QueryOptions } from "mongoose";
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
+require("mongoose");
 import DeskItem, { DeskItemInterface } from "../models/deskItem";
+import { findAny, saveAny } from "../server";
 
 router.use((req: Request, res: Response, next: NextFunction) => {
+  console.log("deskItems here");
   next();
 });
 
-// This defines the home page the this route; route would not work without it
-router.get("/", (req: Request, res: Response) => {
-  console.log("reached home page");
-  res.send("Congrats, you've reached the home page of the auth route");
-});
-
 router.get("/getAllItems", (req: Request, res: Response) => {
-  DeskItem.find(
-    {},
-    { _id: 1, itemCategory: 1, itemName: 1, currentStatus: 1, lastBorrowed: 1 }
-  ).then(
-    (
-      value: (DeskItemInterface & {
-        _id: String;
-        itemCategory: String;
-        itemName: String;
-        currentStatus: String;
-        lastBorrowed: Date;
-      })[]
-    ) => {
-      res.send(value);
-    }
-  );
+  findAny<DeskItemInterface>(req, res, DeskItem, {
+    filter: {},
+    projection: {
+      log: 0,
+    },
+  })
+    .then((deskItems: DeskItemInterface[]) => res.send(deskItems))
+    .catch((e: Error) => res.status(500).send({ message: "Error", e }));
 });
 
-router.get("/getAvailableItems", (req: Request, res: Response) => {
-  DeskItem.find(
-    { currentStatus: "Available" },
-    { _id: 1, itemName: 1, itemCategory: 1, currentStatus: 1 }
-  ).then(
-    (
-      value: (DeskItemInterface & {
-        _id: String;
-        itemName: String;
-        itemCategory: String;
-        currentStatus: String;
-      })[]
-    ) => {
-      res.send(value);
-    }
-  );
+router.get("/getAvailableItems", (req: Request, res: Response): void => {
+  findAny<DeskItemInterface>(req, res, DeskItem, {
+    filter: { currentStatus: "Available" },
+    projection: {
+      log: 0,
+      lastBorrowed: 0,
+    },
+  })
+    .then((availItems: DeskItemInterface[]) => res.send(availItems))
+    .catch((e: Error) => res.status(500).send({ message: "Error", e }));
 });
 
 router.get("/getBorrowedItems", (req: Request, res: Response) => {
-  DeskItem.find(
-    { currentStatus: { $ne: "Available" } },
-    { _id: 1, itemName: 1, itemCategory: 1, currentStatus: 1 }
-  ).then(
-    (
-      value: (DeskItemInterface & {
-        _id: String;
-        itemName: String;
-        itemCategory: String;
-        currentStatus: String;
-      })[]
-    ) => {
-      res.send(value);
-    }
-  );
+  findAny<DeskItemInterface>(req, res, DeskItem, {
+    filter: { currentStatus: { $ne: "Available" } },
+    projection: {
+      log: 0,
+      lastBorrowed: 0,
+    },
+  })
+    .then((borrowedItems: DeskItemInterface[]) => res.send(borrowedItems))
+    .catch((e: Error) => res.status(500).send({ message: "Error", e }));
 });
 
 router.get("/getCategoryAvailableItems", (req: Request, res: Response) => {
-  DeskItem.find(
-    { currentStatus: "Available", itemCategory: req.query.itemCategory },
-    { _id: 1, itemName: 1, currentStatus: 1 }
-  ).then(
-    (
-      value: (DeskItemInterface & {
-        _id: String;
-        itemName: String;
-        itemCategory: String;
-        currentStatus: String;
-      })[]
-    ) => {
-      console.log("getting available items", req.body.itemCategory);
-      res.send(value);
-    }
-  );
+  findAny<DeskItemInterface>(req, res, DeskItem, {
+    filter: {
+      currentStatus: "Available",
+      itemCategory: req.query.itemCategory,
+    },
+    projection: { _id: 1, itemName: 1, currentStatus: 1 },
+  })
+    .then((cateItems: DeskItemInterface[]) => res.send(cateItems))
+    .catch((e: Error) => res.status(500).send({ message: "Error", e }));
 });
 
 router.post("/postNewItem", (req: any, res: Response) => {
-  console.log("body is", req.body);
-  const newItem = new DeskItem({
-    itemName: req.body.itemName,
-    itemCategory: req.body.itemCategory,
-    currentStatus: "Available",
-    lastBorrowed: req.body.lastBorrowed,
-    log: [],
-  });
-  newItem
-    .save()
-    .then((item: DeskItemInterface) => res.send(item))
-    .catch((err: any) => {
-      console.log("error posting item", err);
-      res.status(500).send({ message: "unknown error" });
-    });
+  saveAny<DeskItemInterface, any>(
+    req,
+    res,
+    DeskItem,
+    {
+      itemName: req.body.itemName,
+      itemCategory: req.body.itemCategory,
+      currentStatus: "Available",
+      lastBorrowed: req.body.lastBorrowed,
+    },
+    "Error posting new item"
+  );
 });
 
 router.post("/lendItem", (req: any, res: Response) => {

@@ -4,23 +4,15 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const { Resident } = require("../models/resident");
 import { Semester, semester } from "../models/semester";
+import { findAny } from "../server";
 
 router.use((req: Request, res: Response, next: NextFunction) => {
-  console.log("hello - middleware here");
-  console.log("Time: ", Date.now());
+  console.log("resident here");
   next();
-});
-
-// This defines the home page the this route; route would not work without it
-router.get("/", (req: Request, res: Response) => {
-  console.log("reached home page");
-  res.send("Congrats, you've reached the home page of the auth route");
 });
 
 router.get("/getResidents", (req: Request, res: Response) => {
   console.log("Sending resident data back to you!");
-
-  const { checkedIn } = req.query || {};
 
   Resident.find({}).then((resident: typeof Resident[]) => {
     console.log("resident found is", resident);
@@ -31,9 +23,7 @@ router.get("/getResidents", (req: Request, res: Response) => {
 router.get("/getNotCheckedInResidents", (req: Request, res: Response) => {
   console.log("Sending resident data back to you!");
 
-  const { checkedIn } = req.query || {};
-
-  Resident.find().then((resident: typeof Resident[]) => {
+  Resident.find({ checkedIn: false }).then((resident: typeof Resident[]) => {
     res.send(resident);
   });
 });

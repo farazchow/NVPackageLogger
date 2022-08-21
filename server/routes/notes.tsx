@@ -12,61 +12,55 @@ router.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-router.get("/", (req: Request, res: Response) => {
-    console.log("reached home page");
-    res.send("Congrats, you've reached the home page of the dailynotes route");
-  });
-
 router.get("/getNotes", (req: Request, res: Response) => {
   Notes.find().then((notes: NotesInterface) => {
     res.send(notes);
   });
 });
 
-
 router.post("/addNote", (req: Request, res: Response) => {
-    console.log("Sending note data back to you!");
-    const newNote = new Notes({
-      note: req.body.note,
-      deskworker: req.body.deskworker,
-      createdAt: req.body.createdAt,
-      });
-    
-      newNote
-        .save()
-        .then((notes: NotesInterface) => res.send(notes))
-        .catch((err: any) => {
-          console.log("error posting notes", err);
-          res.status(500).send({ message: "unknown error" });
-        });
+  console.log("Sending note data back to you!");
+  const newNote = new Notes({
+    note: req.body.note,
+    deskworker: req.body.deskworker,
+    createdAt: req.body.createdAt,
   });
 
-  router.post("/deleteNote", (req: Request, res: Response) => {
-     Notes.deleteOne({ note: req.body.note })
-      .then((note: NotesInterface) => {
-        console.log("deleting note");
-        res.send(note);
-      })
-      .catch((err: any) => {
-        console.log("error deleting note ", err);
-        res.status(500).send({ message: "unknown error" });
-      });
-  });
-
-  router.post("/archiveNote", (req: any, res: Response) => {
-    console.log("archiving note");
-    const newArchiveNote = new ArchiveNote({
-      note: req.body.note,
-      deskworker: req.body.deskworker,
-      createdAt: req.body.createdAt,
-      loggedAt: req.body.loggedAt,
+  newNote
+    .save()
+    .then((notes: NotesInterface) => res.send(notes))
+    .catch((err: any) => {
+      console.log("error posting notes", err);
+      res.status(500).send({ message: "unknown error" });
     });
-    newArchiveNote
-      .save()
-      .then((pkg: ArchiveNoteInterface) => res.send(pkg))
-      .catch((err: any) => {
-        console.log("error posting note", err);
-        res.status(500).send({ message: "unknown error" });
-      });
+});
+
+router.post("/deleteNote", (req: Request, res: Response) => {
+  Notes.deleteOne({ note: req.body.note })
+    .then((note: NotesInterface) => {
+      console.log("deleting note");
+      res.send(note);
+    })
+    .catch((err: any) => {
+      console.log("error deleting note ", err);
+      res.status(500).send({ message: "unknown error" });
+    });
+});
+
+router.post("/archiveNote", (req: any, res: Response) => {
+  console.log("archiving note");
+  const newArchiveNote = new ArchiveNote({
+    note: req.body.note,
+    deskworker: req.body.deskworker,
+    createdAt: req.body.createdAt,
+    loggedAt: req.body.loggedAt,
   });
-  module.exports = router;
+  newArchiveNote
+    .save()
+    .then((pkg: ArchiveNoteInterface) => res.send(pkg))
+    .catch((err: any) => {
+      console.log("error posting note", err);
+      res.status(500).send({ message: "unknown error" });
+    });
+});
+module.exports = router;

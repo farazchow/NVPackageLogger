@@ -2,24 +2,26 @@ import { FunctionComponent, useEffect, useState } from "react";
 import NavBar from "./src/components/NavBar";
 import Login from "./src/components/Login";
 
-import { UserInterface } from "../server/models/user";
+import { user } from "../server/models/user";
 import { Routes, Route } from "react-router-dom";
 
 import NotFound from "./src/views/NotFound";
 import Unauthorized from "./src/views/Unauthorizated";
 import Home from "./src/views/Home";
-import LogPackages from "./src/views/LogPackages";
+import Packages from "./src/views/Packages";
 import LendDeskItems from "./src/views/LendDeskItems";
+import Catalog from "./src/views/Catalog";
 import { CheckOutResident } from "./src/views/CheckOutResident";
 import { CheckInResident } from "./src/views/CheckInResident";
 import { SingleResidentView } from "./src/views/SingleResident";
 import { DailyNotes } from "./src/views/Notes";
 import { LostItems } from "./src/views/LostItems";
+import PackageTable from "./src/components/PackageTable";
 
 const App: FunctionComponent = () => {
   /*
    */
-  const [data, setData] = useState<UserInterface[]>([]);
+  const [data, setData] = useState<user[]>([]);
 
   // dummy load data for data fetching
   useEffect(() => {
@@ -40,10 +42,11 @@ const App: FunctionComponent = () => {
       <NavBar />
       <Routes>
         <Route index element={<Home />} />
+        <Route path="/catalog" element={<Catalog />} />
         <Route path="/profile" element={<div>Profile</div>} />
         <Route path="/residents" element={<div>Residents</div>} />
 
-        <Route path="/package" element={<LogPackages />} />
+        <Route path="/packages" element={<Packages />} />
 
         <Route path="/lend/items" element={<LendDeskItems />} />
         <Route path="resident">
@@ -59,6 +62,33 @@ const App: FunctionComponent = () => {
 
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<div>Logout</div>} />
+
+        <Route path="catalog">
+          <Route
+            path="pckges"
+            element={<PackageTable apiEndpoint="/api/package/getPackages" />}
+          />
+          <Route path="desk-items" element={<LendDeskItems />} />
+          <Route path="residents" element={<CheckInResident />} />
+          <Route path="notes" element={<DailyNotes />} />
+
+          <Route
+            path="arch-pckges"
+            element={
+              <PackageTable apiEndpoint="/api/package/archived/getPackages" />
+            }
+          />
+          <Route path="prev-residents" element={<h3>Previous Residents!</h3>} />
+          <Route
+            path="arch-notes"
+            element={
+              <>
+                <h3>Archived Notes!</h3>
+                <DailyNotes />
+              </>
+            }
+          />
+        </Route>
 
         <Route path="/notfound" element={<NotFound />} />
         <Route path="/unauthorized" element={<Unauthorized />} />

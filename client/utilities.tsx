@@ -22,39 +22,35 @@ async function convertToJSON(res: Response): Promise<JSON> {
     });
 }
 
-export async function get(
+export async function get<T>(
   endpoint: RequestInfo | URL,
   params: Record<any, any> = {}
-): Promise<JSON> {
+): Promise<T> {
   return fetch(endpoint + "?" + new URLSearchParams(params).toString())
     .then(convertToJSON)
-    .catch((error): never => {
-      logErrors(error);
-      throw `GET request to ${endpoint} failed with error:\n${error}`;
-    });
+    .catch((e: Error): never => {
+      logErrors(e);
+      throw `GET request to ${endpoint} failed with error:\n${e}`;
+    }) as unknown as T;
 }
 
-export async function post(
+export async function post<T>(
   endpoint: RequestInfo | URL,
   params: Record<any, any> = {}
-): Promise<JSON> {
+): Promise<T> {
   console.log("posting");
   return fetch(endpoint, {
     method: "post",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(params),
-    credentials: "include", // TODO: return to this
+    credentials: "include",
   })
     .then(convertToJSON) // convert result to JSON object
     .catch((error: Error): never => {
       // give a useful error message
       logErrors(error);
       throw `POST request to ${endpoint} failed with error:\n${error}`;
-    });
-}
-
-export async function getUser() {
-  return await get("api/auth/whoami");
+    }) as unknown as T;
 }
 
 // Other functions?

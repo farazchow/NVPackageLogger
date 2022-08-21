@@ -3,18 +3,13 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 import { LostItemInterface } from "../models/lostItem";
-import { ArchiveLostItemInterface } from "../models/archiveLostItem"
+import { ArchiveLostItemInterface } from "../models/archiveLostItem";
 const { LostItems } = require("../models/lostItem");
 const { ArchiveLostItem } = require("../models/archiveLostItem");
 
 router.use((req: Request, res: Response, next: NextFunction) => {
   console.log("lostItems here");
   next();
-});
-
-router.get("/", (req: Request, res: Response) => {
-  console.log("reached home page");
-  res.send("Congrats, you've reached the home page of the lostItems route");
 });
 
 router.get("/getLostItems", (req: Request, res: Response) => {
@@ -53,19 +48,19 @@ router.post("/deleteLostItem", (req: Request, res: Response) => {
 });
 
 router.post("/archiveLostItem", (req: any, res: Response) => {
-console.log("archiving lost item");
-const newArchiveLostItem = new ArchiveLostItem({
+  console.log("archiving lost item");
+  const newArchiveLostItem = new ArchiveLostItem({
     description: req.body.description,
     deskworker: req.body.deskworker,
     createdAt: req.body.createdAt,
     loggedAt: req.body.loggedAt,
-});
-newArchiveLostItem
+  });
+  newArchiveLostItem
     .save()
     .then((pkg: ArchiveLostItemInterface) => res.send(pkg))
     .catch((err: any) => {
-    console.log("error posting lost item", err);
-    res.status(500).send({ message: "unknown error" });
+      console.log("error posting lost item", err);
+      res.status(500).send({ message: "unknown error" });
     });
 });
 module.exports = router;

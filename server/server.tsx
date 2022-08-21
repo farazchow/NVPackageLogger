@@ -1,5 +1,5 @@
 import { Application, NextFunction, Request, Response } from "express";
-import path from "path";
+import { FilterQuery, Model, ProjectionType, QueryOptions } from "mongoose";
 
 // Packages
 const mongoose = require("mongoose");
@@ -31,6 +31,32 @@ mongoose
   })
   .then(() => console.log(`Connected to MongoDB`))
   .catch((err: Error) => console.log(`Error connecting to MongoDB ${err}`));
+
+// Generic Helper Functions //
+export function findAny<T>(
+  req: Request,
+  res: Response,
+  model: Model<T>,
+  params: {
+    filter: FilterQuery<T> | any;
+    projection?: ProjectionType<T> | any;
+    options?: QueryOptions<T> | any;
+    callback?: any;
+  },
+  errmsg: string = "Unknown Error"
+): any {
+  return model.find({ ...params }).then((result: any) => result);
+}
+
+export function saveAny<T, override = T>(
+  req: Request,
+  res: Response,
+  model: Model<T>,
+  params: T & override,
+  errmsg: string = "Unknown Error"
+): any {
+  return new model(params).save();
+}
 
 // Middleware //
 app.use(express.json()); // parses the incoming message and puts the data in req.body
