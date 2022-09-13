@@ -18,6 +18,7 @@ import { DailyNotes } from "./src/views/Notes";
 import { LostItems } from "./src/views/LostItems";
 import PackageTable from "./src/components/PackageTable";
 import { AuthProvider, ProtectedRoute } from "./src/auth/useAuth";
+import { ResidentSpreadSheet } from "./src/views/ResidentSpread";
 
 const App: FunctionComponent = () => {
   /*
@@ -64,42 +65,12 @@ const App: FunctionComponent = () => {
 
             <Route path="/notes" element={<DailyNotes />} />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<div>Logout</div>} />
-          </Route>
-
-          <Route path="/catalog" element={<ProtectedRoute />}>
-            <Route
-              path="pckges"
-              element={<PackageTable apiEndpoint="/api/package/getPackages" />}
-            />
-            <Route path="desk-items" element={<LendDeskItems />} />
-            <Route path="residents" element={<CheckInResident />} />
-            <Route path="notes" element={<DailyNotes />} />
-
-            <Route
-              path="arch-pckges"
-              element={
-                <PackageTable apiEndpoint="/api/package/archived/getPackages" />
-              }
-            />
-            <Route
-              path="prev-residents"
-              element={<h3>Previous Residents!</h3>}
-            />
-            <Route
-              path="arch-notes"
-              element={
-                <>
-                  <h3>Archived Notes!</h3>
-                  <DailyNotes />
-                </>
-              }
-            />
-          </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<div>Logout</div>} />
 
           <Route path="/notfound" element={<NotFound />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="/spreadsheet" element={<ResidentSpreadSheet />} />
         </Routes>
       </AuthProvider>
     </>
